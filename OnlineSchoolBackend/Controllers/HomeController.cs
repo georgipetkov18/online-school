@@ -7,7 +7,7 @@ namespace OnlineSchoolBackend.Controllers
         [Route("api/")]
         public IActionResult Home()
         {
-            return this.Ok(new { test = "wprking" });
+            return this.Ok(new { test = "working" });
         }
     }
 }
