@@ -1,4 +1,4 @@
-namespace OnlineSchoolBackend
+namespace OnlineSchoolApi
 {
     public class WeatherForecast
     {

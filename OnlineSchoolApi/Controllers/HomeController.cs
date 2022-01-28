@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace OnlineSchoolBackend.Controllers
+namespace OnlineSchoolApi.Controllers
 {
     public class HomeController : ControllerBase
     {
