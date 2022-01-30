@@ -348,3 +348,6 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+OnlineSchoolApi/appsettings.json
+OnlineSchoolApi/appsettings.Development.json

@@ -1,17 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OnlineSchoolData.Models
+namespace OnlineSchoolData.Entities
 {
-    internal class Lesson : BaseEntity
+    public class ClassInfoEntity : BaseEntity
     {
         [Required]
-        [MaxLength(40)]
-        public string Name { get; set; }
+        public TimeSpan From { get; set; }
 
         [Required]
-        [MaxLength(30)]
-        public string Code { get; set; }
+        public int DurationInMinutes { get; set; }
 
         public virtual ICollection<TimetableEntity> TimetableEntities { get; set; } = new HashSet<TimetableEntity>();
+
     }
 }
