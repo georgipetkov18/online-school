@@ -1,6 +1,6 @@
-﻿namespace OnlineSchoolBusinessLogic.Interfaces
+﻿namespace OnlineSchoolBusinessLogic.Interfaces;
+
+public interface ILessonRepository
 {
-    public interface ILessonRepository
-    {
-    }
 }
+

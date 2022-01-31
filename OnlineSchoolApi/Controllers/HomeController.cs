@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace OnlineSchoolApi.Controllers
+namespace OnlineSchoolApi.Controllers;
+
+[ApiController]
+public class HomeController : ControllerBase
 {
-    public class HomeController : ControllerBase
+    [HttpGet("api/")]
+    public IActionResult Home()
     {
-        [Route("api/")]
-        public IActionResult Home()
-        {
-            return this.Ok(new { test = "working" });
-        }
+        return this.Ok(new { test = "working" });
     }
 }
+
