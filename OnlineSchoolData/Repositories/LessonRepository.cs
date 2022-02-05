@@ -38,15 +38,22 @@ namespace OnlineSchoolData.Repositories
             return lessonEntity.ToLesson();
         }
 
-        public Task DeleteLessonAsync(Lesson lesson)
+        public async Task DeleteLessonAsync(Guid id)
         {
-            if (lesson is null)
+            if (id == Guid.Empty)
             {
-                throw new ArgumentNullException(nameof(lesson));
+                throw new ArgumentNullException(nameof(id), "Id cannot be empty!");
             }
 
-            this.context.Lessons.Remove(lesson.ToLessonEntity());
-            return this.context.SaveChangesAsync();
+            var lessonEntity = await this.context.Lessons.FirstOrDefaultAsync(l => l.Id == id);
+
+            if (lessonEntity is null)
+            {
+                throw new ArgumentNullException(nameof(lessonEntity), "Lesson with the given id does not exist!");
+            }
+
+            this.context.Lessons.Remove(lessonEntity);
+            await this.context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Lesson>> GetAllLessonsAsync()

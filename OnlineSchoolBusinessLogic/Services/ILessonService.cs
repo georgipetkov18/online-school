@@ -12,6 +12,6 @@ namespace OnlineSchoolBusinessLogic.Services
 
         Task<Lesson> UpdateLessonAsync(Lesson lesson);
 
-        Task DeleteLessonAsync(Lesson lesson);
+        Task DeleteLessonAsync(Guid id);
     }
 }

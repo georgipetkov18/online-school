@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineSchoolBusinessLogic.Interfaces;
+using OnlineSchoolBusinessLogic.Services;
 using OnlineSchoolData;
 using OnlineSchoolData.Repositories;
 
@@ -18,6 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
+builder.Services.AddScoped<ILessonService, LessonService>();
 
 var app = builder.Build();
 
