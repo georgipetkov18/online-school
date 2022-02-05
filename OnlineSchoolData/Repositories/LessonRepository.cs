@@ -38,7 +38,7 @@ namespace OnlineSchoolData.Repositories
             return lessonEntity.ToLesson();
         }
 
-        public async Task DeleteLessonAsync(Lesson lesson)
+        public Task DeleteLessonAsync(Lesson lesson)
         {
             if (lesson is null)
             {
@@ -46,7 +46,7 @@ namespace OnlineSchoolData.Repositories
             }
 
             this.context.Lessons.Remove(lesson.ToLessonEntity());
-            await this.context.SaveChangesAsync();
+            return this.context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Lesson>> GetAllLessonsAsync()
