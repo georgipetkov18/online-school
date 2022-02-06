@@ -67,14 +67,14 @@ namespace OnlineSchoolData.Repositories
         {
             if (subjectId == Guid.Empty)
             {
-                throw new ArgumentNullException(nameof(subjectId));
+                throw new ArgumentNullException(nameof(subjectId), "Id cannot be empty!");
             }
 
             var subjectEntity = await this.context.Subjects.FirstOrDefaultAsync(l => l.Id == subjectId);
 
             if (subjectEntity is null)
             {
-                throw new ArgumentNullException(nameof(subjectEntity));
+                throw new ArgumentNullException(nameof(subjectEntity), "Subject with the given id does not exist!");
             }
 
             return subjectEntity.ToSubject();
@@ -101,7 +101,7 @@ namespace OnlineSchoolData.Repositories
 
             if (subjectEntity is null)
             {
-                throw new ArgumentNullException(nameof(subjectEntity));
+                throw new ArgumentNullException(nameof(subjectEntity), "Subject with the given id does not exist!");
             }
 
             subjectEntity.Name = subject.Name;

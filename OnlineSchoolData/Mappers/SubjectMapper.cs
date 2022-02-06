@@ -17,11 +17,11 @@ namespace OnlineSchoolData.Mappers
 
         public static IEnumerable<Subject> ToSubjects(this IEnumerable<SubjectEntity> subjectEntities)
         {
-            IEnumerable<Subject> subjects = new List<Subject>();
+            IList<Subject> subjects = new List<Subject>();
 
             foreach (var subjectEntity in subjectEntities)
             {
-                subjects.Append(subjectEntity.ToSubject());
+                subjects.Add(subjectEntity.ToSubject());
             }
 
             return subjects;
