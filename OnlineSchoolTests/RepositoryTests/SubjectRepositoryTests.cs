@@ -117,5 +117,89 @@ namespace OnlineSchoolTests.RepositoryTests
 
         }
 
+
+        [Test]
+        public async Task GetAll_Method_Returns_All_Instances()
+        {
+            var subjectEntity1 = new SubjectEntity
+            {
+                Name = "Test Name 1",
+                Code = "Test Code 1",
+            };
+
+            var subjectEntity2 = new SubjectEntity
+            {
+                Name = "Test Name 2",
+                Code = "Test Code 2",
+            };
+
+            var task1 = this.subjectRepo.AddSubjectAsync(subjectEntity1.ToSubject());
+            var task2 = this.subjectRepo.AddSubjectAsync(subjectEntity2.ToSubject());
+            await Task.WhenAll(task1, task2);
+
+            var subjects = await this.subjectRepo.GetAllSubjectsAsync();
+            Assert.AreEqual(2, subjects.Count());
+        }
+
+
+        [Test]
+        public void Get_Method_Throws_Exception_When_Id_Is_Invalid()
+        {
+            AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.GetSubjectAsync(Guid.NewGuid()); };
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(testDelegate);
+            Assert.That(exception.Message.Contains("Subject with the given id does not exist!"));
+        }
+
+        [Test]
+        public async Task Get_Method_Reads_The_Correct_Subject()
+        {
+            var subjectEntity = new SubjectEntity
+            {
+                Name = "Test Name 1",
+                Code = "Test Code 1",
+            };
+
+            var addedSubject = await this.subjectRepo.AddSubjectAsync(subjectEntity.ToSubject());
+
+            var readSubject = await this.subjectRepo.GetSubjectAsync(addedSubject.Id);
+
+            Assert.AreEqual(subjectEntity.Name, readSubject.Name);
+        }
+
+
+        [Test]
+        public void Update_Method_Throws_Exception_When_Id_Is_Invalid()
+        {
+            var subjectEntity = new SubjectEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = "Test Name 1",
+                Code = "Test Code 1",
+            };
+
+            AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.UpdateSubjectAsync(subjectEntity.ToSubject()); };
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(testDelegate);
+            Assert.That(exception.Message.Contains("Subject with the given id does not exist!"));
+        }
+
+        [Test]
+        public async Task Update_Method_Does_Indeed_Update_Subject()
+        {
+            var subjectEntity = new SubjectEntity
+            {
+                Name = "Test Name 1",
+                Code = "Test Code 1",
+            };
+
+            var addedSubject = await this.subjectRepo.AddSubjectAsync(subjectEntity.ToSubject());
+
+            subjectEntity.Id = addedSubject.Id;
+            subjectEntity.Name = "Changed";
+
+            var updatedSubject = await this.subjectRepo.UpdateSubjectAsync(subjectEntity.ToSubject());
+
+            Assert.AreEqual("Changed", updatedSubject.Name);
+        }
+
     }
 }
