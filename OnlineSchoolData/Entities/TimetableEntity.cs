@@ -7,9 +7,9 @@ namespace OnlineSchoolData.Entities
         [Required]
         public DayOfWeek Day { get; set; }
 
-        public virtual LessonEntity Lesson { get; set; } = null!;
+        public virtual SubjectEntity Subject { get; set; } = null!;
 
-        public virtual ClassInfoEntity ClassInfo { get; set; } = null!;
+        public virtual LessonEntity Lesson { get; set; } = null!;
 
         public virtual TeacherEntity? Teacher { get; set; } = null!;
 

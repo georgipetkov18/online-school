@@ -12,8 +12,8 @@ using OnlineSchoolData;
 namespace OnlineSchoolData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220131200942_CreateUserEntities")]
-    partial class CreateUserEntities
+    [Migration("20220206075721_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,7 +46,7 @@ namespace OnlineSchoolData.Migrations
                     b.ToTable("Classes");
                 });
 
-            modelBuilder.Entity("OnlineSchoolData.Entities.ClassInfoEntity", b =>
+            modelBuilder.Entity("OnlineSchoolData.Entities.LessonEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,33 +63,6 @@ namespace OnlineSchoolData.Migrations
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ClassInformation");
-                });
-
-            modelBuilder.Entity("OnlineSchoolData.Entities.LessonEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
 
@@ -128,6 +101,33 @@ namespace OnlineSchoolData.Migrations
                     b.HasIndex("ClassId");
 
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("OnlineSchoolData.Entities.SubjectEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Subjects");
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.TeacherEntity", b =>
@@ -173,9 +173,6 @@ namespace OnlineSchoolData.Migrations
                     b.Property<Guid>("ClassId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ClassInfoId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -188,6 +185,9 @@ namespace OnlineSchoolData.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("SubjectId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("TeacherId")
                         .HasColumnType("uniqueidentifier");
 
@@ -195,9 +195,9 @@ namespace OnlineSchoolData.Migrations
 
                     b.HasIndex("ClassId");
 
-                    b.HasIndex("ClassInfoId");
-
                     b.HasIndex("LessonId");
+
+                    b.HasIndex("SubjectId");
 
                     b.HasIndex("TeacherId");
 
@@ -223,15 +223,15 @@ namespace OnlineSchoolData.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OnlineSchoolData.Entities.ClassInfoEntity", "ClassInfo")
-                        .WithMany("TimetableEntities")
-                        .HasForeignKey("ClassInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("OnlineSchoolData.Entities.LessonEntity", "Lesson")
                         .WithMany("TimetableEntities")
                         .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineSchoolData.Entities.SubjectEntity", "Subject")
+                        .WithMany("TimetableEntities")
+                        .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -242,9 +242,9 @@ namespace OnlineSchoolData.Migrations
 
                     b.Navigation("Class");
 
-                    b.Navigation("ClassInfo");
-
                     b.Navigation("Lesson");
+
+                    b.Navigation("Subject");
 
                     b.Navigation("Teacher");
                 });
@@ -256,12 +256,12 @@ namespace OnlineSchoolData.Migrations
                     b.Navigation("TimetableEntities");
                 });
 
-            modelBuilder.Entity("OnlineSchoolData.Entities.ClassInfoEntity", b =>
+            modelBuilder.Entity("OnlineSchoolData.Entities.LessonEntity", b =>
                 {
                     b.Navigation("TimetableEntities");
                 });
 
-            modelBuilder.Entity("OnlineSchoolData.Entities.LessonEntity", b =>
+            modelBuilder.Entity("OnlineSchoolData.Entities.SubjectEntity", b =>
                 {
                     b.Navigation("TimetableEntities");
                 });

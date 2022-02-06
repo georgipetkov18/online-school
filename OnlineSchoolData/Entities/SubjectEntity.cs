@@ -2,15 +2,16 @@
 
 namespace OnlineSchoolData.Entities
 {
-    public class ClassInfoEntity : BaseEntity
+    public class SubjectEntity : BaseEntity
     {
         [Required]
-        public TimeSpan From { get; set; }
+        [MaxLength(40)]
+        public string Name { get; set; } = string.Empty;
 
         [Required]
-        public int DurationInMinutes { get; set; }
+        [MaxLength(30)]
+        public string Code { get; set; } = string.Empty;
 
         public virtual ICollection<TimetableEntity> TimetableEntities { get; set; } = new HashSet<TimetableEntity>();
-
     }
 }

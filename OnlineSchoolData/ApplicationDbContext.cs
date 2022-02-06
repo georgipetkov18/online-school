@@ -5,8 +5,8 @@ namespace OnlineSchoolData;
 
 public class ApplicationDbContext : DbContext
 {
+    public DbSet<SubjectEntity> Subjects { get; set; } = null!;
     public DbSet<LessonEntity> Lessons { get; set; } = null!;
-    public DbSet<ClassInfoEntity> ClassInformation { get; set; } = null!;
     public DbSet<TeacherEntity> Teachers { get; set; } = null!;
     public DbSet<StudentEntity> Students { get; set; } = null!;
     public DbSet<ClassEntity> Classes { get; set; } = null!;
@@ -18,14 +18,14 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<SubjectEntity>()
+            .HasMany(subject => subject.TimetableEntities)
+            .WithOne(timetableEntity => timetableEntity.Subject)
+            .OnDelete(DeleteBehavior.Cascade);
+
         modelBuilder.Entity<LessonEntity>()
             .HasMany(lesson => lesson.TimetableEntities)
             .WithOne(timetableEntity => timetableEntity.Lesson)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        modelBuilder.Entity<ClassInfoEntity>()
-            .HasMany(classInfo => classInfo.TimetableEntities)
-            .WithOne(timetableEntity => timetableEntity.ClassInfo)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<TeacherEntity>()

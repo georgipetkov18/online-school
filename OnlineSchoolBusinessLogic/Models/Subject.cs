@@ -1,6 +1,6 @@
 ﻿namespace OnlineSchoolBusinessLogic.Models
 {
-    public record Lesson
+    public record Subject
     {
         public Guid Id { get; init; }
         public string Name { get; init; }

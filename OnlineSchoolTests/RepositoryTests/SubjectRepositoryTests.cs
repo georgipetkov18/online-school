@@ -1,25 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using NUnit.Framework;
 using OnlineSchoolBusinessLogic.Interfaces;
-using OnlineSchoolBusinessLogic.Models;
-using OnlineSchoolBusinessLogic.Services;
 using OnlineSchoolData;
 using OnlineSchoolData.Entities;
 using OnlineSchoolData.Mappers;
 using OnlineSchoolData.Repositories;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace OnlineSchoolTests.RepositoryTests
 {
 
-    public class LessonRepositoryTests
+    public class SubjectRepositoryTests
     {
         private ApplicationDbContext context = null!;
-        private ILessonRepository lessonRepo = null!;
+        private ISubjectRepository subjectRepo = null!;
 
         [SetUp]
         public void Setup()
@@ -30,7 +26,7 @@ namespace OnlineSchoolTests.RepositoryTests
 
             this.context = new ApplicationDbContext(options);
 
-            this.lessonRepo = new LessonRepository(this.context);
+            this.subjectRepo = new SubjectRepository(this.context);
         }
 
         [TearDown]
@@ -42,71 +38,71 @@ namespace OnlineSchoolTests.RepositoryTests
         [Test]
         public async Task Add_Method_Does_Indeed_Add_Instance_To_Database()
         {
-            var lessonEntity = new LessonEntity
+            var subjectEntity = new SubjectEntity
             {
                 Name = "Test Name 1",
                 Code = "Test Code 1",
             };
-            await this.lessonRepo.AddLessonAsync(lessonEntity.ToLesson());
+            await this.subjectRepo.AddSubjectAsync(subjectEntity.ToSubject());
 
-            Assert.That(this.context.Lessons.Count() > 0);
+            Assert.That(this.context.Subjects.Count() > 0);
         }
 
         [Test]
-        public void Add_Method_Does_Not_Add_Instance_To_Database_When_Lesson_Is_Null()
+        public void Add_Method_Does_Not_Add_Instance_To_Database_When_Subject_Is_Null()
         {
-            AsyncTestDelegate testDelegate = async delegate { await this.lessonRepo.AddLessonAsync(null); };
+            AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.AddSubjectAsync(null); };
             Assert.ThrowsAsync<ArgumentNullException>(testDelegate);
-            Assert.That(this.context.Lessons.Count() == 0);
+            Assert.That(this.context.Subjects.Count() == 0);
         }
 
         [Test]
         public void Add_Method_Does_Not_Add_Instance_To_Database_When_Name_Is_Null()
         {
-            var lessonEntity = new LessonEntity
+            var subjectEntity = new SubjectEntity
             {
                 Code = "Test Code 1",
             };
 
-            AsyncTestDelegate testDelegate = async delegate { await this.lessonRepo.AddLessonAsync(lessonEntity.ToLesson()); };
+            AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.AddSubjectAsync(subjectEntity.ToSubject()); };
             Assert.ThrowsAsync<ArgumentNullException>(testDelegate);
-            Assert.That(this.context.Lessons.Count() == 0);
+            Assert.That(this.context.Subjects.Count() == 0);
         }
 
         [Test]
         public void Add_Method_Does_Not_Add_Instance_To_Database_When_Code_Is_Null()
         {
-            var lessonEntity = new LessonEntity
+            var subjectEntity = new SubjectEntity
             {
                 Name = "Test Name 1",
             };
 
-            AsyncTestDelegate testDelegate = async delegate { await this.lessonRepo.AddLessonAsync(lessonEntity.ToLesson()); };
+            AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.AddSubjectAsync(subjectEntity.ToSubject()); };
             Assert.ThrowsAsync<ArgumentNullException>(testDelegate);
-            Assert.That(this.context.Lessons.Count() == 0);
+            Assert.That(this.context.Subjects.Count() == 0);
         }
 
 
         [Test]
         public async Task Delete_Method_Does_Indeed_Delete_Instance_From_Database()
         {
-            var lessonEntity = new LessonEntity
+            var subjectEntity = new SubjectEntity
             {
                 Name = "Test Name 1",
                 Code = "Test Code 1",
             };
 
-            var lesson = await this.lessonRepo.AddLessonAsync(lessonEntity.ToLesson());
+            var subject = await this.subjectRepo.AddSubjectAsync(subjectEntity.ToSubject());
 
-            await this.lessonRepo.DeleteLessonAsync(lesson.Id);
+            await this.subjectRepo.DeleteSubjectAsync(subject.Id);
 
-            Assert.That(this.context.Lessons.Count() == 0);
+            Assert.That(this.context.Subjects.Count() == 0);
         }
 
         [Test]
         public void Delete_Method_Throws_Exception_When_Id_Is_Empty()
         {
-            AsyncTestDelegate testDelegate = async delegate { await this.lessonRepo.DeleteLessonAsync(Guid.Empty); };
+            AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.DeleteSubjectAsync(Guid.Empty); };
             var exception = Assert.ThrowsAsync<ArgumentNullException>(testDelegate);
             Assert.That(exception.Message.Contains("Id cannot be empty!"));
 
@@ -115,9 +111,9 @@ namespace OnlineSchoolTests.RepositoryTests
         [Test]
         public void Delete_Method_Throws_Exception_When_Id_Is_Invalid()
         {
-            AsyncTestDelegate testDelegate = async delegate { await this.lessonRepo.DeleteLessonAsync(Guid.NewGuid()); };
+            AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.DeleteSubjectAsync(Guid.NewGuid()); };
             var exception = Assert.ThrowsAsync<ArgumentNullException>(testDelegate);
-            Assert.That(exception.Message.Contains("Lesson with the given id does not exist!"));
+            Assert.That(exception.Message.Contains("Subject with the given id does not exist!"));
 
         }
 
