@@ -112,7 +112,7 @@ namespace OnlineSchoolTests.RepositoryTests
         public void Delete_Method_Throws_Exception_When_Id_Is_Invalid()
         {
             AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.DeleteSubjectAsync(Guid.NewGuid()); };
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(testDelegate);
+            var exception = Assert.ThrowsAsync<ArgumentException>(testDelegate);
             Assert.That(exception.Message.Contains("Subject with the given id does not exist!"));
 
         }
@@ -178,7 +178,7 @@ namespace OnlineSchoolTests.RepositoryTests
             };
 
             AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.UpdateSubjectAsync(subjectEntity.ToSubject()); };
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(testDelegate);
+            var exception = Assert.ThrowsAsync<ArgumentException>(testDelegate);
             Assert.That(exception.Message.Contains("Subject with the given id does not exist!"));
         }
 

@@ -26,12 +26,22 @@ public class SubjectsController : ControllerBase
         }
         catch (ArgumentNullException)
         {
-            return this.BadRequest(new ErrorResponseModel { ErrorMessage = $"Invalid Id: {subjectId}" });
+            return this.BadRequest(new ErrorResponseModel
+            {
+                ErrorMessage = $"Invalid Id: {subjectId}"
+            });
         }
-        catch (Exception)
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        var subjects = await this.subjectService.GetAllSubjectsAsync();
+        if (subjects.Any())
         {
-            return new StatusCodeResult(500);
+            return this.Ok(subjects);
         }
+        return this.NoContent();
     }
 
     [HttpPost]
@@ -40,15 +50,62 @@ public class SubjectsController : ControllerBase
         try
         {
             var createdSubject = await this.subjectService.AddSubjectAsync(subjectInputModel.ToSubject());
-            return this.CreatedAtAction(nameof(Get), new { subjectId = createdSubject.Id}, createdSubject);
+            return this.CreatedAtAction(nameof(Get), new { subjectId = createdSubject.Id }, createdSubject);
         }
         catch (ArgumentNullException)
         {
-            return this.BadRequest(new ErrorResponseModel { ErrorMessage = "Invalid data was provided" });
+            return this.BadRequest(new ErrorResponseModel
+            {
+                ErrorMessage = "Invalid data was provided"
+            });
         }
-        catch (Exception)
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> Update(SubjectInputModel subjectInputModel)
+    {
+        try
         {
-            return new StatusCodeResult(500);
+            var updatedSubject = await this.subjectService.UpdateSubjectAsync(subjectInputModel.ToSubject());
+            return this.Ok(updatedSubject);
+        }
+        catch (ArgumentNullException)
+        {
+            return this.BadRequest(new ErrorResponseModel
+            {
+                ErrorMessage = "Invalid data was provided"
+            });
+        }
+        catch (ArgumentException)
+        {
+            return this.BadRequest(new ErrorResponseModel
+            {
+                ErrorMessage = $"Subject with id: {subjectInputModel.Id} does not exist!"
+            });
+        }
+    }
+
+    [HttpDelete("{subjectId}")]
+    public async Task<IActionResult> Delete(Guid subjectId)
+    {
+        try
+        {
+            await this.subjectService.DeleteSubjectAsync(subjectId);
+            return this.Ok();
+        }
+        catch (ArgumentNullException)
+        {
+            return this.BadRequest(new ErrorResponseModel
+            {
+                ErrorMessage = $"Invalid Id: {subjectId}"
+            });
+        }
+        catch (ArgumentException)
+        {
+            return this.BadRequest(new ErrorResponseModel
+            {
+                ErrorMessage = $"Subject with id: {subjectId} does not exist!"
+            });
         }
     }
 

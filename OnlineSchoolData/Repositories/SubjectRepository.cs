@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolBusinessLogic.Models;
+using OnlineSchoolData.Entities;
 using OnlineSchoolData.Mappers;
 
 namespace OnlineSchoolData.Repositories
@@ -38,18 +39,18 @@ namespace OnlineSchoolData.Repositories
             return subjectEntity.ToSubject();
         }
 
-        public async Task DeleteSubjectAsync(Guid id)
+        public async Task DeleteSubjectAsync(Guid subjectId)
         {
-            if (id == Guid.Empty)
+            if (subjectId == Guid.Empty)
             {
-                throw new ArgumentNullException(nameof(id), "Id cannot be empty!");
+                throw new ArgumentNullException(nameof(subjectId), "Id cannot be empty!");
             }
 
-            var subjectEntity = await this.context.Subjects.FirstOrDefaultAsync(l => l.Id == id);
+            var subjectEntity = await this.GetSubjectByIdAsync(subjectId);
 
             if (subjectEntity is null)
             {
-                throw new ArgumentNullException(nameof(subjectEntity), "Subject with the given id does not exist!");
+                throw new ArgumentException("Subject with the given id does not exist!");
             }
 
             this.context.Subjects.Remove(subjectEntity);
@@ -58,7 +59,7 @@ namespace OnlineSchoolData.Repositories
 
         public async Task<IEnumerable<Subject>> GetAllSubjectsAsync()
         {
-            var subjectEntities = await this.context.Subjects.ToListAsync();
+            var subjectEntities = await this.context.Subjects.AsNoTracking().ToListAsync();
 
             return subjectEntities.ToSubjects();
         }
@@ -70,7 +71,7 @@ namespace OnlineSchoolData.Repositories
                 throw new ArgumentNullException(nameof(subjectId), "Id cannot be empty!");
             }
 
-            var subjectEntity = await this.context.Subjects.FirstOrDefaultAsync(l => l.Id == subjectId);
+            var subjectEntity = await this.GetSubjectByIdAsync(subjectId, false);
 
             if (subjectEntity is null)
             {
@@ -97,11 +98,11 @@ namespace OnlineSchoolData.Repositories
                 throw new ArgumentNullException(nameof(subject.Code));
             }
 
-            var subjectEntity = await this.context.Subjects.FirstOrDefaultAsync(l => l.Id == subject.Id);
+            var subjectEntity = await this.GetSubjectByIdAsync(subject.Id);
 
             if (subjectEntity is null)
             {
-                throw new ArgumentNullException(nameof(subjectEntity), "Subject with the given id does not exist!");
+                throw new ArgumentException("Subject with the given id does not exist!");
             }
 
             subjectEntity.Name = subject.Name;
@@ -111,6 +112,16 @@ namespace OnlineSchoolData.Repositories
             await this.context.SaveChangesAsync();
 
             return subjectEntity.ToSubject();
+        }
+
+        private async Task<SubjectEntity?> GetSubjectByIdAsync(Guid subjectId, bool tracking = true)
+        {
+            var query = this.context.Subjects.AsQueryable();
+            if (!tracking)
+            {
+                query.AsNoTracking();
+            }
+            return await query.FirstOrDefaultAsync(l => l.Id == subjectId);
         }
     }
 }
