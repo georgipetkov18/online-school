@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolBusinessLogic.Models;
+using OnlineSchoolData.CustomExceptions;
 using OnlineSchoolData.Entities;
 using OnlineSchoolData.Mappers;
 
@@ -19,17 +20,17 @@ namespace OnlineSchoolData.Repositories
         {
             if (subject is null)
             {
-                throw new ArgumentNullException(nameof(subject));
+                throw new EmptyDataException(nameof(subject));
             }
 
             if (string.IsNullOrWhiteSpace(subject.Name))
             {
-                throw new ArgumentNullException(nameof(subject.Name));
+                throw new EmptyDataException(nameof(subject.Name));
             }
 
             if (string.IsNullOrWhiteSpace(subject.Code))
             {
-                throw new ArgumentNullException(nameof(subject.Code));
+                throw new EmptyDataException(nameof(subject.Code));
             }
 
             var subjectEntity = subject.ToSubjectEntity();
@@ -43,14 +44,14 @@ namespace OnlineSchoolData.Repositories
         {
             if (subjectId == Guid.Empty)
             {
-                throw new ArgumentNullException(nameof(subjectId), "Id cannot be empty!");
+                throw new EmptyDataException(nameof(subjectId));
             }
 
             var subjectEntity = await this.GetSubjectByIdAsync(subjectId);
 
             if (subjectEntity is null)
             {
-                throw new ArgumentException("Subject with the given id does not exist!");
+                throw new InvalidIdException("Lesson with the given id does not exist!", subjectId);
             }
 
             this.context.Subjects.Remove(subjectEntity);
@@ -68,14 +69,14 @@ namespace OnlineSchoolData.Repositories
         {
             if (subjectId == Guid.Empty)
             {
-                throw new ArgumentNullException(nameof(subjectId), "Id cannot be empty!");
+                throw new EmptyDataException(nameof(subjectId));
             }
 
             var subjectEntity = await this.GetSubjectByIdAsync(subjectId, false);
 
             if (subjectEntity is null)
             {
-                throw new ArgumentNullException(nameof(subjectEntity), "Subject with the given id does not exist!");
+                throw new InvalidIdException("Lesson with the given id does not exist!", subjectId);
             }
 
             return subjectEntity.ToSubject();
@@ -85,24 +86,24 @@ namespace OnlineSchoolData.Repositories
         {
             if (subject is null)
             {
-                throw new ArgumentNullException(nameof(subject));
+                throw new EmptyDataException(nameof(subject));
             }
 
             if (string.IsNullOrWhiteSpace(subject.Name))
             {
-                throw new ArgumentNullException(nameof(subject.Name));
+                throw new EmptyDataException(nameof(subject.Name));
             }
 
             if (string.IsNullOrWhiteSpace(subject.Code))
             {
-                throw new ArgumentNullException(nameof(subject.Code));
+                throw new EmptyDataException(nameof(subject.Code));
             }
 
             var subjectEntity = await this.GetSubjectByIdAsync(subject.Id);
 
             if (subjectEntity is null)
             {
-                throw new ArgumentException("Subject with the given id does not exist!");
+                throw new InvalidIdException("Lesson with the given id does not exist!", subject.Id);
             }
 
             subjectEntity.Name = subject.Name;
@@ -119,9 +120,9 @@ namespace OnlineSchoolData.Repositories
             var query = this.context.Subjects.AsQueryable();
             if (!tracking)
             {
-                query.AsNoTracking();
+                query = query.AsNoTracking();
             }
-            return await query.FirstOrDefaultAsync(l => l.Id == subjectId);
+            return await query.FirstOrDefaultAsync(s => s.Id == subjectId);
         }
     }
 }

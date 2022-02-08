@@ -2,6 +2,7 @@
 using OnlineSchoolApi.RequestModels;
 using OnlineSchoolApi.ResponseModels;
 using OnlineSchoolBusinessLogic.Services;
+using OnlineSchoolData.CustomExceptions;
 
 namespace OnlineSchoolApi.Controllers;
 
@@ -24,11 +25,11 @@ public class SubjectsController : ControllerBase
             var subject = await this.subjectService.GetSubjectAsync(subjectId);
             return this.Ok(subject);
         }
-        catch (ArgumentNullException)
+        catch (CustomException ex)
         {
             return this.BadRequest(new ErrorResponseModel
             {
-                ErrorMessage = $"Invalid Id: {subjectId}"
+                ErrorMessage = ex.Message
             });
         }
     }
@@ -52,11 +53,11 @@ public class SubjectsController : ControllerBase
             var createdSubject = await this.subjectService.AddSubjectAsync(subjectInputModel.ToSubject());
             return this.CreatedAtAction(nameof(Get), new { subjectId = createdSubject.Id }, createdSubject);
         }
-        catch (ArgumentNullException)
+        catch (CustomException ex)
         {
             return this.BadRequest(new ErrorResponseModel
             {
-                ErrorMessage = "Invalid data was provided"
+                ErrorMessage = ex.Message
             });
         }
     }
@@ -69,18 +70,11 @@ public class SubjectsController : ControllerBase
             var updatedSubject = await this.subjectService.UpdateSubjectAsync(subjectInputModel.ToSubject());
             return this.Ok(updatedSubject);
         }
-        catch (ArgumentNullException)
+        catch (CustomException ex)
         {
             return this.BadRequest(new ErrorResponseModel
             {
-                ErrorMessage = "Invalid data was provided"
-            });
-        }
-        catch (ArgumentException)
-        {
-            return this.BadRequest(new ErrorResponseModel
-            {
-                ErrorMessage = $"Subject with id: {subjectInputModel.Id} does not exist!"
+                ErrorMessage = ex.Message
             });
         }
     }
@@ -93,21 +87,13 @@ public class SubjectsController : ControllerBase
             await this.subjectService.DeleteSubjectAsync(subjectId);
             return this.Ok();
         }
-        catch (ArgumentNullException)
+        catch (CustomException ex)
         {
             return this.BadRequest(new ErrorResponseModel
             {
-                ErrorMessage = $"Invalid Id: {subjectId}"
-            });
-        }
-        catch (ArgumentException)
-        {
-            return this.BadRequest(new ErrorResponseModel
-            {
-                ErrorMessage = $"Subject with id: {subjectId} does not exist!"
+                ErrorMessage = ex.Message
             });
         }
     }
-
 }
 
