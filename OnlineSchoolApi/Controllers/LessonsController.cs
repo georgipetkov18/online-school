@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineSchoolApi.RequestModels;
 using OnlineSchoolApi.ResponseModels;
 using OnlineSchoolBusinessLogic.Services;
 using OnlineSchoolData.CustomExceptions;
@@ -24,13 +25,63 @@ namespace OnlineSchoolApi.Controllers
                 var lesson = await this.lessonService.GetLessonAsync(lessonId);
                 return this.Ok(lesson);
             }
-            catch (InvalidIdException ex)
+            catch (CustomException ex)
             {
-                return this.BadRequest(new ErrorResponseModel { ErrorMessage = ex.Message});
+                return this.BadRequest(new ErrorResponseModel
+                { 
+                    ErrorMessage = ex.Message
+                });
             }
-            catch (ArgumentNullException)
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(LessonInputModel lessonInputModel)
+        {
+            try
             {
-                return this.BadRequest();
+                var createdLesson = await this.lessonService.AddLessonAsync(lessonInputModel.ToLesson());
+                return this.CreatedAtAction(nameof(Get), new { lessonId = createdLesson.Id }, createdLesson);
+            }
+            catch (CustomException ex)
+            {
+                return this.BadRequest(new ErrorResponseModel
+                {
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(LessonInputModel lessonInputModel)
+        {
+            try
+            {
+                var updatedLesson = await this.lessonService.UpdateLessonAsync(lessonInputModel.ToLesson());
+                return this.Ok(updatedLesson);
+            }
+            catch (CustomException ex)
+            {
+                return this.BadRequest(new ErrorResponseModel
+                {
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+
+        [HttpDelete("{lessonId}")]
+        public async Task<IActionResult> Delete(Guid lessonId)
+        {
+            try
+            {
+                await this.lessonService.DeleteLessonAsync(lessonId);
+                return this.Ok();
+            }
+            catch (CustomException ex)
+            {
+                return this.BadRequest(new ErrorResponseModel
+                {
+                    ErrorMessage = ex.Message
+                });
             }
         }
     }

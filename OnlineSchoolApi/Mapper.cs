@@ -23,5 +23,24 @@ namespace OnlineSchoolApi
                 Code = subjectInputModel.Code,
             };
         }
+
+        public static Lesson ToLesson(this LessonInputModel lessonInputModel)
+        {
+            if (lessonInputModel.Id is null)
+            {
+                return new Lesson
+                {
+                    From = lessonInputModel.From,
+                    DurationInMinutes = lessonInputModel.DurationInMinutes,
+                };
+            }
+
+            return new Lesson
+            {
+                Id = lessonInputModel.Id.Value,
+                From = lessonInputModel.From,
+                DurationInMinutes = lessonInputModel.DurationInMinutes,
+            };
+        }
     }
 }
