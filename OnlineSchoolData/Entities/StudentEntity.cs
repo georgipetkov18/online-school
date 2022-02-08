@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace OnlineSchoolData.Entities
+﻿namespace OnlineSchoolData.Entities
 {
     public class StudentEntity : UserEntity
     {
