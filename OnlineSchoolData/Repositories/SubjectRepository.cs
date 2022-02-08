@@ -51,7 +51,7 @@ namespace OnlineSchoolData.Repositories
 
             if (subjectEntity is null)
             {
-                throw new InvalidIdException("Lesson with the given id does not exist!", subjectId);
+                throw new InvalidIdException("Subject with the given id does not exist!", subjectId);
             }
 
             this.context.Subjects.Remove(subjectEntity);
@@ -76,7 +76,7 @@ namespace OnlineSchoolData.Repositories
 
             if (subjectEntity is null)
             {
-                throw new InvalidIdException("Lesson with the given id does not exist!", subjectId);
+                throw new InvalidIdException("Subject with the given id does not exist!", subjectId);
             }
 
             return subjectEntity.ToSubject();
@@ -103,7 +103,7 @@ namespace OnlineSchoolData.Repositories
 
             if (subjectEntity is null)
             {
-                throw new InvalidIdException("Lesson with the given id does not exist!", subject.Id);
+                throw new InvalidIdException("Subject with the given id does not exist!", subject.Id);
             }
 
             subjectEntity.Name = subject.Name;

@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolData;
+using OnlineSchoolData.CustomExceptions;
 using OnlineSchoolData.Entities;
 using OnlineSchoolData.Mappers;
 using OnlineSchoolData.Repositories;
@@ -52,7 +53,7 @@ namespace OnlineSchoolTests.RepositoryTests
         public void Add_Method_Does_Not_Add_Instance_To_Database_When_Subject_Is_Null()
         {
             AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.AddSubjectAsync(null); };
-            Assert.ThrowsAsync<ArgumentNullException>(testDelegate);
+            Assert.ThrowsAsync<EmptyDataException>(testDelegate);
             Assert.That(this.context.Subjects.Count() == 0);
         }
 
@@ -65,7 +66,7 @@ namespace OnlineSchoolTests.RepositoryTests
             };
 
             AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.AddSubjectAsync(subjectEntity.ToSubject()); };
-            Assert.ThrowsAsync<ArgumentNullException>(testDelegate);
+            Assert.ThrowsAsync<EmptyDataException>(testDelegate);
             Assert.That(this.context.Subjects.Count() == 0);
         }
 
@@ -78,7 +79,7 @@ namespace OnlineSchoolTests.RepositoryTests
             };
 
             AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.AddSubjectAsync(subjectEntity.ToSubject()); };
-            Assert.ThrowsAsync<ArgumentNullException>(testDelegate);
+            Assert.ThrowsAsync<EmptyDataException>(testDelegate);
             Assert.That(this.context.Subjects.Count() == 0);
         }
 
@@ -103,7 +104,7 @@ namespace OnlineSchoolTests.RepositoryTests
         public void Delete_Method_Throws_Exception_When_Id_Is_Empty()
         {
             AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.DeleteSubjectAsync(Guid.Empty); };
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(testDelegate);
+            var exception = Assert.ThrowsAsync<EmptyDataException>(testDelegate);
             Assert.That(exception.Message.Contains("Id cannot be empty!"));
 
         }
@@ -112,7 +113,7 @@ namespace OnlineSchoolTests.RepositoryTests
         public void Delete_Method_Throws_Exception_When_Id_Is_Invalid()
         {
             AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.DeleteSubjectAsync(Guid.NewGuid()); };
-            var exception = Assert.ThrowsAsync<ArgumentException>(testDelegate);
+            var exception = Assert.ThrowsAsync<InvalidIdException>(testDelegate);
             Assert.That(exception.Message.Contains("Subject with the given id does not exist!"));
 
         }
@@ -146,7 +147,7 @@ namespace OnlineSchoolTests.RepositoryTests
         public void Get_Method_Throws_Exception_When_Id_Is_Invalid()
         {
             AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.GetSubjectAsync(Guid.NewGuid()); };
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(testDelegate);
+            var exception = Assert.ThrowsAsync<InvalidIdException>(testDelegate);
             Assert.That(exception.Message.Contains("Subject with the given id does not exist!"));
         }
 
@@ -178,7 +179,7 @@ namespace OnlineSchoolTests.RepositoryTests
             };
 
             AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.UpdateSubjectAsync(subjectEntity.ToSubject()); };
-            var exception = Assert.ThrowsAsync<ArgumentException>(testDelegate);
+            var exception = Assert.ThrowsAsync<InvalidIdException>(testDelegate);
             Assert.That(exception.Message.Contains("Subject with the given id does not exist!"));
         }
 
