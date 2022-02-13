@@ -4,6 +4,6 @@
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
-        public ICollection<Student>? Students { get; set; } = new HashSet<Student>();
+        public ICollection<Guid>? Students { get; set; } = new HashSet<Guid>();
     }
 }

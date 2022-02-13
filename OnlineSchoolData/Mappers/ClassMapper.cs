@@ -11,7 +11,7 @@ namespace OnlineSchoolData.Mappers
             {
                 Id = classEntity.Id,
                 Name = classEntity.Name,
-                Students = classEntity.Students.Select(s => new Student { Id = s.Id }).ToList(),
+                Students = classEntity.Students.Select(s => s.Id).ToList(),
             };
         }
 
@@ -30,7 +30,7 @@ namespace OnlineSchoolData.Mappers
             {
                 Id = _class.Id,
                 Name = _class.Name,
-                Students = _class.Students.Select(s => new StudentEntity()).ToList()
+                Students = _class.Students.Select(studentId => new StudentEntity { Id = studentId }).ToList()
             };
         }
 
