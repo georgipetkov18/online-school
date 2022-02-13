@@ -1,6 +1,6 @@
 ﻿using OnlineSchoolBusinessLogic.Models;
 
-namespace OnlineSchoolBusinessLogic.Services;
+namespace OnlineSchoolBusinessLogic.Interfaces;
 
 public interface ILessonService
 {

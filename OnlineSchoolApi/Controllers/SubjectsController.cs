@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineSchoolApi.RequestModels;
 using OnlineSchoolApi.ResponseModels;
-using OnlineSchoolBusinessLogic.Services;
+using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolData.CustomExceptions;
 
 namespace OnlineSchoolApi.Controllers;

@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace OnlineSchoolTests.RepositoryTests
 {
-
     public class SubjectRepositoryTests
     {
         private ApplicationDbContext context = null!;
@@ -178,7 +177,10 @@ namespace OnlineSchoolTests.RepositoryTests
                 Code = "Test Code 1",
             };
 
-            AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.UpdateSubjectAsync(subjectEntity.ToSubject()); };
+            AsyncTestDelegate testDelegate = async delegate 
+            { 
+                await this.subjectRepo.UpdateSubjectAsync(subjectEntity.Id, subjectEntity.ToSubject()); 
+            };
             var exception = Assert.ThrowsAsync<InvalidIdException>(testDelegate);
             Assert.That(exception.Message.Contains("Subject with the given id does not exist!"));
         }
@@ -197,7 +199,7 @@ namespace OnlineSchoolTests.RepositoryTests
             subjectEntity.Id = addedSubject.Id;
             subjectEntity.Name = "Changed";
 
-            var updatedSubject = await this.subjectRepo.UpdateSubjectAsync(subjectEntity.ToSubject());
+            var updatedSubject = await this.subjectRepo.UpdateSubjectAsync(subjectEntity.Id, subjectEntity.ToSubject());
 
             Assert.AreEqual("Changed", updatedSubject.Name);
         }
