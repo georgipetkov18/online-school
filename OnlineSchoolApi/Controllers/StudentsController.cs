@@ -20,51 +20,60 @@ namespace OnlineSchoolApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(StudentInputModel studentInputModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(ModelState);
+            }
+
             try
             {
                 var createdStudent = await this.studentService.AddStudentAsync(studentInputModel.ToStudent());
                 return this.CreatedAtAction(nameof(Get), new { studentId = createdStudent.Id }, createdStudent);
             }
-            catch (CustomException ex)
+            catch (InvalidIdException ex)
             {
-                return this.BadRequest(new ErrorResponseModel
-                {
-                    ErrorMessage = ex.Message
-                });
+                ModelState.AddModelError("Id", ex.Message);
+                return this.BadRequest(ModelState);
             }
         }
 
         [HttpGet("{studentId}")]
         public async Task<IActionResult> Get(Guid studentId)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(ModelState);
+            }
+
             try
             {
                 var student = await this.studentService.GetStudentAsync(studentId);
                 return this.Ok(student);
             }
-            catch (CustomException ex)
+            catch (InvalidIdException ex)
             {
-                return this.BadRequest(new ErrorResponseModel
-                {
-                    ErrorMessage = ex.Message
-                });
+                ModelState.AddModelError("Id", ex.Message);
+                return this.BadRequest(ModelState);
             }
         }
 
         [HttpDelete("{studentId}")]
         public async Task<IActionResult> Delete(Guid studentId)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(ModelState);
+            }
+
             try
             {
                 await this.studentService.DeleteStudentAsync(studentId);
                 return this.Ok();
             }
-            catch (CustomException ex)
+            catch (InvalidIdException ex)
             {
-                return this.BadRequest(new ErrorResponseModel
-                {
-                    ErrorMessage = ex.Message
-                });
+                ModelState.AddModelError("Id", ex.Message);
+                return this.BadRequest(ModelState);
             }
         }
     }

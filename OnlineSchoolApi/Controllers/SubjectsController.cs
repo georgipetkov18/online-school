@@ -20,23 +20,31 @@ public class SubjectsController : ControllerBase
     [HttpGet("{subjectId}")]
     public async Task<IActionResult> Get(Guid subjectId)
     {
+        if (!ModelState.IsValid)
+        {
+            return this.BadRequest(ModelState);
+        }
+
         try
         {
             var subject = await this.subjectService.GetSubjectAsync(subjectId);
             return this.Ok(subject);
         }
-        catch (CustomException ex)
+        catch (InvalidIdException ex)
         {
-            return this.BadRequest(new ErrorResponseModel
-            {
-                ErrorMessage = ex.Message
-            });
+            ModelState.AddModelError("Id", ex.Message);
+            return this.BadRequest(ModelState);
         }
     }
 
     [HttpGet]
     public async Task<IActionResult> Get()
     {
+        if (!ModelState.IsValid)
+        {
+            return this.BadRequest(ModelState);
+        }
+
         var subjects = await this.subjectService.GetAllSubjectsAsync();
         if (subjects.Any())
         {
@@ -48,51 +56,60 @@ public class SubjectsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Add(SubjectInputModel subjectInputModel)
     {
+        if (!ModelState.IsValid)
+        {
+            return this.BadRequest(ModelState);
+        }
+
         try
         {
             var createdSubject = await this.subjectService.AddSubjectAsync(subjectInputModel.ToSubject());
             return this.CreatedAtAction(nameof(Get), new { subjectId = createdSubject.Id }, createdSubject);
         }
-        catch (CustomException ex)
+        catch (InvalidIdException ex)
         {
-            return this.BadRequest(new ErrorResponseModel
-            {
-                ErrorMessage = ex.Message
-            });
+            ModelState.AddModelError("Id", ex.Message);
+            return this.BadRequest(ModelState);
         }
     }
 
     [HttpPut("{subjectId}")]
     public async Task<IActionResult> Update(Guid subjectId, SubjectInputModel subjectInputModel)
     {
+        if (!ModelState.IsValid)
+        {
+            return this.BadRequest(ModelState);
+        }
+
         try
         {
             var updatedSubject = await this.subjectService.UpdateSubjectAsync(subjectId, subjectInputModel.ToSubject());
             return this.Ok(updatedSubject);
         }
-        catch (CustomException ex)
+        catch (InvalidIdException ex)
         {
-            return this.BadRequest(new ErrorResponseModel
-            {
-                ErrorMessage = ex.Message
-            });
+            ModelState.AddModelError("Id", ex.Message);
+            return this.BadRequest(ModelState);
         }
     }
 
     [HttpDelete("{subjectId}")]
     public async Task<IActionResult> Delete(Guid subjectId)
     {
+        if (!ModelState.IsValid)
+        {
+            return this.BadRequest(ModelState);
+        }
+
         try
         {
             await this.subjectService.DeleteSubjectAsync(subjectId);
             return this.Ok();
         }
-        catch (CustomException ex)
+        catch (InvalidIdException ex)
         {
-            return this.BadRequest(new ErrorResponseModel
-            {
-                ErrorMessage = ex.Message
-            });
+            ModelState.AddModelError("Id", ex.Message);
+            return this.BadRequest(ModelState);
         }
     }
 }

@@ -18,24 +18,13 @@ namespace OnlineSchoolData.Mappers
 
         public static StudentEntity ToStudentEntity(this Student student)
         {
-            if (student.ClassId is null)
-            {
-                return new StudentEntity
-                {
-                    Id = student.Id,
-                    Email = student.Email,
-                    Password = student.Password,
-                    Username = student.Username,
-                };
-            }
-
             return new StudentEntity
             {
                 Id = student.Id,
                 Email = student.Email,
                 Password = student.Password,
                 Username = student.Username,
-                ClassId = student.ClassId.Value,
+                ClassId = student.ClassId,
             };
         }
     }

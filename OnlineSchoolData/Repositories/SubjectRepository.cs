@@ -18,21 +18,6 @@ namespace OnlineSchoolData.Repositories
 
         public async Task<Subject> AddSubjectAsync(Subject subject)
         {
-            if (subject is null)
-            {
-                throw new EmptyDataException(nameof(subject));
-            }
-
-            if (string.IsNullOrWhiteSpace(subject.Name))
-            {
-                throw new EmptyDataException(nameof(subject.Name));
-            }
-
-            if (string.IsNullOrWhiteSpace(subject.Code))
-            {
-                throw new EmptyDataException(nameof(subject.Code));
-            }
-
             var subjectEntity = subject.ToSubjectEntity();
             await this.context.Subjects.AddAsync(subjectEntity);
             await this.context.SaveChangesAsync();
@@ -42,16 +27,11 @@ namespace OnlineSchoolData.Repositories
 
         public async Task DeleteSubjectAsync(Guid subjectId)
         {
-            if (subjectId == Guid.Empty)
-            {
-                throw new EmptyDataException(nameof(subjectId));
-            }
-
             var subjectEntity = await this.GetSubjectByIdAsync(subjectId);
 
             if (subjectEntity is null)
             {
-                throw new InvalidIdException("Subject with the given id does not exist!", subjectId);
+                throw new InvalidIdException("Subject with the given id does not exist!");
             }
 
             this.context.Subjects.Remove(subjectEntity);
@@ -67,16 +47,11 @@ namespace OnlineSchoolData.Repositories
 
         public async Task<Subject> GetSubjectAsync(Guid subjectId)
         {
-            if (subjectId == Guid.Empty)
-            {
-                throw new EmptyDataException(nameof(subjectId));
-            }
-
             var subjectEntity = await this.GetSubjectByIdAsync(subjectId, false);
 
             if (subjectEntity is null)
             {
-                throw new InvalidIdException("Subject with the given id does not exist!", subjectId);
+                throw new InvalidIdException("Subject with the given id does not exist!");
             }
 
             return subjectEntity.ToSubject();
@@ -84,26 +59,11 @@ namespace OnlineSchoolData.Repositories
 
         public async Task<Subject> UpdateSubjectAsync(Guid subjectId, Subject subject)
         {
-            if (subject is null)
-            {
-                throw new EmptyDataException(nameof(subject));
-            }
-
-            if (string.IsNullOrWhiteSpace(subject.Name))
-            {
-                throw new EmptyDataException(nameof(subject.Name));
-            }
-
-            if (string.IsNullOrWhiteSpace(subject.Code))
-            {
-                throw new EmptyDataException(nameof(subject.Code));
-            }
-
             var subjectEntity = await this.GetSubjectByIdAsync(subjectId);
 
             if (subjectEntity is null)
             {
-                throw new InvalidIdException("Subject with the given id does not exist!", subjectId);
+                throw new InvalidIdException("Subject with the given id does not exist!");
             }
 
             subjectEntity.Name = subject.Name;

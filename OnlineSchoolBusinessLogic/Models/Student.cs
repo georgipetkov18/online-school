@@ -1,7 +1,10 @@
-﻿namespace OnlineSchoolBusinessLogic.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OnlineSchoolBusinessLogic.Models
 {
     public class Student : User
     { 
-        public Guid? ClassId { get; set; }
+        [Required]
+        public Guid ClassId { get; set; }
     }
 }

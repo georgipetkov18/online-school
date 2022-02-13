@@ -41,7 +41,7 @@ namespace OnlineSchoolData.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Classes");
+                    b.ToTable("Classes", (string)null);
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.LessonEntity", b =>
@@ -64,7 +64,7 @@ namespace OnlineSchoolData.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Lessons");
+                    b.ToTable("Lessons", (string)null);
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.StudentEntity", b =>
@@ -98,7 +98,7 @@ namespace OnlineSchoolData.Migrations
 
                     b.HasIndex("ClassId");
 
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.SubjectEntity", b =>
@@ -125,7 +125,7 @@ namespace OnlineSchoolData.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subjects");
+                    b.ToTable("Subjects", (string)null);
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.TeacherEntity", b =>
@@ -159,7 +159,7 @@ namespace OnlineSchoolData.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teachers");
+                    b.ToTable("Teachers", (string)null);
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.TimetableEntity", b =>
@@ -199,7 +199,7 @@ namespace OnlineSchoolData.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Timetable");
+                    b.ToTable("Timetable", (string)null);
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.StudentEntity", b =>

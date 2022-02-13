@@ -18,11 +18,6 @@ namespace OnlineSchoolData.Repositories
 
         public async Task<Class> AddClassAsync(Class _class)
         {
-            if (_class is null)
-            {
-                throw new EmptyDataException(nameof(_class));
-            }
-
             var classEntity = _class.ToClassEntity();
             await this.context.Classes.AddAsync(classEntity);
             await this.context.SaveChangesAsync();
@@ -32,16 +27,11 @@ namespace OnlineSchoolData.Repositories
 
         public async Task DeleteClassAsync(Guid classId)
         {
-            if (classId == Guid.Empty)
-            {
-                throw new EmptyDataException(nameof(classId));
-            }
-
             var classEntity = await this.GetClassByIdAsync(classId);
 
             if (classEntity is null)
             {
-                throw new InvalidIdException("Class with the given id does not exist!", classId);
+                throw new InvalidIdException("Class with the given id does not exist!");
             }
 
             this.context.Classes.Remove(classEntity);
@@ -50,11 +40,6 @@ namespace OnlineSchoolData.Repositories
 
         public async Task<Class> GetClassAsync(Guid classId)
         {
-            if (classId == Guid.Empty)
-            {
-                throw new EmptyDataException(nameof(classId));
-            }
-
             var classEntity = await this.context.Classes
                 .Include(c => c.Students)
                 .AsNoTracking()
@@ -62,7 +47,7 @@ namespace OnlineSchoolData.Repositories
 
             if (classEntity is null)
             {
-                throw new InvalidIdException("Class with the given id does not exist!", classId);
+                throw new InvalidIdException("Class with the given id does not exist!");
             }
 
             return classEntity.ToClass();
@@ -70,22 +55,11 @@ namespace OnlineSchoolData.Repositories
 
         public async Task<Class> UpdateClassAsync(Guid classId, Class _class)
         {
-            if (_class is null)
-            {
-                throw new EmptyDataException(nameof(_class));
-            }
-
-            if (string.IsNullOrWhiteSpace(_class.Name))
-            {
-                throw new InvalidDataProvidedException(nameof(_class.Name));
-            }
-
-
             var classEntity = await this.GetClassByIdAsync(classId);
 
             if (classEntity is null)
             {
-                throw new InvalidIdException("Class with the given id does not exist!", classId);
+                throw new InvalidIdException("Class with the given id does not exist!");
             }
 
             classEntity.Name = _class.Name;

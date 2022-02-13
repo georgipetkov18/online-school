@@ -20,68 +20,81 @@ namespace OnlineSchoolApi.Controllers
         [HttpGet("{lessonId}")]
         public async Task<IActionResult> Get(Guid lessonId)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(ModelState);
+            }
+
             try
             {
                 var lesson = await this.lessonService.GetLessonAsync(lessonId);
                 return this.Ok(lesson);
             }
-            catch (CustomException ex)
+
+            catch (InvalidIdException ex)
             {
-                return this.BadRequest(new ErrorResponseModel
-                { 
-                    ErrorMessage = ex.Message
-                });
+                ModelState.AddModelError("Id", ex.Message);
+                return this.BadRequest(ModelState);
             }
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(LessonInputModel lessonInputModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(ModelState);
+            }
+
             try
             {
                 var createdLesson = await this.lessonService.AddLessonAsync(lessonInputModel.ToLesson());
                 return this.CreatedAtAction(nameof(Get), new { lessonId = createdLesson.Id }, createdLesson);
             }
-            catch (CustomException ex)
+            catch (InvalidIdException ex)
             {
-                return this.BadRequest(new ErrorResponseModel
-                {
-                    ErrorMessage = ex.Message
-                });
+                ModelState.AddModelError("Id", ex.Message);
+                return this.BadRequest(ModelState);
             }
         }
 
         [HttpPut("{lessonId}")]
         public async Task<IActionResult> Update(Guid lessonId, LessonInputModel lessonInputModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(ModelState);
+            }
+
             try
             {
                 var updatedLesson = await this.lessonService.UpdateLessonAsync(lessonId, lessonInputModel.ToLesson());
                 return this.Ok(updatedLesson);
             }
-            catch (CustomException ex)
+            catch (InvalidIdException ex)
             {
-                return this.BadRequest(new ErrorResponseModel
-                {
-                    ErrorMessage = ex.Message
-                });
+                ModelState.AddModelError("Id", ex.Message);
+                return this.BadRequest(ModelState);
             }
         }
 
         [HttpDelete("{lessonId}")]
         public async Task<IActionResult> Delete(Guid lessonId)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(ModelState);
+            }
+
             try
             {
                 await this.lessonService.DeleteLessonAsync(lessonId);
                 return this.Ok();
             }
-            catch (CustomException ex)
+            catch (InvalidIdException ex)
             {
-                return this.BadRequest(new ErrorResponseModel
-                {
-                    ErrorMessage = ex.Message
-                });
+                ModelState.AddModelError("Id", ex.Message);
+                return this.BadRequest(ModelState);
             }
         }
     }

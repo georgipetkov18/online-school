@@ -20,68 +20,79 @@ namespace OnlineSchoolApi.Controllers
         [HttpGet("{classId}")]
         public async Task<IActionResult> Get(Guid classId)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(ModelState);
+            }
+
             try
             {
                 var _class = await this.classService.GetClassAsync(classId);
                 return this.Ok(_class);
             }
-            catch (CustomException ex)
+            catch (InvalidIdException ex)
             {
-                return this.BadRequest(new ErrorResponseModel
-                {
-                    ErrorMessage = ex.Message
-                });
+                ModelState.AddModelError("Id", ex.Message);
+                return this.BadRequest(ModelState);
             }
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(ClassInputModel classInputModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(ModelState);
+            }
+
             try
             {
                 var createdClass = await this.classService.AddClassAsync(classInputModel.ToClass());
                 return this.CreatedAtAction(nameof(Get), new { classId = createdClass.Id }, createdClass);
             }
-            catch (CustomException ex)
+            catch (InvalidIdException ex)
             {
-                return this.BadRequest(new ErrorResponseModel
-                {
-                    ErrorMessage = ex.Message
-                });
+                ModelState.AddModelError("Id", ex.Message);
+                return this.BadRequest(ModelState);
             }
         }
 
         [HttpPut("{classId}")]
         public async Task<IActionResult> Update(Guid classId, ClassInputModel classInputModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(ModelState);
+            }
+
             try
             {
                 var updatedClass = await this.classService.UpdateClassAsync(classId, classInputModel.ToClass());
                 return this.Ok(updatedClass);
             }
-            catch (CustomException ex)
+            catch (InvalidIdException ex)
             {
-                return this.BadRequest(new ErrorResponseModel
-                {
-                    ErrorMessage = ex.Message
-                });
+                ModelState.AddModelError("Id", ex.Message);
+                return this.BadRequest(ModelState);
             }
         }
 
         [HttpDelete("{classId}")]
         public async Task<IActionResult> Delete(Guid classId)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(ModelState);
+            }
             try
             {
                 await this.classService.DeleteClassAsync(classId);
                 return this.Ok();
             }
-            catch (CustomException ex)
+            catch (InvalidIdException ex)
             {
-                return this.BadRequest(new ErrorResponseModel
-                {
-                    ErrorMessage = ex.Message
-                });
+                ModelState.AddModelError("Id", ex.Message);
+                return this.BadRequest(ModelState);
             }
         }
     }

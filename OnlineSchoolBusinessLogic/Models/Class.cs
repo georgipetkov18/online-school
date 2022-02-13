@@ -1,9 +1,15 @@
-﻿namespace OnlineSchoolBusinessLogic.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OnlineSchoolBusinessLogic.Models
 {
     public class Class
     {
         public Guid Id { get; set; }
+
+        [Required]
+        [MaxLength(30)]
         public string Name { get; set; } = null!;
+
         public ICollection<Guid>? Students { get; set; } = new HashSet<Guid>();
     }
 }

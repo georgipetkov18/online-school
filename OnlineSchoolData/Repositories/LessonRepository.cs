@@ -18,11 +18,6 @@ namespace OnlineSchoolData.Repositories
 
         public async Task<Lesson> AddLessonAsync(Lesson lesson)
         {
-            if (lesson is null)
-            {
-                throw new EmptyDataException(nameof(lesson));
-            }
-
             var lessonEntity = lesson.ToLessonEntity();
             await this.context.Lessons.AddAsync(lessonEntity);
             await this.context.SaveChangesAsync();
@@ -32,16 +27,11 @@ namespace OnlineSchoolData.Repositories
 
         public async Task DeleteLessonAsync(Guid lessonId)
         {
-            if (lessonId == Guid.Empty)
-            {
-                throw new EmptyDataException(nameof(lessonId));
-            }
-
             var lessonEntity = await this.GetLessonByIdAsync(lessonId);
 
             if (lessonEntity is null)
             {
-                throw new InvalidIdException("Lesson with the given id does not exist!", lessonId);
+                throw new InvalidIdException("Lesson with the given id does not exist!");
             }
 
             this.context.Lessons.Remove(lessonEntity);
@@ -50,16 +40,11 @@ namespace OnlineSchoolData.Repositories
 
         public async Task<Lesson> GetLessonAsync(Guid lessonId)
         {
-            if (lessonId == Guid.Empty)
-            {
-                throw new EmptyDataException(nameof(lessonId));
-            }
-
             var lessonEntity = await this.GetLessonByIdAsync(lessonId, false);
 
             if (lessonEntity is null)
             {
-                throw new InvalidIdException("Lesson with the given id does not exist!", lessonId);
+                throw new InvalidIdException("Lesson with the given id does not exist!");
             }
 
             return lessonEntity.ToLesson();
@@ -67,26 +52,11 @@ namespace OnlineSchoolData.Repositories
 
         public async Task<Lesson> UpdateLessonAsync(Guid lessonId, Lesson lesson)
         {
-            if (lesson is null)
-            {
-                throw new EmptyDataException(nameof(lesson));
-            }
-
-            if (lesson.From == TimeSpan.Zero)
-            {
-                throw new InvalidDataProvidedException(nameof(lesson.From), TimeSpan.Zero.ToString());
-            }
-
-            if (lesson.DurationInMinutes <= 0)
-            {
-                throw new InvalidDataProvidedException(nameof(lesson.DurationInMinutes));
-            }
-
             var lessonEntity = await this.GetLessonByIdAsync(lessonId);
 
             if (lessonEntity is null)
             {
-                throw new InvalidIdException("Lesson with the given id does not exist!", lessonId);
+                throw new InvalidIdException("Lesson with the given id does not exist!");
             }
 
             lessonEntity.From = lesson.From;
