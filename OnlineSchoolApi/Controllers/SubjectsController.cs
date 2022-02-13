@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineSchoolApi.RequestModels;
+using OnlineSchoolApi.InputModels;
 using OnlineSchoolApi.ResponseModels;
 using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolData.CustomExceptions;

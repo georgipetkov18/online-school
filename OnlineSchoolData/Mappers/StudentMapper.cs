@@ -13,13 +13,13 @@ namespace OnlineSchoolData.Mappers
                 Email = studentEntity.Email,
                 Password = studentEntity.Password,
                 Username = studentEntity.Username,
-                Class = new Class { Id = studentEntity.Class.Id },
+                ClassId = studentEntity.ClassId,
             };
         }
 
         public static StudentEntity ToStudentEntity(this Student student)
         {
-            if (student.Class is null)
+            if (student.ClassId is null)
             {
                 return new StudentEntity
                 {
@@ -36,7 +36,7 @@ namespace OnlineSchoolData.Mappers
                 Email = student.Email,
                 Password = student.Password,
                 Username = student.Username,
-                Class = new ClassEntity() { Id = student.Class.Id },
+                ClassId = student.ClassId.Value,
             };
         }
     }

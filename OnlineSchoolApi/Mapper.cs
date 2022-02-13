@@ -1,4 +1,4 @@
-﻿using OnlineSchoolApi.RequestModels;
+﻿using OnlineSchoolApi.InputModels;
 using OnlineSchoolBusinessLogic.Models;
 
 namespace OnlineSchoolApi
@@ -20,6 +20,25 @@ namespace OnlineSchoolApi
             {
                 From = lessonInputModel.From,
                 DurationInMinutes = lessonInputModel.DurationInMinutes,
+            };
+        }
+
+        public static Student ToStudent(this StudentInputModel studentInputModel)
+        {
+            return new Student
+            {
+                Username = studentInputModel.Username,
+                Password = studentInputModel.Password,
+                Email = studentInputModel.Email,
+                ClassId = studentInputModel.ClassId,
+            };
+        }
+
+        public static Class ToClass(this ClassInputModel classInputModel)
+        {
+            return new Class
+            {
+                Name = classInputModel.Name,
             };
         }
     }

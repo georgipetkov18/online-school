@@ -1,4 +1,4 @@
-﻿namespace OnlineSchoolApi.RequestModels
+﻿namespace OnlineSchoolApi.InputModels
 {
     public class SubjectInputModel
     {

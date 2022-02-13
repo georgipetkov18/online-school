@@ -2,6 +2,6 @@
 {
     public class Student : User
     { 
-        public Class? Class { get; set; } = null!;
+        public Guid? ClassId { get; set; }
     }
 }
