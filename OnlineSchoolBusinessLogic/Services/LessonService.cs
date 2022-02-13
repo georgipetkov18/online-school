@@ -12,12 +12,13 @@ namespace OnlineSchoolBusinessLogic.Services
             this.lessonRepository = lessonRepository;
         }
 
-        public async Task<Lesson> AddLessonAsync(Lesson subject) => await this.lessonRepository.AddLessonAsync(subject);
+        public async Task<Lesson> AddLessonAsync(Lesson lesson) => await this.lessonRepository.AddLessonAsync(lesson);
 
-        public async Task DeleteLessonAsync(Guid id) => await this.lessonRepository.DeleteLessonAsync(id);
+        public async Task DeleteLessonAsync(Guid lessonId) => await this.lessonRepository.DeleteLessonAsync(lessonId);
 
-        public async Task<Lesson> GetLessonAsync(Guid subjectId) => await this.lessonRepository.GetLessonAsync(subjectId);
+        public async Task<Lesson> GetLessonAsync(Guid lessonId) => await this.lessonRepository.GetLessonAsync(lessonId);
 
-        public async Task<Lesson> UpdateLessonAsync(Lesson subject) => await this.lessonRepository.UpdateLessonAsync(subject);
+        public async Task<Lesson> UpdateLessonAsync(Guid lessonId, Lesson lesson) 
+            => await this.lessonRepository.UpdateLessonAsync(lessonId, lesson);
     }
 }

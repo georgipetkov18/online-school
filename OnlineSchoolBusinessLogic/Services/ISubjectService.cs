@@ -10,7 +10,7 @@ namespace OnlineSchoolBusinessLogic.Services
 
         Task<IEnumerable<Subject>> GetAllSubjectsAsync();
 
-        Task<Subject> UpdateSubjectAsync(Subject subject);
+        Task<Subject> UpdateSubjectAsync(Guid subjectId, Subject subject);
 
         Task DeleteSubjectAsync(Guid id);
     }

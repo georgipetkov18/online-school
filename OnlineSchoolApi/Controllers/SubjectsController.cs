@@ -62,12 +62,12 @@ public class SubjectsController : ControllerBase
         }
     }
 
-    [HttpPut]
-    public async Task<IActionResult> Update(SubjectInputModel subjectInputModel)
+    [HttpPut("{subjectId}")]
+    public async Task<IActionResult> Update(Guid subjectId, SubjectInputModel subjectInputModel)
     {
         try
         {
-            var updatedSubject = await this.subjectService.UpdateSubjectAsync(subjectInputModel.ToSubject());
+            var updatedSubject = await this.subjectService.UpdateSubjectAsync(subjectId, subjectInputModel.ToSubject());
             return this.Ok(updatedSubject);
         }
         catch (CustomException ex)

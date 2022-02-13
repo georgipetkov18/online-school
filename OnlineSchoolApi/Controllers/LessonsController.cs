@@ -51,12 +51,12 @@ namespace OnlineSchoolApi.Controllers
             }
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update(LessonInputModel lessonInputModel)
+        [HttpPut("{lessonId}")]
+        public async Task<IActionResult> Update(Guid lessonId, LessonInputModel lessonInputModel)
         {
             try
             {
-                var updatedLesson = await this.lessonService.UpdateLessonAsync(lessonInputModel.ToLesson());
+                var updatedLesson = await this.lessonService.UpdateLessonAsync(lessonId, lessonInputModel.ToLesson());
                 return this.Ok(updatedLesson);
             }
             catch (CustomException ex)

@@ -15,12 +15,13 @@ namespace OnlineSchoolBusinessLogic.Services
 
         public async Task<Subject> AddSubjectAsync(Subject subject) => await this.subjectRepository.AddSubjectAsync(subject);
 
-        public async Task DeleteSubjectAsync(Guid id) => await this.subjectRepository.DeleteSubjectAsync(id);
+        public async Task DeleteSubjectAsync(Guid subjectId) => await this.subjectRepository.DeleteSubjectAsync(subjectId);
 
         public async Task<IEnumerable<Subject>> GetAllSubjectsAsync() => await this.subjectRepository.GetAllSubjectsAsync();
 
         public async Task<Subject> GetSubjectAsync(Guid subjectId) => await this.subjectRepository.GetSubjectAsync(subjectId);
 
-        public async Task<Subject> UpdateSubjectAsync(Subject subject) => await this.subjectRepository.UpdateSubjectAsync(subject);
+        public async Task<Subject> UpdateSubjectAsync(Guid subjectId, Subject subject) 
+            => await this.subjectRepository.UpdateSubjectAsync(subjectId, subject);
     }
 }

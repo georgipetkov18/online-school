@@ -4,11 +4,11 @@ namespace OnlineSchoolBusinessLogic.Services;
 
 public interface ILessonService
 {
-    Task<Lesson> AddLessonAsync(Lesson subject);
+    Task<Lesson> AddLessonAsync(Lesson lesson);
 
-    Task<Lesson> GetLessonAsync(Guid subjectId);
+    Task<Lesson> GetLessonAsync(Guid lessonId);
 
-    Task<Lesson> UpdateLessonAsync(Lesson subject);
+    Task<Lesson> UpdateLessonAsync(Guid lessonId, Lesson lesson);
 
     Task DeleteLessonAsync(Guid id);
 }
