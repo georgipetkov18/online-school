@@ -11,7 +11,6 @@ namespace OnlineSchoolData.Mappers
             {
                 Id = studentEntity.Id,
                 Email = studentEntity.Email,
-                Password = studentEntity.Password,
                 Username = studentEntity.Username,
                 ClassId = studentEntity.ClassId,
             };
