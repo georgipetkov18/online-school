@@ -12,7 +12,7 @@ using OnlineSchoolData;
 namespace OnlineSchoolData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220206075721_InitialCreate")]
+    [Migration("20220217162540_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,6 +69,28 @@ namespace OnlineSchoolData.Migrations
                     b.ToTable("Lessons");
                 });
 
+            modelBuilder.Entity("OnlineSchoolData.Entities.RoleEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("OnlineSchoolData.Entities.StudentEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -81,24 +103,17 @@ namespace OnlineSchoolData.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ClassId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Students");
                 });
@@ -139,27 +154,20 @@ namespace OnlineSchoolData.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Subject")
                         .IsRequired()
                         .HasMaxLength(70)
                         .HasColumnType("nvarchar(70)");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Teachers");
                 });
@@ -204,6 +212,40 @@ namespace OnlineSchoolData.Migrations
                     b.ToTable("Timetable");
                 });
 
+            modelBuilder.Entity("OnlineSchoolData.Entities.UserEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("OnlineSchoolData.Entities.StudentEntity", b =>
                 {
                     b.HasOne("OnlineSchoolData.Entities.ClassEntity", "Class")
@@ -212,7 +254,26 @@ namespace OnlineSchoolData.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("OnlineSchoolData.Entities.UserEntity", "User")
+                        .WithMany("Students")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Class");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("OnlineSchoolData.Entities.TeacherEntity", b =>
+                {
+                    b.HasOne("OnlineSchoolData.Entities.UserEntity", "User")
+                        .WithMany("Teachers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.TimetableEntity", b =>
@@ -238,7 +299,7 @@ namespace OnlineSchoolData.Migrations
                     b.HasOne("OnlineSchoolData.Entities.TeacherEntity", "Teacher")
                         .WithMany("TimetableEntities")
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Class");
 
@@ -247,6 +308,17 @@ namespace OnlineSchoolData.Migrations
                     b.Navigation("Subject");
 
                     b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("OnlineSchoolData.Entities.UserEntity", b =>
+                {
+                    b.HasOne("OnlineSchoolData.Entities.RoleEntity", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.ClassEntity", b =>
@@ -261,6 +333,11 @@ namespace OnlineSchoolData.Migrations
                     b.Navigation("TimetableEntities");
                 });
 
+            modelBuilder.Entity("OnlineSchoolData.Entities.RoleEntity", b =>
+                {
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("OnlineSchoolData.Entities.SubjectEntity", b =>
                 {
                     b.Navigation("TimetableEntities");
@@ -269,6 +346,13 @@ namespace OnlineSchoolData.Migrations
             modelBuilder.Entity("OnlineSchoolData.Entities.TeacherEntity", b =>
                 {
                     b.Navigation("TimetableEntities");
+                });
+
+            modelBuilder.Entity("OnlineSchoolData.Entities.UserEntity", b =>
+                {
+                    b.Navigation("Students");
+
+                    b.Navigation("Teachers");
                 });
 #pragma warning restore 612, 618
         }

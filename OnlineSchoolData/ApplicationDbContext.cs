@@ -7,10 +7,12 @@ public class ApplicationDbContext : DbContext
 {
     public DbSet<SubjectEntity> Subjects { get; set; } = null!;
     public DbSet<LessonEntity> Lessons { get; set; } = null!;
+    public DbSet<UserEntity> Users { get; set; } = null!;
     public DbSet<TeacherEntity> Teachers { get; set; } = null!;
     public DbSet<StudentEntity> Students { get; set; } = null!;
     public DbSet<ClassEntity> Classes { get; set; } = null!;
     public DbSet<TimetableEntity> Timetable { get; set; } = null!;
+    public DbSet<RoleEntity> Roles { get; set; } = null!;
 
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
@@ -20,28 +22,36 @@ public class ApplicationDbContext : DbContext
     {
         modelBuilder.Entity<SubjectEntity>()
             .HasMany(subject => subject.TimetableEntities)
-            .WithOne(timetableEntity => timetableEntity.Subject)
-            .OnDelete(DeleteBehavior.Cascade);
+            .WithOne(timetableEntity => timetableEntity.Subject);
 
         modelBuilder.Entity<LessonEntity>()
             .HasMany(lesson => lesson.TimetableEntities)
-            .WithOne(timetableEntity => timetableEntity.Lesson)
-            .OnDelete(DeleteBehavior.Cascade);
+            .WithOne(timetableEntity => timetableEntity.Lesson);
+
+        modelBuilder.Entity<UserEntity>()
+            .HasMany(u => u.Teachers)
+            .WithOne(t => t.User);
+
+        modelBuilder.Entity<UserEntity>()
+            .HasMany(u => u.Students)
+            .WithOne(s => s.User);
 
         modelBuilder.Entity<TeacherEntity>()
             .HasMany(teacher => teacher.TimetableEntities)
             .WithOne(timetableEntity => timetableEntity.Teacher)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<StudentEntity>()
             .HasOne(student => student.Class)
-            .WithMany(_class => _class.Students)
-            .OnDelete(DeleteBehavior.Cascade);
+            .WithMany(_class => _class.Students);
 
         modelBuilder.Entity<ClassEntity>()
             .HasMany(_class => _class.TimetableEntities)
-            .WithOne(timetableEntity => timetableEntity.Class)
-            .OnDelete(DeleteBehavior.Cascade);
+            .WithOne(timetableEntity => timetableEntity.Class);
+
+        modelBuilder.Entity<RoleEntity>()
+            .HasMany(r => r.Users)
+            .WithOne(u => u.Role);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

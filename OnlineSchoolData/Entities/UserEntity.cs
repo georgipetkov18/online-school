@@ -13,5 +13,10 @@ namespace OnlineSchoolData.Entities
         [Required]
         [EmailAddress]
         public string Email { get; set; } = null!;
+
+        [Required]
+        public RoleEntity Role { get; set; } = null!;
+        public ICollection<StudentEntity> Students { get; set; } = null!;
+        public ICollection<TeacherEntity> Teachers{ get; set; } = null!;
     }
 }

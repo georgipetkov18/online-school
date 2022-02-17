@@ -48,39 +48,39 @@ namespace OnlineSchoolTests.RepositoryTests
             Assert.That(this.context.Subjects.Count() > 0);
         }
 
-        [Test]
-        public void Add_Method_Does_Not_Add_Instance_To_Database_When_Subject_Is_Null()
-        {
-            AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.AddSubjectAsync(null); };
-            Assert.ThrowsAsync<EmptyDataException>(testDelegate);
-            Assert.That(this.context.Subjects.Count() == 0);
-        }
+        //[Test]
+        //public void Add_Method_Does_Not_Add_Instance_To_Database_When_Subject_Is_Null()
+        //{
+        //    AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.AddSubjectAsync(null); };
+        //    Assert.ThrowsAsync<EmptyDataException>(testDelegate);
+        //    Assert.That(this.context.Subjects.Count() == 0);
+        //}
 
-        [Test]
-        public void Add_Method_Does_Not_Add_Instance_To_Database_When_Name_Is_Null()
-        {
-            var subjectEntity = new SubjectEntity
-            {
-                Code = "Test Code 1",
-            };
+        //[Test]
+        //public void Add_Method_Does_Not_Add_Instance_To_Database_When_Name_Is_Null()
+        //{
+        //    var subjectEntity = new SubjectEntity
+        //    {
+        //        Code = "Test Code 1",
+        //    };
 
-            AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.AddSubjectAsync(subjectEntity.ToSubject()); };
-            Assert.ThrowsAsync<EmptyDataException>(testDelegate);
-            Assert.That(this.context.Subjects.Count() == 0);
-        }
+        //    AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.AddSubjectAsync(subjectEntity.ToSubject()); };
+        //    Assert.ThrowsAsync<EmptyDataException>(testDelegate);
+        //    Assert.That(this.context.Subjects.Count() == 0);
+        //}
 
-        [Test]
-        public void Add_Method_Does_Not_Add_Instance_To_Database_When_Code_Is_Null()
-        {
-            var subjectEntity = new SubjectEntity
-            {
-                Name = "Test Name 1",
-            };
+        //[Test]
+        //public void Add_Method_Does_Not_Add_Instance_To_Database_When_Code_Is_Null()
+        //{
+        //    var subjectEntity = new SubjectEntity
+        //    {
+        //        Name = "Test Name 1",
+        //    };
 
-            AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.AddSubjectAsync(subjectEntity.ToSubject()); };
-            Assert.ThrowsAsync<EmptyDataException>(testDelegate);
-            Assert.That(this.context.Subjects.Count() == 0);
-        }
+        //    AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.AddSubjectAsync(subjectEntity.ToSubject()); };
+        //    Assert.ThrowsAsync<EmptyDataException>(testDelegate);
+        //    Assert.That(this.context.Subjects.Count() == 0);
+        //}
 
 
         [Test]
@@ -99,14 +99,14 @@ namespace OnlineSchoolTests.RepositoryTests
             Assert.That(this.context.Subjects.Count() == 0);
         }
 
-        [Test]
-        public void Delete_Method_Throws_Exception_When_Id_Is_Empty()
-        {
-            AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.DeleteSubjectAsync(Guid.Empty); };
-            var exception = Assert.ThrowsAsync<EmptyDataException>(testDelegate);
-            Assert.That(exception.Message.Contains("Id cannot be empty!"));
+        //[Test]
+        //public void Delete_Method_Throws_Exception_When_Id_Is_Empty()
+        //{
+        //    AsyncTestDelegate testDelegate = async delegate { await this.subjectRepo.DeleteSubjectAsync(Guid.Empty); };
+        //    var exception = Assert.ThrowsAsync<EmptyDataException>(testDelegate);
+        //    Assert.That(exception.Message.Contains("Id cannot be empty!"));
 
-        }
+        //}
 
         [Test]
         public void Delete_Method_Throws_Exception_When_Id_Is_Invalid()

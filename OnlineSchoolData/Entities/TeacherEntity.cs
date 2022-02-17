@@ -2,11 +2,14 @@
 
 namespace OnlineSchoolData.Entities
 {
-    public class TeacherEntity : UserEntity
+    public class TeacherEntity : BaseEntity
     {
         [Required]
         [MaxLength(70)]
         public string Subject { get; set; } = null!;
+
+        [Required]
+        public virtual UserEntity User { get; set; } = null!;
 
         public virtual ICollection<TimetableEntity> TimetableEntities { get; set; } = new HashSet<TimetableEntity>();
     }
