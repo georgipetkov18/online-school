@@ -13,5 +13,6 @@ namespace OnlineSchoolData.Entities
         public string Code { get; set; } = string.Empty;
 
         public virtual ICollection<TimetableEntity> TimetableEntities { get; set; } = new HashSet<TimetableEntity>();
+        public virtual ICollection<TeacherEntity> Teachers { get; set; } = new HashSet<TeacherEntity>();
     }
 }
