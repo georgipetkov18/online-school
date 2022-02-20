@@ -30,10 +30,16 @@ namespace OnlineSchoolData.Repositories
 
             if (user is null)
             {
-                throw new ArgumentException("Invalid credential were provided!");
+                throw new ArgumentException("Invalid credentials were provided!");
             }
 
             var key = configuration.GetSection("JwtSecret").Value;
+
+            if (key is null)
+            {
+                throw new ArgumentNullException();
+            }
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.ASCII.GetBytes(key);
             var tokenDescriptor = new SecurityTokenDescriptor
