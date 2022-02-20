@@ -29,12 +29,15 @@ namespace OnlineSchoolApi.Controllers
                 var authenticatedUserModel = await this.authenticationService
                    .Authenticate(authenticationInputModel.UsernameOrEmail, authenticationInputModel.Password);
 
-                return this.Ok(authenticatedUserModel);
-            }
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    Expires = DateTime.UtcNow.AddDays(7)
+                };
 
-            catch (ArgumentNullException)
-            {
-                return this.StatusCode(500, new ErrorResponse { ErrorMessage = "Something went wrong"});
+                this.Response.Cookies.Append("refreshToken", authenticatedUserModel.RefreshToken, cookieOptions);
+
+                return this.Ok(authenticatedUserModel.ToAuthenticateResponse());
             }
 
             catch (ArgumentException ex)

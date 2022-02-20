@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineSchoolData;
 
@@ -11,9 +12,10 @@ using OnlineSchoolData;
 namespace OnlineSchoolData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220220194015_AddRefreshTokens")]
+    partial class AddRefreshTokens
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +43,7 @@ namespace OnlineSchoolData.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Classes", (string)null);
+                    b.ToTable("Classes");
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.LessonEntity", b =>
@@ -64,7 +66,7 @@ namespace OnlineSchoolData.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Lessons", (string)null);
+                    b.ToTable("Lessons");
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.RefreshTokenEntity", b =>
@@ -94,7 +96,7 @@ namespace OnlineSchoolData.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.RoleEntity", b =>
@@ -116,7 +118,7 @@ namespace OnlineSchoolData.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.StudentEntity", b =>
@@ -143,7 +145,7 @@ namespace OnlineSchoolData.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Students", (string)null);
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.SubjectEntity", b =>
@@ -170,7 +172,7 @@ namespace OnlineSchoolData.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subjects", (string)null);
+                    b.ToTable("Subjects");
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.TeacherEntity", b =>
@@ -197,7 +199,7 @@ namespace OnlineSchoolData.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Teachers", (string)null);
+                    b.ToTable("Teachers");
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.TimetableEntity", b =>
@@ -237,7 +239,7 @@ namespace OnlineSchoolData.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Timetable", (string)null);
+                    b.ToTable("Timetable");
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.UserEntity", b =>
@@ -273,7 +275,7 @@ namespace OnlineSchoolData.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("OnlineSchoolData.Entities.RefreshTokenEntity", b =>

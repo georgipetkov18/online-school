@@ -18,6 +18,7 @@ namespace OnlineSchoolData.Entities
 
         [Required]
         public RoleEntity Role { get; set; } = null!;
+        public RefreshTokenEntity RefreshToken { get; set; } = null!;
         public ICollection<StudentEntity> Students { get; set; } = null!;
         public ICollection<TeacherEntity> Teachers { get; set; } = null!;
     }

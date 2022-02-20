@@ -51,7 +51,6 @@ namespace OnlineSchoolApi
                 Email = authenticateModel.Email,
                 Role = authenticateModel.Role,
                 JwtToken = authenticateModel.JwtToken,
-                RefreshToken = authenticateModel.RefreshToken,
             };
         }
     }

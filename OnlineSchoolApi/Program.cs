@@ -48,6 +48,7 @@ builder.Services.AddAuthentication(x =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtSecret").Value)),
         ValidateIssuer = false,
         ValidateAudience = false,
+        ClockSkew = TimeSpan.Zero,
     };
 });
 

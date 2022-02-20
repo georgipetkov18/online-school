@@ -13,6 +13,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<ClassEntity> Classes { get; set; } = null!;
     public DbSet<TimetableEntity> Timetable { get; set; } = null!;
     public DbSet<RoleEntity> Roles { get; set; } = null!;
+    public DbSet<RefreshTokenEntity> RefreshTokens { get; set; } = null!;
 
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
@@ -56,6 +57,11 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<RoleEntity>()
             .HasMany(r => r.Users)
             .WithOne(u => u.Role);
+
+        modelBuilder.Entity<RefreshTokenEntity>()
+            .HasOne(t => t.User)
+            .WithOne(u => u.RefreshToken)
+            .HasForeignKey<RefreshTokenEntity>(t => t.UserId);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
