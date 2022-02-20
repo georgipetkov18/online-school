@@ -1,4 +1,5 @@
 ﻿using OnlineSchoolApi.InputModels;
+using OnlineSchoolApi.ResponseModels;
 using OnlineSchoolBusinessLogic.Models;
 
 namespace OnlineSchoolApi
@@ -39,6 +40,18 @@ namespace OnlineSchoolApi
             return new Class
             {
                 Name = classInputModel.Name,
+            };
+        }
+
+        public static AuthenticateResponse ToAuthenticateResponse(this AuthenticateModel authenticateModel)
+        {
+            return new AuthenticateResponse
+            {
+                Username = authenticateModel.Username,
+                Email = authenticateModel.Email,
+                Role = authenticateModel.Role,
+                JwtToken = authenticateModel.JwtToken,
+                RefreshToken = authenticateModel.RefreshToken,
             };
         }
     }

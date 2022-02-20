@@ -1,6 +1,6 @@
 ﻿namespace OnlineSchoolApi.ResponseModels
 {
-    public class ErrorResponseModel
+    public class ErrorResponse
     {
         public string ErrorMessage { get; set; } = null!;
     }
