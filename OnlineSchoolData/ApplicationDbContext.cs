@@ -41,6 +41,10 @@ public class ApplicationDbContext : DbContext
             .WithOne(timetableEntity => timetableEntity.Teacher)
             .OnDelete(DeleteBehavior.Restrict);
 
+        modelBuilder.Entity<TeacherEntity>()
+            .HasOne(t => t.Subject)
+            .WithMany(s => s.Teachers);
+
         modelBuilder.Entity<StudentEntity>()
             .HasOne(student => student.Class)
             .WithMany(_class => _class.Students);

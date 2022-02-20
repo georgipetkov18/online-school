@@ -5,8 +5,7 @@ namespace OnlineSchoolData.Entities
     public class TeacherEntity : BaseEntity
     {
         [Required]
-        [MaxLength(70)]
-        public string Subject { get; set; } = null!;
+        public virtual SubjectEntity Subject { get; set; } = null!;
 
         [Required]
         public virtual UserEntity User { get; set; } = null!;
