@@ -2,7 +2,7 @@
 
 namespace OnlineSchoolBusinessLogic.Models
 {
-    public class User
+    public record User
     {
         public Guid Id { get; set; }
 
