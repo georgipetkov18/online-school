@@ -17,25 +17,25 @@ namespace OnlineSchoolApi.Controllers
             this.studentService = studentService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Register(StudentInputModel studentInputModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return this.BadRequest(ModelState);
-            }
+        //[HttpPost]
+        //public async Task<IActionResult> Register(StudentInputModel studentInputModel)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return this.BadRequest(ModelState);
+        //    }
 
-            try
-            {
-                var createdStudent = await this.studentService.AddStudentAsync(studentInputModel.ToStudent());
-                return this.CreatedAtAction(nameof(Get), new { studentId = createdStudent.Id }, createdStudent);
-            }
-            catch (InvalidIdException ex)
-            {
-                ModelState.AddModelError("Id", ex.Message);
-                return this.BadRequest(ModelState);
-            }
-        }
+        //    try
+        //    {
+        //        var createdStudent = await this.studentService.AddStudentAsync(studentInputModel.ToStudent());
+        //        return this.CreatedAtAction(nameof(Get), new { studentId = createdStudent.Id }, createdStudent);
+        //    }
+        //    catch (InvalidIdException ex)
+        //    {
+        //        ModelState.AddModelError("Id", ex.Message);
+        //        return this.BadRequest(ModelState);
+        //    }
+        //}
 
         [HttpGet("{studentId}")]
         public async Task<IActionResult> Get(Guid studentId)

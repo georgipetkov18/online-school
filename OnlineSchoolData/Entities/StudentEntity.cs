@@ -5,11 +5,11 @@ namespace OnlineSchoolData.Entities
     public class StudentEntity : BaseEntity
     {
         [Required]
+        public Guid ClassId { get; set; }
         public virtual ClassEntity Class { get; set; } = null!;
 
-        public Guid ClassId { get; set; }
-
         [Required]
+        public Guid UserId { get; set; }
         public virtual UserEntity User { get; set; } = null!;
     }
 }

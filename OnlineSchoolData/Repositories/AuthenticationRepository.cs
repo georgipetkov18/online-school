@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using OnlineSchoolBusinessLogic.Common;
 using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolBusinessLogic.Models;
 using OnlineSchoolData.Entities;
+using OnlineSchoolData.Mappers;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -72,6 +74,34 @@ namespace OnlineSchoolData.Repositories
             await this.context.SaveChangesAsync();
 
             return new AuthenticateModel(user.Username, user.Email, user.Role.Name, jwtTokenString, refreshToken.Token);
+        }
+
+        public async Task<AuthenticateModel> Register(User user)
+        {
+            var role = await this.context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == user.RoleName.ToLower());
+
+            if (role is null)
+            {
+                // Throw exception
+                throw new Exception();
+            }
+
+            await this.context.Users.AddAsync(user.ToUserEntity(role));
+
+            switch (role.Name)
+            {
+                case Roles.Student:
+                    await this.context.Students.AddAsync(user.ToStudentEntity(user.ToUserEntity(role)));
+                    break;
+
+                case Roles.Teacher:
+                    await this.context.Teachers.AddAsync(user.ToTeacherEntity(user.ToUserEntity(role)));
+                    break;
+            }
+
+            await this.context.SaveChangesAsync();
+            return await this.Authenticate(user.Email, user.Password);
+
         }
 
         private RefreshTokenEntity GenerateRefreshToken()

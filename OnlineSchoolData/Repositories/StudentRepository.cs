@@ -16,15 +16,6 @@ namespace OnlineSchoolData.Repositories
             this.context = context;
         }
 
-        public async Task<Student> AddStudentAsync(Student student)
-        {
-            var studentEntity = student.ToStudentEntity();
-            await this.context.Students.AddAsync(studentEntity);
-            await this.context.SaveChangesAsync();
-
-            return studentEntity.ToStudent();
-        }
-
         public async Task DeleteStudentAsync(Guid studentId)
         {
             var studentEntity = await this.GetStudentByIdAsync(studentId);

@@ -12,8 +12,6 @@ namespace OnlineSchoolBusinessLogic.Services
             this.studentRepository = studentRepository;
         }
 
-        public async Task<Student> AddStudentAsync(Student student) => await this.studentRepository.AddStudentAsync(student);
-
         public async Task DeleteStudentAsync(Guid studentId) => await this.studentRepository.DeleteStudentAsync(studentId);
 
         public async Task<Student> GetStudentAsync(Guid studentId) => await this.studentRepository.GetStudentAsync(studentId);

@@ -53,5 +53,18 @@ namespace OnlineSchoolApi
                 JwtToken = authenticateModel.JwtToken,
             };
         }
+
+        public static User ToUser(this UserInputModel userInputModel)
+        {
+            return new User
+            {
+                Username = userInputModel.Username,
+                Email = userInputModel.Email,
+                Password = userInputModel.Password,
+                RoleName = userInputModel.RoleName,
+                ClassId = userInputModel.ClassId,
+                SubjectId = userInputModel.SubjectId,
+            };
+        }
     }
 }

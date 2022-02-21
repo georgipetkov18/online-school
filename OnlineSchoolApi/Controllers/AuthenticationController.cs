@@ -47,9 +47,24 @@ namespace OnlineSchoolApi.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Register()
+        public async Task<IActionResult> Register(UserInputModel userInputModel)
         {
-            return Ok();
+            try
+            {
+                var authenticatedUserModel = await this.authenticationService.Register(userInputModel.ToUser());
+                var authenticateInputModel = new AuthenticationInputModel
+                {
+                    UsernameOrEmail = userInputModel.Email,
+                    Password = userInputModel.Password,
+                };
+
+                return this.Ok(authenticatedUserModel.ToAuthenticateResponse());
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         [HttpGet("[action]")]

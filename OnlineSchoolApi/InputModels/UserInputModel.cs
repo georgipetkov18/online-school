@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OnlineSchoolBusinessLogic.Models
+namespace OnlineSchoolApi.InputModels
 {
-    public record User
+    public class UserInputModel
     {
-        public Guid Id { get; set; }
-
         [Required]
         public string Username { get; set; } = null!;
 

@@ -1,0 +1,47 @@
+﻿using OnlineSchoolBusinessLogic.Models;
+using OnlineSchoolData.Entities;
+
+namespace OnlineSchoolData.Mappers
+{
+    public static class UserMapper
+    {
+        public static Student ToStudent(this StudentEntity studentEntity)
+        {
+            return new Student
+            {
+                ClassId = studentEntity.ClassId,
+            };
+        }
+
+        public static StudentEntity ToStudentEntity(this User student, UserEntity user)
+        {
+            return new StudentEntity
+            {
+                Id = student.Id,
+                ClassId = student.ClassId!.Value,
+                User = user,
+            };
+        }
+
+        public static TeacherEntity ToTeacherEntity(this User teacher, UserEntity user)
+        {
+            return new TeacherEntity
+            {
+                Id = teacher.Id,
+                SubjectId = teacher.SubjectId!.Value,
+                User = user,
+            };
+        }
+
+        public static UserEntity ToUserEntity(this User user, RoleEntity role)
+        {
+            return new UserEntity
+            {
+                Username = user.Username,
+                Email = user.Email,
+                Password = user.Password,
+                Role = role,
+            };
+        }
+    }
+}
