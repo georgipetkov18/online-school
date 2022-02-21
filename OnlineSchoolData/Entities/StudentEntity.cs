@@ -9,7 +9,6 @@ namespace OnlineSchoolData.Entities
         public virtual ClassEntity Class { get; set; } = null!;
 
         [Required]
-        public Guid UserId { get; set; }
         public virtual UserEntity User { get; set; } = null!;
     }
 }

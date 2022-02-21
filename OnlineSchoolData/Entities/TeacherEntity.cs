@@ -9,7 +9,6 @@ namespace OnlineSchoolData.Entities
         public virtual SubjectEntity Subject { get; set; } = null!;
 
         [Required]
-        public Guid UserId { get; set; }
         public virtual UserEntity User { get; set; } = null!;
 
         public virtual ICollection<TimetableEntity> TimetableEntities { get; set; } = new HashSet<TimetableEntity>();

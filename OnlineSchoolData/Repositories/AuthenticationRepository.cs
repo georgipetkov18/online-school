@@ -91,10 +91,12 @@ namespace OnlineSchoolData.Repositories
             switch (role.Name)
             {
                 case Roles.Student:
+                    // Check if classId is not null
                     await this.context.Students.AddAsync(user.ToStudentEntity(user.ToUserEntity(role)));
                     break;
 
                 case Roles.Teacher:
+                    // Check if subjectId is not null
                     await this.context.Teachers.AddAsync(user.ToTeacherEntity(user.ToUserEntity(role)));
                     break;
             }
