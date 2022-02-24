@@ -2,7 +2,7 @@
 
 namespace OnlineSchoolBusinessLogic.Interfaces;
 
-public interface ILessonService
+public interface ILessonsService
 {
     Task<Lesson> AddLessonAsync(Lesson lesson);
 

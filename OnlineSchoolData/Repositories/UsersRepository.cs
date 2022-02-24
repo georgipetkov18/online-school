@@ -24,7 +24,7 @@ namespace OnlineSchoolData.Repositories
             this.configuration = configuration;
         }
 
-        public async Task<AuthenticateModel> Authenticate(string usernameOrEmail, string password)
+        public async Task<AuthenticateModel> Authenticate(string usernameOrEmail, string password, bool hashedPassword = false)
         { 
             var user = await this.context.Users
                 .Include(u => u.Role)
@@ -34,7 +34,14 @@ namespace OnlineSchoolData.Repositories
 
             if (user is null)
             {
-                throw new ArgumentException("Invalid credentials were provided!");
+                throw new ArgumentException($"User: {usernameOrEmail} does not exist");
+            }
+
+            var passwordIsValid = hashedPassword ? user.Password == password : BCrypt.Net.BCrypt.Verify(password, user.Password);
+
+            if (!passwordIsValid)
+            {
+                throw new ArgumentException("Invalid password");
             }
 
             var key = configuration.GetSection("JwtSecret").Value;

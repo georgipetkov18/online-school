@@ -13,11 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddScoped<ISubjectsRepository, SubjectsRepository>();
-builder.Services.AddScoped<ISubjectService, SubjectService>();
+builder.Services.AddScoped<ISubjectsService, SubjectsService>();
 builder.Services.AddScoped<ILessonsRepository, LessonsRepository>();
-builder.Services.AddScoped<ILessonService, LessonService>();
+builder.Services.AddScoped<ILessonsService, LessonsService>();
 builder.Services.AddScoped<IStudentsRepository, StudentsRepository>();
-builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IStudentsService, StudentsService>();
 builder.Services.AddScoped<IClassRepository, ClassRepository>();
 builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();

@@ -3,11 +3,11 @@ using OnlineSchoolBusinessLogic.Models;
 
 namespace OnlineSchoolBusinessLogic.Services
 {
-    public class StudentService : IStudentService
+    public class StudentsService : IStudentsService
     {
         private readonly IStudentsRepository studentsRepository;
 
-        public StudentService(IStudentsRepository studentsRepository)
+        public StudentsService(IStudentsRepository studentsRepository)
         {
             this.studentsRepository = studentsRepository;
         }
