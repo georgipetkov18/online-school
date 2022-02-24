@@ -5,23 +5,23 @@ namespace OnlineSchoolBusinessLogic.Services
 {
     public class SubjectService : ISubjectService
     {
-        private readonly ISubjectRepository subjectRepository;
+        private readonly ISubjectsRepository subjectsRepository;
 
-        public SubjectService(ISubjectRepository subjectRepository)
+        public SubjectService(ISubjectsRepository subjectsRepository)
         {
-            this.subjectRepository = subjectRepository;
+            this.subjectsRepository = subjectsRepository;
         }
 
 
-        public async Task<Subject> AddSubjectAsync(Subject subject) => await this.subjectRepository.AddSubjectAsync(subject);
+        public async Task<Subject> AddSubjectAsync(Subject subject) => await this.subjectsRepository.AddSubjectAsync(subject);
 
-        public async Task DeleteSubjectAsync(Guid subjectId) => await this.subjectRepository.DeleteSubjectAsync(subjectId);
+        public async Task DeleteSubjectAsync(Guid subjectId) => await this.subjectsRepository.DeleteSubjectAsync(subjectId);
 
-        public async Task<IEnumerable<Subject>> GetAllSubjectsAsync() => await this.subjectRepository.GetAllSubjectsAsync();
+        public async Task<IEnumerable<Subject>> GetAllSubjectsAsync() => await this.subjectsRepository.GetAllSubjectsAsync();
 
-        public async Task<Subject> GetSubjectAsync(Guid subjectId) => await this.subjectRepository.GetSubjectAsync(subjectId);
+        public async Task<Subject> GetSubjectAsync(Guid subjectId) => await this.subjectsRepository.GetSubjectAsync(subjectId);
 
         public async Task<Subject> UpdateSubjectAsync(Guid subjectId, Subject subject) 
-            => await this.subjectRepository.UpdateSubjectAsync(subjectId, subject);
+            => await this.subjectsRepository.UpdateSubjectAsync(subjectId, subject);
     }
 }

@@ -7,11 +7,11 @@ using OnlineSchoolBusinessLogic.Interfaces;
 namespace OnlineSchoolApi.Controllers
 {
     [ApiController]
-    public class AuthenticationController : ControllerBase
+    public class UsersController : ControllerBase
     {
-        private readonly IAuthenticationService authenticationService;
+        private readonly IUsersService authenticationService;
 
-        public AuthenticationController(IAuthenticationService authenticationService)
+        public UsersController(IUsersService authenticationService)
         {
             this.authenticationService = authenticationService;
         }

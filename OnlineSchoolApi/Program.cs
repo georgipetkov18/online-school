@@ -12,16 +12,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+builder.Services.AddScoped<ISubjectsRepository, SubjectsRepository>();
 builder.Services.AddScoped<ISubjectService, SubjectService>();
-builder.Services.AddScoped<ILessonRepository, LessonRepository>();
+builder.Services.AddScoped<ILessonsRepository, LessonsRepository>();
 builder.Services.AddScoped<ILessonService, LessonService>();
-builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IStudentsRepository, StudentsRepository>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IClassRepository, ClassRepository>();
 builder.Services.AddScoped<IClassService, ClassService>();
-builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
-builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IUsersService, UsersService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {

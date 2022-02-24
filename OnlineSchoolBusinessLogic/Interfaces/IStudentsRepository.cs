@@ -2,7 +2,7 @@
 
 namespace OnlineSchoolBusinessLogic.Interfaces;
 
-public interface IStudentRepository
+public interface IStudentsRepository
 {
     Task<Student> GetStudentAsync(Guid studentId);
 

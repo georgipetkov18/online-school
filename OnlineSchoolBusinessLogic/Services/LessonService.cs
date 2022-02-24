@@ -5,20 +5,20 @@ namespace OnlineSchoolBusinessLogic.Services
 {
     public class LessonService : ILessonService
     {
-        private readonly ILessonRepository lessonRepository;
+        private readonly ILessonsRepository lessonsRepository;
 
-        public LessonService(ILessonRepository lessonRepository)
+        public LessonService(ILessonsRepository lessonsRepository)
         {
-            this.lessonRepository = lessonRepository;
+            this.lessonsRepository = lessonsRepository;
         }
 
-        public async Task<Lesson> AddLessonAsync(Lesson lesson) => await this.lessonRepository.AddLessonAsync(lesson);
+        public async Task<Lesson> AddLessonAsync(Lesson lesson) => await this.lessonsRepository.AddLessonAsync(lesson);
 
-        public async Task DeleteLessonAsync(Guid lessonId) => await this.lessonRepository.DeleteLessonAsync(lessonId);
+        public async Task DeleteLessonAsync(Guid lessonId) => await this.lessonsRepository.DeleteLessonAsync(lessonId);
 
-        public async Task<Lesson> GetLessonAsync(Guid lessonId) => await this.lessonRepository.GetLessonAsync(lessonId);
+        public async Task<Lesson> GetLessonAsync(Guid lessonId) => await this.lessonsRepository.GetLessonAsync(lessonId);
 
         public async Task<Lesson> UpdateLessonAsync(Guid lessonId, Lesson lesson) 
-            => await this.lessonRepository.UpdateLessonAsync(lessonId, lesson);
+            => await this.lessonsRepository.UpdateLessonAsync(lessonId, lesson);
     }
 }

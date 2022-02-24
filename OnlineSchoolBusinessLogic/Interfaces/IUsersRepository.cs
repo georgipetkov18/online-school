@@ -2,7 +2,7 @@
 
 namespace OnlineSchoolBusinessLogic.Interfaces
 {
-    public interface IAuthenticationRepository
+    public interface IUsersRepository
     {
         Task<AuthenticateModel> Authenticate(string usernameOrEmail, string password);
 

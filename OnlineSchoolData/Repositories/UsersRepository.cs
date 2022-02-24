@@ -13,12 +13,12 @@ using System.Text;
 
 namespace OnlineSchoolData.Repositories
 {
-    public class AuthenticationRepository : IAuthenticationRepository
+    public class UsersRepository : IUsersRepository
     {
         private readonly ApplicationDbContext context;
         private readonly IConfiguration configuration;
 
-        public AuthenticationRepository(ApplicationDbContext context, IConfiguration configuration)
+        public UsersRepository(ApplicationDbContext context, IConfiguration configuration)
         {
             this.context = context;
             this.configuration = configuration;

@@ -7,11 +7,11 @@ using OnlineSchoolData.Mappers;
 
 namespace OnlineSchoolData.Repositories
 {
-    public class StudentRepository : IStudentRepository
+    public class StudentsRepository : IStudentsRepository
     {
         private readonly ApplicationDbContext context;
 
-        public StudentRepository(ApplicationDbContext context)
+        public StudentsRepository(ApplicationDbContext context)
         {
             this.context = context;
         }

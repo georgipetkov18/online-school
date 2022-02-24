@@ -15,7 +15,7 @@ namespace OnlineSchoolTests.RepositoryTests
     public class SubjectRepositoryTests
     {
         private ApplicationDbContext context = null!;
-        private ISubjectRepository subjectRepo = null!;
+        private ISubjectsRepository subjectRepo = null!;
 
         [SetUp]
         public void Setup()
@@ -26,7 +26,7 @@ namespace OnlineSchoolTests.RepositoryTests
 
             this.context = new ApplicationDbContext(options);
 
-            this.subjectRepo = new SubjectRepository(this.context);
+            this.subjectRepo = new SubjectsRepository(this.context);
         }
 
         [TearDown]
