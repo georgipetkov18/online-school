@@ -25,12 +25,10 @@ namespace OnlineSchoolData.Repositories
         }
 
         public async Task<AuthenticateModel> Authenticate(string usernameOrEmail, string password, bool hashedPassword = false)
-        { 
+        {
             var user = await this.context.Users
                 .Include(u => u.Role)
-                .FirstOrDefaultAsync(u =>
-                    (u.Username == usernameOrEmail || u.Email == usernameOrEmail) &&
-                    u.Password == password);
+                .FirstOrDefaultAsync(u => u.Email == usernameOrEmail || u.Username == usernameOrEmail);
 
             if (user is null)
             {
@@ -41,10 +39,10 @@ namespace OnlineSchoolData.Repositories
 
             if (!passwordIsValid)
             {
-                throw new ArgumentException("Invalid password");
+                throw new ArgumentException($"Invalid password was provided");
             }
 
-            var key = configuration.GetSection("JwtSecret").Value;
+            var key = this.configuration.GetSection("JwtSecret").Value;
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.ASCII.GetBytes(key);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -61,7 +59,7 @@ namespace OnlineSchoolData.Repositories
 
             var jwtToken = tokenHandler.CreateToken(tokenDescriptor);
             var jwtTokenString = tokenHandler.WriteToken(jwtToken);
-            var refreshToken = this.GenerateRefreshToken();       
+            var refreshToken = GenerateRefreshToken();
 
             var currentUserToken = await this.context.RefreshTokens.FirstOrDefaultAsync(t => t.UserId == user.Id);
 
@@ -80,37 +78,65 @@ namespace OnlineSchoolData.Repositories
 
             await this.context.SaveChangesAsync();
 
+
             return new AuthenticateModel(user.Username, user.Email, user.Role.Name, jwtTokenString, refreshToken.Token);
         }
 
-        public async Task<AuthenticateModel> Register(User user)
+        public async Task Register(User user)
         {
             var role = await this.context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == user.RoleName.ToLower());
 
             if (role is null)
             {
-                // Throw exception
-                throw new Exception();
+                throw new ArgumentException($"Role with name {user.RoleName} does not exist!");
             }
+            var userEntity = user.ToUserEntity(role);
 
-            await this.context.Users.AddAsync(user.ToUserEntity(role));
+            await this.context.Users.AddAsync(userEntity);
 
             switch (role.Name)
             {
                 case Roles.Student:
-                    // Check if classId is not null
-                    await this.context.Students.AddAsync(user.ToStudentEntity(user.ToUserEntity(role)));
+                    await this.context.Students.AddAsync(user.ToStudentEntity(userEntity));
                     break;
 
                 case Roles.Teacher:
-                    // Check if subjectId is not null
-                    await this.context.Teachers.AddAsync(user.ToTeacherEntity(user.ToUserEntity(role)));
+                    await this.context.Teachers.AddAsync(user.ToTeacherEntity(userEntity));
                     break;
             }
 
             await this.context.SaveChangesAsync();
-            return await this.Authenticate(user.Email, user.Password);
+        }
 
+        public async Task<AuthenticateModel> RefreshToken(string refreshToken)
+        {
+            var tokenEntity = await this.context.RefreshTokens
+                .Include(t => t.User)
+                .FirstOrDefaultAsync(t => t.Token == refreshToken);
+
+            if (tokenEntity is null)
+            {
+                throw new ArgumentNullException(nameof(tokenEntity), "Invalid refresh token was provided");
+            }
+
+            if (DateTime.UtcNow >= tokenEntity.ExpiresOn)
+            {
+                this.context.RefreshTokens.Remove(tokenEntity);
+                await this.context.SaveChangesAsync();
+
+                throw new ArgumentException("Refresh token has expired");
+            }
+
+            var userEntity = tokenEntity.User;
+            var newRefreshToken = GenerateRefreshToken();
+            tokenEntity.Token = newRefreshToken.Token;
+            tokenEntity.ExpiresOn = newRefreshToken.ExpiresOn;
+
+            this.context.Update(tokenEntity);
+
+            await this.context.SaveChangesAsync();
+
+            return await Authenticate(userEntity.Email, userEntity.Password, true);
         }
 
         private RefreshTokenEntity GenerateRefreshToken()

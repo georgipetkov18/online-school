@@ -1,19 +1,19 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineSchoolApi.InputModels;
-using OnlineSchoolApi.ResponseModels;
 using OnlineSchoolBusinessLogic.Interfaces;
 
 namespace OnlineSchoolApi.Controllers
 {
     [ApiController]
+    [Route("api")]
     public class UsersController : ControllerBase
     {
-        private readonly IUsersService authenticationService;
+        private readonly IUsersService usersService;
 
         public UsersController(IUsersService authenticationService)
         {
-            this.authenticationService = authenticationService;
+            this.usersService = authenticationService;
         }
 
         [HttpPost("[action]")]
@@ -21,57 +21,88 @@ namespace OnlineSchoolApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return this.BadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             try
             {
-                var authenticatedUserModel = await this.authenticationService
-                   .Authenticate(authenticationInputModel.UsernameOrEmail, authenticationInputModel.Password);
+                var authenticatedUser = await this.usersService.Authenticate(authenticationInputModel.UsernameOrEmail, authenticationInputModel.Password);
 
-                var cookieOptions = new CookieOptions
-                {
-                    HttpOnly = true,
-                    Expires = DateTime.UtcNow.AddDays(7)
-                };
+                var cookieOptions = GetRefreshTokenOptions();
 
-                this.Response.Cookies.Append("refreshToken", authenticatedUserModel.RefreshToken, cookieOptions);
-
-                return this.Ok(authenticatedUserModel.ToAuthenticateResponse());
+                this.Response.Cookies.Append("refreshToken", authenticatedUser.RefreshToken, cookieOptions);
+                return Ok(authenticatedUser.ToAuthenticateResponse());
             }
-
             catch (ArgumentException ex)
             {
-                return this.BadRequest(new ErrorResponse { ErrorMessage = ex.Message });
+                ModelState.AddModelError("Credentials", ex.Message);
+                return BadRequest(ModelState);
             }
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Register(UserInputModel userInputModel)
+        public async Task<IActionResult> Register(UserInputModel user)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             try
             {
-                var authenticatedUserModel = await this.authenticationService.Register(userInputModel.ToUser());
-                var authenticateInputModel = new AuthenticationInputModel
-                {
-                    UsernameOrEmail = userInputModel.Email,
-                    Password = userInputModel.Password,
-                };
+                await usersService.Register(user.ToUser());
 
-                return this.Ok(authenticatedUserModel.ToAuthenticateResponse());
+                return Ok(new { message = $"Registered user: {user.Username}" });
             }
-            catch (Exception)
+            catch (ArgumentException ex)
             {
-
-                throw;
+                ModelState.AddModelError(user.RoleName, ex.Message);
+                return BadRequest(ModelState);
             }
         }
 
-        [HttpGet("[action]")]
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (refreshToken is null)
+            {
+                return BadRequest(new { message = "Token is required" });
+            }
+
+            try
+            {
+                var authenticatedUser = await usersService.RefreshToken(refreshToken);
+                var cookieOptions = GetRefreshTokenOptions();
+
+                this.Response.Cookies.Append("refreshToken", authenticatedUser.RefreshToken, cookieOptions);
+
+                return Ok(authenticatedUser.ToAuthenticateResponse());
+            }
+            catch (ArgumentNullException)
+            {
+                return BadRequest(new { message = "Invalid refresh token was provided" });
+
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message, tokenExpired = true });
+            }
+        }
+
+        private CookieOptions GetRefreshTokenOptions()
+        {
+            return new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(7)
+            };
+        }
+
         [Authorize]
+        [HttpGet("test")]
         public IActionResult Test()
         {
-            return Ok("Authenticated");
+            return Ok();
         }
     }
 }

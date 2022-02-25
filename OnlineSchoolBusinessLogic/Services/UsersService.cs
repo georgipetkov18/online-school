@@ -15,6 +15,10 @@ namespace OnlineSchoolBusinessLogic.Services
         public async Task<AuthenticateModel> Authenticate(string usernameOrEmail, string password) =>
             await usersRepository.Authenticate(usernameOrEmail, password);
 
-        public async Task<AuthenticateModel> Register(User user) => await this.usersRepository.Register(user);
+        public async Task<AuthenticateModel> RefreshToken(string refreshToken) => 
+            await this.usersRepository.RefreshToken(refreshToken);
+
+        public async Task Register(User user) => 
+            await this.usersRepository.Register(user);
     }
 }

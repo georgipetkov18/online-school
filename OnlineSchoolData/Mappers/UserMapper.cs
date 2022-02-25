@@ -39,7 +39,7 @@ namespace OnlineSchoolData.Mappers
             {
                 Username = user.Username,
                 Email = user.Email,
-                Password = user.Password,
+                Password = BCrypt.Net.BCrypt.HashPassword(user.Password),
                 Role = role,
             };
         }
