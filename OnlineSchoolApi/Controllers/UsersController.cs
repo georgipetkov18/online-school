@@ -60,6 +60,7 @@ namespace OnlineSchoolApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken()
         {
@@ -71,7 +72,7 @@ namespace OnlineSchoolApi.Controllers
 
             try
             {
-                var authenticatedUser = await usersService.RefreshTokenAsync(refreshToken);
+                var authenticatedUser = await usersService.RefreshTokenAsync(User, refreshToken);
                 var cookieOptions = GetRefreshTokenOptions();
 
                 this.Response.Cookies.Append("refreshToken", authenticatedUser.RefreshToken, cookieOptions);

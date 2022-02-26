@@ -7,6 +7,7 @@ using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolBusinessLogic.Services;
 using OnlineSchoolData;
 using OnlineSchoolData.Repositories;
+using OnlineSchoolData.Seeders;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,10 +22,10 @@ builder.Services.AddScoped<IStudentsRepository, StudentsRepository>();
 builder.Services.AddScoped<IStudentsService, StudentsService>();
 builder.Services.AddScoped<IClassRepository, ClassRepository>();
 builder.Services.AddScoped<IClassService, ClassService>();
-builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
-builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITimetableRepository, TimetableRepository>();
 builder.Services.AddScoped<ITimetableService, TimetableService>();
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IUsersService, UsersService>();
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -93,7 +94,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
@@ -101,5 +101,13 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetService<ApplicationDbContext>()!;
+
+await RoleSeeder.SeedRolesAsync(context);
+await SubjectSeeder.SeedSubjectAsync(context);
+await ClassSeeder.SeedClassAsync(context);
+await UserSeeder.SeedUsersAsync(context);
 
 app.Run();

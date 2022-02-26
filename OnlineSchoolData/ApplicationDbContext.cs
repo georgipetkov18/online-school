@@ -13,7 +13,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<ClassEntity> Classes { get; set; } = null!;
     public DbSet<TimetableEntity> Timetable { get; set; } = null!;
     public DbSet<RoleEntity> Roles { get; set; } = null!;
-    public DbSet<RefreshTokenEntity> RefreshTokens { get; set; } = null!;
 
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
@@ -29,22 +28,31 @@ public class ApplicationDbContext : DbContext
             .HasMany(lesson => lesson.TimetableEntities)
             .WithOne(timetableEntity => timetableEntity.Lesson);
 
-        modelBuilder.Entity<UserEntity>()
-            .HasMany(u => u.Teachers)
-            .WithOne(t => t.User);
+        modelBuilder.Entity<UserEntity>(builder =>
+        {
+            builder
+                .HasMany(u => u.Teachers)
+                .WithOne(t => t.User);
 
-        modelBuilder.Entity<UserEntity>()
-            .HasMany(u => u.Students)
-            .WithOne(s => s.User);
+            builder
+                .HasMany(u => u.Students)
+                .WithOne(s => s.User);
 
-        modelBuilder.Entity<TeacherEntity>()
-            .HasMany(teacher => teacher.TimetableEntities)
-            .WithOne(timetableEntity => timetableEntity.Teacher)
-            .OnDelete(DeleteBehavior.Restrict);
+            builder.HasIndex(u => u.Email).IsUnique();
+            builder.HasIndex(u => u.Username).IsUnique();
+        });
 
-        modelBuilder.Entity<TeacherEntity>()
-            .HasOne(t => t.Subject)
-            .WithMany(s => s.Teachers);
+        modelBuilder.Entity<TeacherEntity>(builder =>
+        {
+            builder
+                .HasMany(teacher => teacher.TimetableEntities)
+                .WithOne(timetableEntity => timetableEntity.Teacher)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .HasOne(t => t.Subject)
+                .WithMany(s => s.Teachers);
+        });
 
         modelBuilder.Entity<StudentEntity>()
             .HasOne(student => student.Class)
@@ -57,11 +65,6 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<RoleEntity>()
             .HasMany(r => r.Users)
             .WithOne(u => u.Role);
-
-        modelBuilder.Entity<RefreshTokenEntity>()
-            .HasOne(t => t.User)
-            .WithOne(u => u.RefreshToken)
-            .HasForeignKey<RefreshTokenEntity>(t => t.UserId);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

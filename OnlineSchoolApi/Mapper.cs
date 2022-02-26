@@ -24,9 +24,9 @@ namespace OnlineSchoolApi
             };
         }
 
-        public static Student ToStudent(this StudentInputModel studentInputModel)
+        public static User ToStudent(this StudentInputModel studentInputModel)
         {
-            return new Student
+            return new User
             {
                 Username = studentInputModel.Username,
                 Password = studentInputModel.Password,

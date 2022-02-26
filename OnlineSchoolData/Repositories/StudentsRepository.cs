@@ -29,7 +29,7 @@ namespace OnlineSchoolData.Repositories
             await this.context.SaveChangesAsync();
         }
 
-        public async Task<Student> GetStudentAsync(Guid studentId)
+        public async Task<User> GetStudentAsync(Guid studentId)
         {
             var studentEntity = await this.GetStudentByIdAsync(studentId, false);
 

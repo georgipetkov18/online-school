@@ -24,64 +24,6 @@ namespace OnlineSchoolData.Repositories
             this.configuration = configuration;
         }
 
-        public async Task<AuthenticateModel> AuthenticateAsync(string usernameOrEmail, string password, bool hashedPassword = false)
-        {
-            var user = await this.context.Users
-                .Include(u => u.Role)
-                .FirstOrDefaultAsync(u => u.Email == usernameOrEmail || u.Username == usernameOrEmail);
-
-            if (user is null)
-            {
-                throw new ArgumentException($"User: {usernameOrEmail} does not exist");
-            }
-
-            var passwordIsValid = hashedPassword ? user.Password == password : BCrypt.Net.BCrypt.Verify(password, user.Password);
-
-            if (!passwordIsValid)
-            {
-                throw new ArgumentException($"Invalid password was provided");
-            }
-
-            var key = this.configuration.GetSection("JwtSecret").Value;
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenKey = Encoding.ASCII.GetBytes(key);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role.Name),
-                }),
-                Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var jwtToken = tokenHandler.CreateToken(tokenDescriptor);
-            var jwtTokenString = tokenHandler.WriteToken(jwtToken);
-            var refreshToken = GenerateRefreshToken();
-
-            var currentUserToken = await this.context.RefreshTokens.FirstOrDefaultAsync(t => t.UserId == user.Id);
-
-            if (currentUserToken is null)
-            {
-                refreshToken.User = user;
-                await this.context.AddAsync(refreshToken);
-            }
-            else
-            {
-                currentUserToken.Token = refreshToken.Token;
-                currentUserToken.ExpiresOn = refreshToken.ExpiresOn;
-                currentUserToken.User = user;
-                this.context.Update(currentUserToken);
-            }
-
-            await this.context.SaveChangesAsync();
-
-
-            return new AuthenticateModel(user.Username, user.Email, user.Role.Name, jwtTokenString, refreshToken.Token);
-        }
-
         public async Task RegisterAsync(User user)
         {
             var role = await this.context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == user.RoleName.ToLower());
@@ -108,57 +50,39 @@ namespace OnlineSchoolData.Repositories
             await this.context.SaveChangesAsync();
         }
 
-        public async Task<AuthenticateModel> RefreshTokenAsync(string refreshToken)
+        public async Task<User> GetUserAsync(string usernameOrEmail, string password, bool hashedPassword = false)
         {
-            var tokenEntity = await this.context.RefreshTokens
-                .Include(t => t.User)
-                .FirstOrDefaultAsync(t => t.Token == refreshToken);
+            var user = await this.context.Users
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Username == usernameOrEmail || u.Email == usernameOrEmail);
 
-            if (tokenEntity is null)
+            if (user is null)
             {
-                throw new ArgumentNullException(nameof(tokenEntity), "Invalid refresh token was provided");
+                throw new ArgumentException($"User: {usernameOrEmail} does not exist");
             }
 
-            if (DateTime.UtcNow >= tokenEntity.ExpiresOn)
-            {
-                this.context.RefreshTokens.Remove(tokenEntity);
-                await this.context.SaveChangesAsync();
+            var passwordIsValid = hashedPassword ? user.Password == password : BCrypt.Net.BCrypt.Verify(password, user.Password);
 
-                throw new ArgumentException("Refresh token has expired");
+            if (!passwordIsValid)
+            {
+                throw new ArgumentException($"Invalid password was provided");
             }
 
-            var userEntity = tokenEntity.User;
-            var newRefreshToken = GenerateRefreshToken();
-            tokenEntity.Token = newRefreshToken.Token;
-            tokenEntity.ExpiresOn = newRefreshToken.ExpiresOn;
-
-            this.context.Update(tokenEntity);
-
-            await this.context.SaveChangesAsync();
-
-            return await AuthenticateAsync(userEntity.Email, userEntity.Password, true);
+            return user.ToUser();
         }
 
-        private RefreshTokenEntity GenerateRefreshToken()
+        public async Task<User> GetUserAsync(string usernameOrEmail)
         {
-            var refreshToken = new RefreshTokenEntity
+            var userEntity = await this.context.Users
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Username == usernameOrEmail || u.Email == usernameOrEmail);
+
+            if (userEntity is null)
             {
-                Token = this.GetUniqueToken(),
-                ExpiresOn = DateTime.UtcNow.AddDays(7),
-            };
+                throw new ArgumentException($"User: {usernameOrEmail} does not exist");
+            }
 
-            return refreshToken;
-        }
-
-        private string GetUniqueToken()
-        {
-            var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
-            var tokenIsUnique = !context.Users.Any(u => u.RefreshToken.Token == token);
-
-            if (!tokenIsUnique)
-                return this.GetUniqueToken();
-
-            return token;
+            return userEntity.ToUser();
         }
     }
 }

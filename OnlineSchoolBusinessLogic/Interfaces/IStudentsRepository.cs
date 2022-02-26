@@ -4,7 +4,7 @@ namespace OnlineSchoolBusinessLogic.Interfaces;
 
 public interface IStudentsRepository
 {
-    Task<Student> GetStudentAsync(Guid studentId);
+    Task<User> GetStudentAsync(Guid studentId);
 
     Task DeleteStudentAsync(Guid studentId);
 }

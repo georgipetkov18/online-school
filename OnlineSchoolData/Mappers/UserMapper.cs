@@ -5,9 +5,9 @@ namespace OnlineSchoolData.Mappers
 {
     public static class UserMapper
     {
-        public static Student ToStudent(this StudentEntity studentEntity)
+        public static User ToStudent(this StudentEntity studentEntity)
         {
-            return new Student
+            return new User
             {
                 ClassId = studentEntity.ClassId,
             };
@@ -41,6 +41,18 @@ namespace OnlineSchoolData.Mappers
                 Email = user.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(user.Password),
                 Role = role,
+            };
+        }
+
+        public static User ToUser(this UserEntity userEntity)
+        {
+            return new User
+            {
+                Id = userEntity.Id,
+                Username = userEntity.Username,
+                Password = userEntity.Password,
+                Email = userEntity.Email,
+                RoleName = userEntity.Role.Name,
             };
         }
     }

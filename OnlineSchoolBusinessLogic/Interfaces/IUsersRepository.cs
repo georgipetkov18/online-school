@@ -4,9 +4,9 @@ namespace OnlineSchoolBusinessLogic.Interfaces
 {
     public interface IUsersRepository
     {
-        Task<AuthenticateModel> AuthenticateAsync(string usernameOrEmail, string password, bool hashedPassword = false);
+        Task<User> GetUserAsync(string usernameOrEmail, string password, bool hashedPassword = false);
+        Task<User> GetUserAsync(string usernameOrEmail);
         Task RegisterAsync(User user);
-        Task<AuthenticateModel> RefreshTokenAsync(string refreshToken);
     }
 
 }
