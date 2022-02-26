@@ -2,7 +2,7 @@
 
 namespace OnlineSchoolBusinessLogic.Interfaces;
 
-public interface ISubjectRepository
+public interface ISubjectsRepository
 {
     Task<Subject> AddSubjectAsync(Subject subject);
 

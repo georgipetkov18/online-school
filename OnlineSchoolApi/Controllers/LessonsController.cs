@@ -10,9 +10,9 @@ namespace OnlineSchoolApi.Controllers
     [Route("api/[controller]/[action]")]
     public class LessonsController : ControllerBase
     {
-        private readonly ILessonService lessonService;
+        private readonly ILessonsService lessonService;
 
-        public LessonsController(ILessonService lessonService)
+        public LessonsController(ILessonsService lessonService)
         {
             this.lessonService = lessonService;
         }
