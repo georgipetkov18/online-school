@@ -4,9 +4,9 @@ namespace OnlineSchoolBusinessLogic.Interfaces
 {
     public interface IUsersService
     {
-        Task<AuthenticateModel> Authenticate(string usernameOrEmail, string password);
-        Task Register(User user);
-        Task<AuthenticateModel> RefreshToken(string refreshToken);
+        Task<AuthenticateModel> AuthenticateAsync(string usernameOrEmail, string password);
+        Task RegisterAsync(User user);
+        Task<AuthenticateModel> RefreshTokenAsync(string refreshToken);
     }
 
 }

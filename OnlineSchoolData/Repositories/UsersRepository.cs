@@ -24,7 +24,7 @@ namespace OnlineSchoolData.Repositories
             this.configuration = configuration;
         }
 
-        public async Task<AuthenticateModel> Authenticate(string usernameOrEmail, string password, bool hashedPassword = false)
+        public async Task<AuthenticateModel> AuthenticateAsync(string usernameOrEmail, string password, bool hashedPassword = false)
         {
             var user = await this.context.Users
                 .Include(u => u.Role)
@@ -82,7 +82,7 @@ namespace OnlineSchoolData.Repositories
             return new AuthenticateModel(user.Username, user.Email, user.Role.Name, jwtTokenString, refreshToken.Token);
         }
 
-        public async Task Register(User user)
+        public async Task RegisterAsync(User user)
         {
             var role = await this.context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == user.RoleName.ToLower());
 
@@ -108,7 +108,7 @@ namespace OnlineSchoolData.Repositories
             await this.context.SaveChangesAsync();
         }
 
-        public async Task<AuthenticateModel> RefreshToken(string refreshToken)
+        public async Task<AuthenticateModel> RefreshTokenAsync(string refreshToken)
         {
             var tokenEntity = await this.context.RefreshTokens
                 .Include(t => t.User)
@@ -136,7 +136,7 @@ namespace OnlineSchoolData.Repositories
 
             await this.context.SaveChangesAsync();
 
-            return await Authenticate(userEntity.Email, userEntity.Password, true);
+            return await AuthenticateAsync(userEntity.Email, userEntity.Password, true);
         }
 
         private RefreshTokenEntity GenerateRefreshToken()

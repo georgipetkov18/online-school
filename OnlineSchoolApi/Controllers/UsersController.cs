@@ -26,7 +26,7 @@ namespace OnlineSchoolApi.Controllers
 
             try
             {
-                var authenticatedUser = await this.usersService.Authenticate(authenticationInputModel.UsernameOrEmail, authenticationInputModel.Password);
+                var authenticatedUser = await this.usersService.AuthenticateAsync(authenticationInputModel.UsernameOrEmail, authenticationInputModel.Password);
 
                 var cookieOptions = GetRefreshTokenOptions();
 
@@ -49,7 +49,7 @@ namespace OnlineSchoolApi.Controllers
             }
             try
             {
-                await usersService.Register(user.ToUser());
+                await usersService.RegisterAsync(user.ToUser());
 
                 return Ok(new { message = $"Registered user: {user.Username}" });
             }
@@ -71,7 +71,7 @@ namespace OnlineSchoolApi.Controllers
 
             try
             {
-                var authenticatedUser = await usersService.RefreshToken(refreshToken);
+                var authenticatedUser = await usersService.RefreshTokenAsync(refreshToken);
                 var cookieOptions = GetRefreshTokenOptions();
 
                 this.Response.Cookies.Append("refreshToken", authenticatedUser.RefreshToken, cookieOptions);
