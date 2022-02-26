@@ -1,27 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using OnlineSchoolBusinessLogic.Common;
 using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolBusinessLogic.Models;
-using OnlineSchoolData.Entities;
 using OnlineSchoolData.Mappers;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace OnlineSchoolData.Repositories
 {
     public class UsersRepository : IUsersRepository
     {
         private readonly ApplicationDbContext context;
-        private readonly IConfiguration configuration;
 
-        public UsersRepository(ApplicationDbContext context, IConfiguration configuration)
+        public UsersRepository(ApplicationDbContext context)
         {
             this.context = context;
-            this.configuration = configuration;
         }
 
         public async Task RegisterAsync(User user)
