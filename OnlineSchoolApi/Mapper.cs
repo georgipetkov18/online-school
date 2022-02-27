@@ -24,17 +24,6 @@ namespace OnlineSchoolApi
             };
         }
 
-        public static User ToStudent(this StudentInputModel studentInputModel)
-        {
-            return new User
-            {
-                Username = studentInputModel.Username,
-                Password = studentInputModel.Password,
-                Email = studentInputModel.Email,
-                ClassId = studentInputModel.ClassId,
-            };
-        }
-
         public static Class ToClass(this ClassInputModel classInputModel)
         {
             return new Class
@@ -59,6 +48,8 @@ namespace OnlineSchoolApi
             return new User
             {
                 Username = userInputModel.Username,
+                FirstName = userInputModel.FirstName,
+                LastName = userInputModel.LastName,
                 Email = userInputModel.Email,
                 Password = userInputModel.Password,
                 RoleName = userInputModel.RoleName,
@@ -82,7 +73,8 @@ namespace OnlineSchoolApi
             };
         }
 
-        public static Dictionary<string, List<TimetableEntryResponse>> ToTimetableResponse(this IEnumerable<IGrouping<string, TimetableEntry>> groups)
+        public static Dictionary<string, List<TimetableEntryResponse>> ToTimetableResponse(
+            this IEnumerable<IGrouping<string, TimetableEntry>> groups)
         {
             var output = new Dictionary<string, List<TimetableEntryResponse>>();
 

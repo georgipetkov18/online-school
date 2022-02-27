@@ -23,6 +23,8 @@ namespace OnlineSchoolData.Seeders
                 var user = new User
                 {
                     Username = "Student",
+                    FirstName = "Student",
+                    LastName = "1",
                     Email= "student@abv.bg",
                     Password = "student",
                     RoleName = Roles.Student,
@@ -53,6 +55,8 @@ namespace OnlineSchoolData.Seeders
                 var user = new User
                 {
                     Username = "Teacher",
+                    FirstName = "Teacher",
+                    LastName = "1",
                     Email = "teacher@abv.bg",
                     Password = "teacher",
                     RoleName = Roles.Teacher,

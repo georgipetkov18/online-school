@@ -38,6 +38,8 @@ namespace OnlineSchoolData.Mappers
             return new UserEntity
             {
                 Username = user.Username,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 Email = user.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(user.Password),
                 Role = role,
@@ -50,6 +52,8 @@ namespace OnlineSchoolData.Mappers
             {
                 Id = userEntity.Id,
                 Username = userEntity.Username,
+                FirstName = userEntity.FirstName,
+                LastName = userEntity.LastName,
                 Password = userEntity.Password,
                 Email = userEntity.Email,
                 RoleName = userEntity.Role.Name,

@@ -12,6 +12,12 @@ namespace OnlineSchoolData.Entities
         public string Password { get; set; } = null!;
 
         [Required]
+        public string FirstName { get; set; } = null!;
+
+        [Required]
+        public string LastName { get; set; } = null!;
+
+        [Required]
         [EmailAddress]
         [MaxLength(100)]
         public string Email { get; set; } = null!;
