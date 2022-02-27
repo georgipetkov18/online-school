@@ -9,7 +9,7 @@ namespace OnlineSchoolBusinessLogic.Interfaces
 
         Task<IEnumerable<TimetableEntry>> GetCurrentDayEntriesAsync(ClaimsPrincipal user);
 
-        Task<IEnumerable<TimetableEntry>> GetTimetableAsync(ClaimsPrincipal user);
+        Task<IEnumerable<IGrouping<string, TimetableEntry>>> GetTimetableAsync(ClaimsPrincipal user);
 
         Task<TimetableEntry?> GetNextEntryAsync(ClaimsPrincipal user);
 

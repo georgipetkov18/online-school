@@ -67,11 +67,11 @@ namespace OnlineSchoolApi
             };
         }
 
-        public static TimetableResponse ToTimetableResponse(this TimetableEntry timetableEntry)
+        public static TimetableEntryResponse ToTimetableEntryResponse(this TimetableEntry timetableEntry)
         {
             var lessonContinuity = new TimeSpan(0, timetableEntry.Lesson.DurationInMinutes, 0);
 
-            return new TimetableResponse
+            return new TimetableEntryResponse
             {
                 Name = timetableEntry.Subject.Name,
                 Code = timetableEntry.Subject.Code,
@@ -80,6 +80,17 @@ namespace OnlineSchoolApi
                 Class = timetableEntry.Class.Name,
                 // TODO: Add teacher
             };
+        }
+
+        public static Dictionary<string, List<TimetableEntryResponse>> ToTimetableResponse(this IEnumerable<IGrouping<string, TimetableEntry>> groups)
+        {
+            var output = new Dictionary<string, List<TimetableEntryResponse>>();
+
+            foreach (var group in groups)
+            {
+                output.Add(group.Key, group.Select(e => e.ToTimetableEntryResponse()).ToList());
+            }
+            return output;
         }
     }
 }

@@ -40,10 +40,12 @@ namespace OnlineSchoolBusinessLogic.Services
             return await this.timetableRepository.GetNextEntryAsync(userId);
         }
 
-        public async Task<IEnumerable<TimetableEntry>> GetTimetableAsync(ClaimsPrincipal user) 
+        public async Task<IEnumerable<IGrouping<string, TimetableEntry>>> GetTimetableAsync(ClaimsPrincipal user) 
         {
             var userId = GetId(user);
-            return await this.timetableRepository.GetTimetableAsync(userId);
+            var timetable = await this.timetableRepository.GetTimetableAsync(userId);
+            return timetable
+                .GroupBy(e => e.DayOfWeek);
         }
 
         private Guid GetId(ClaimsPrincipal user)

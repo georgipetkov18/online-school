@@ -1,6 +1,6 @@
 ﻿namespace OnlineSchoolApi.ResponseModels
 {
-    public class TimetableResponse
+    public class TimetableEntryResponse
     {
         public string Name { get; set; } = null!;
         public string Code { get; set; } = null!;

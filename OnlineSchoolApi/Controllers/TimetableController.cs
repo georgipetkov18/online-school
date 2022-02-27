@@ -23,7 +23,7 @@ namespace OnlineSchoolApi.Controllers
             try
             {
                 var currentEntry = await this.timetableService.GetCurrentEntryAsync(User);
-                return Ok(currentEntry?.ToTimetableResponse());
+                return Ok(currentEntry?.ToTimetableEntryResponse());
             }
             catch (ArgumentException ex)
             {
@@ -37,7 +37,7 @@ namespace OnlineSchoolApi.Controllers
             try
             {
                 var nextEntry = await this.timetableService.GetNextEntryAsync(User);
-                return Ok(nextEntry?.ToTimetableResponse());
+                return Ok(nextEntry?.ToTimetableEntryResponse());
             }
             catch (ArgumentException ex)
             {
@@ -50,8 +50,8 @@ namespace OnlineSchoolApi.Controllers
         {
             try
             {
-                var timetable = await this.timetableService.GetTimetableAsync(User);
-                return Ok(timetable?.Select(e => e.ToTimetableResponse()));
+                var timetableGroup = await this.timetableService.GetTimetableAsync(User);
+                return Ok(timetableGroup.ToTimetableResponse());
             }
             catch (ArgumentException ex)
             {
@@ -65,7 +65,7 @@ namespace OnlineSchoolApi.Controllers
             try
             {
                 var timetable = await this.timetableService.GetCurrentDayEntriesAsync(User);
-                return Ok(timetable?.Select(e => e.ToTimetableResponse()));
+                return Ok(timetable?.Select(e => e.ToTimetableEntryResponse()));
             }
             catch (ArgumentException ex)
             {
@@ -80,7 +80,7 @@ namespace OnlineSchoolApi.Controllers
             try
             {
                 var timetable = await this.timetableService.GetEntriesByDayOfWeekAsync(User, dayOfWeek);
-                return Ok(timetable?.Select(e => e.ToTimetableResponse()));
+                return Ok(timetable?.Select(e => e.ToTimetableEntryResponse()));
             }
             catch (ArgumentException ex)
             {
