@@ -104,10 +104,6 @@ app.MapControllers();
 
 using var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetService<ApplicationDbContext>()!;
-
-await RoleSeeder.SeedRolesAsync(context);
-await SubjectSeeder.SeedSubjectAsync(context);
-await ClassSeeder.SeedClassAsync(context);
-await UserSeeder.SeedUsersAsync(context);
+await DatabaseSeeder.SeedDatabase(context);
 
 app.Run();
