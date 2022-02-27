@@ -11,7 +11,7 @@ namespace OnlineSchoolData.Entities
 
         public virtual LessonEntity Lesson { get; set; } = null!;
 
-        public virtual TeacherEntity? Teacher { get; set; } = null!;
+        public virtual TeacherEntity Teacher { get; set; } = null!;
 
         public virtual ClassEntity Class { get; set; } = null!;
     }

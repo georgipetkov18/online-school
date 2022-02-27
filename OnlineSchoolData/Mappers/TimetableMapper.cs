@@ -26,7 +26,7 @@ namespace OnlineSchoolData.Mappers
                 Lesson = timetableEntity.Lesson.ToLesson(),
                 DayOfWeek = timetableEntity.Day.ToString(),
                 Class = timetableEntity.Class.ToClass(),
-                TeacherId = timetableEntity.Teacher.Id,
+                Teacher = timetableEntity.Teacher.ToTeacher(),
             };
         }
 
@@ -37,7 +37,7 @@ namespace OnlineSchoolData.Mappers
                 Subject = timetableEntry.Subject.ToSubjectEntity(),
                 Lesson = timetableEntry.Lesson.ToLessonEntity(),
                 Class = timetableEntry.Class.ToClassEntity(),
-                Teacher = new TeacherEntity { Id = timetableEntry.TeacherId },
+                Teacher = new TeacherEntity { Id = timetableEntry.Teacher.Id },
                 Day = Enum.Parse<DayOfWeek>(timetableEntry.DayOfWeek),
             };
         }

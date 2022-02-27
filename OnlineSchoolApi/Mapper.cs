@@ -69,7 +69,16 @@ namespace OnlineSchoolApi
                 From = timetableEntry.Lesson.From,
                 To = timetableEntry.Lesson.From.Add(lessonContinuity),
                 Class = timetableEntry.Class.Name,
-                // TODO: Add teacher
+                Teacher = timetableEntry.Teacher.ToTeacherResponse(),
+            };
+        }
+
+        public static TeacherResponse ToTeacherResponse(this Teacher teacher)
+        {
+            return new TeacherResponse
+            {
+                FirstName = teacher.FirstName,
+                LastName = teacher.LastName,
             };
         }
 

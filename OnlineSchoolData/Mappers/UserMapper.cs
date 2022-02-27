@@ -13,6 +13,16 @@ namespace OnlineSchoolData.Mappers
             };
         }
 
+        public static Teacher ToTeacher(this TeacherEntity teacherEntity)
+        {
+            return new Teacher
+            {
+                Id = teacherEntity.Id,
+                FirstName = teacherEntity.User.FirstName,
+                LastName = teacherEntity.User.LastName,
+            };
+        }
+
         public static StudentEntity ToStudentEntity(this User student, UserEntity user)
         {
             return new StudentEntity

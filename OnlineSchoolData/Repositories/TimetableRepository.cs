@@ -32,6 +32,8 @@ namespace OnlineSchoolData.Repositories
                 .Include(t => t.Subject)
                 .Include(t => t.Lesson)
                 .Include(t => t.Class)
+                .Include(t => t.Teacher)
+                    .ThenInclude(t => t.User)
                 .Select(t => t.ToTimetableEntry())
                 .ToListAsync();
         }
@@ -67,6 +69,8 @@ namespace OnlineSchoolData.Repositories
                 .Include(t => t.Subject)
                 .Include(t => t.Lesson)
                 .Include(t => t.Class)
+                .Include(t => t.Teacher)
+                    .ThenInclude(t => t.User)
                 .Select(t => t.ToTimetableEntry())
                 .ToListAsync();
         }
@@ -98,6 +102,8 @@ namespace OnlineSchoolData.Repositories
                 .Include(t => t.Subject)
                 .Include(t => t.Lesson)
                 .Include(t => t.Class)
+                .Include(t => t.Teacher)
+                    .ThenInclude(t => t.User)
                 .Select(t => t.ToTimetableEntry())
                 .AsNoTracking()
                 .ToListAsync();

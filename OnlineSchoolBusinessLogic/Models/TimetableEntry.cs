@@ -14,6 +14,6 @@ namespace OnlineSchoolBusinessLogic.Models
         public Subject Subject { get; set; } = null!;
         public Lesson Lesson { get; set; } = null!;
         public Class Class { get; set; } = null!;
-        public Guid TeacherId { get; set; }
+        public Teacher Teacher { get; set; } = null!;
     } 
 }
