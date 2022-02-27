@@ -2,8 +2,8 @@
 {
     public class TimetableResponse
     {
-        public string SubjectName { get; set; } = null!;
-        public string SubjectCode { get; set; } = null!;
+        public string Name { get; set; } = null!;
+        public string Code { get; set; } = null!;
         public string Teacher { get; set; } = null!;
         public string Class { get; set; } = null!;
         public TimeSpan From { get; set; }

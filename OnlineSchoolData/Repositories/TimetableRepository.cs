@@ -59,8 +59,11 @@ namespace OnlineSchoolData.Repositories
         {
             var userEntries = await this.GetUserEntriesAsync(userId);
 
+            var validDayOfWeekString = char.ToUpper(dayOfWeek[0]) + dayOfWeek[1..];
+            var dayOfWeekObject = Enum.Parse<DayOfWeek>(validDayOfWeekString);
+
             return await userEntries
-                .Where(t => t.Day.ToString().ToLower() == dayOfWeek.ToLower())
+                .Where(t => t.Day == dayOfWeekObject)
                 .Include(t => t.Subject)
                 .Include(t => t.Lesson)
                 .Include(t => t.Class)

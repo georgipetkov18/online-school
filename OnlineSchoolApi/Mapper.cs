@@ -73,10 +73,10 @@ namespace OnlineSchoolApi
 
             return new TimetableResponse
             {
-                SubjectName = timetableEntry.Subject.Name,
-                SubjectCode = timetableEntry.Subject.Code,
+                Name = timetableEntry.Subject.Name,
+                Code = timetableEntry.Subject.Code,
                 From = timetableEntry.Lesson.From,
-                To = lessonContinuity,
+                To = timetableEntry.Lesson.From.Add(lessonContinuity),
                 Class = timetableEntry.Class.Name,
                 // TODO: Add teacher
             };
