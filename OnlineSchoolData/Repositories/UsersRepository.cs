@@ -17,6 +17,16 @@ namespace OnlineSchoolData.Repositories
 
         public async Task RegisterAsync(User user)
         {
+            if (await this.context.Users.AnyAsync(u => u.Username == user.Username))
+            {
+                throw new ArgumentException($"Username: {user.Username} already exists!");
+            }
+
+            if (await this.context.Users.AnyAsync(u => u.Email == user.Email))
+            {
+                throw new ArgumentException($"Email: {user.Email} is already taken!");
+            }
+
             var role = await this.context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == user.RoleName.ToLower());
 
             if (role is null)
@@ -30,10 +40,18 @@ namespace OnlineSchoolData.Repositories
             switch (role.Name)
             {
                 case Roles.Student:
+                    if (user.ClassId is null || !await this.context.Classes.AnyAsync(c => c.Id == user.ClassId))
+                    {
+                        throw new ArgumentException($"Provide a valid classId");
+                    }
                     await this.context.Students.AddAsync(user.ToStudentEntity(userEntity));
                     break;
 
                 case Roles.Teacher:
+                    if (user.SubjectId is null || !await this.context.Subjects.AnyAsync(s => s.Id == user.SubjectId))
+                    {
+                        throw new ArgumentException($"Provide a valid subjectId");
+                    }
                     await this.context.Teachers.AddAsync(user.ToTeacherEntity(userEntity));
                     break;
             }
