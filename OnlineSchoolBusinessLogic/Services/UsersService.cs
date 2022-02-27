@@ -25,22 +25,20 @@ namespace OnlineSchoolBusinessLogic.Services
         {
             var user = await usersRepository.GetUserAsync(usernameOrEmail, password, hashedPassword);
 
-            //var userSpecificClaim = user.ClassId is null
-            //    ? new Claim("SubjectId", user.SubjectId?.ToString()!)
-            //    : new Claim("ClassId", user.ClassId?.ToString()!);
+            var claimList = new Claim[]
+            {
+                new Claim("Id", user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.RoleName),
+            };
 
             var key = configuration.GetSection("JwtSecret").Value;
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.ASCII.GetBytes(key);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.RoleName),
-                    //userSpecificClaim
-                }),
+                Subject = new ClaimsIdentity(claimList),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };

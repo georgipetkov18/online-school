@@ -1,18 +1,19 @@
 ﻿using OnlineSchoolBusinessLogic.Models;
+using System.Security.Claims;
 
 namespace OnlineSchoolBusinessLogic.Interfaces
 {
     public interface ITimetableService
     {
-        Task<IEnumerable<TimetableEntry>> GetEntriesByDayOfWeekAsync(string dayOfWeek);
+        Task<IEnumerable<TimetableEntry>> GetEntriesByDayOfWeekAsync(ClaimsPrincipal user, string dayOfWeek);
 
-        Task<IEnumerable<TimetableEntry>> GetCurrentDayEntriesAsync();
+        Task<IEnumerable<TimetableEntry>> GetCurrentDayEntriesAsync(ClaimsPrincipal user);
 
-        Task<IEnumerable<TimetableEntry>> GetTimetableAsync();
+        Task<IEnumerable<TimetableEntry>> GetTimetableAsync(ClaimsPrincipal user);
 
-        Task<TimetableEntry?> GetNextEntryAsync();
+        Task<TimetableEntry?> GetNextEntryAsync(ClaimsPrincipal user);
 
-        Task<TimetableEntry?> GetCurrentEntryAsync();
+        Task<TimetableEntry?> GetCurrentEntryAsync(ClaimsPrincipal user);
 
         Task AddTimetableEntryAsync(TimetableEntry timetableEntry);
     }

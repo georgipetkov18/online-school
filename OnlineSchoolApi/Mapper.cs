@@ -66,5 +66,20 @@ namespace OnlineSchoolApi
                 SubjectId = userInputModel.SubjectId,
             };
         }
+
+        public static TimetableResponse ToTimetableResponse(this TimetableEntry timetableEntry)
+        {
+            var lessonContinuity = new TimeSpan(0, timetableEntry.Lesson.DurationInMinutes, 0);
+
+            return new TimetableResponse
+            {
+                SubjectName = timetableEntry.Subject.Name,
+                SubjectCode = timetableEntry.Subject.Code,
+                From = timetableEntry.Lesson.From,
+                To = lessonContinuity,
+                Class = timetableEntry.Class.Name,
+                // TODO: Add teacher
+            };
+        }
     }
 }
