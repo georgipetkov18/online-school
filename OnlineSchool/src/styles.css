@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+.form-fields {
+    margin-bottom: 3rem;
+}
+
+.form-fields .form-group {
+    margin-bottom: 2.5rem;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: space-around;
+    padding: 0 15rem;
+}
+
+.form-buttons .btn {
+    min-width: 18rem;
+}
