@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineSchoolApi.InputModels;
+using OnlineSchoolBusinessLogic.Common;
 using OnlineSchoolBusinessLogic.Interfaces;
 
 namespace OnlineSchoolApi.Controllers
@@ -91,7 +92,7 @@ namespace OnlineSchoolApi.Controllers
         }
 
         [HttpPut("[action]/{userId}")]
-        [Authorize]
+        [Authorize(Policy = Policies.RequireAuthorityRole)]
         public async Task<IActionResult> Approve(Guid userId)
         {
             try

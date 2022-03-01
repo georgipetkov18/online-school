@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using OnlineSchoolBusinessLogic.Common;
 using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolBusinessLogic.Services;
 using OnlineSchoolData;
@@ -55,6 +56,21 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = false,
         ClockSkew = TimeSpan.Zero,
     };
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(Policies.RequireAdministratorRole,
+        policy => policy.RequireRole(Roles.Administrator));
+
+    options.AddPolicy(Policies.RequireTeacherRole,
+        policy => policy.RequireRole(Roles.Teacher));
+
+    options.AddPolicy(Policies.RequireStudentRole,
+        policy => policy.RequireRole(Roles.Student));
+
+    options.AddPolicy(Policies.RequireAuthorityRole,
+        policy => policy.RequireRole(Roles.Administrator, Roles.Teacher));
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
