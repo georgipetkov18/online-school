@@ -70,6 +70,11 @@ namespace OnlineSchoolData.Repositories
                 throw new ArgumentException($"User: {usernameOrEmail} does not exist");
             }
 
+            if (user.Status == AccountStatus.Pending)
+            {
+                throw new ArgumentException($"User: {usernameOrEmail} is not approved");
+            }
+
             var passwordIsValid = hashedPassword ? user.Password == password : BCrypt.Net.BCrypt.Verify(password, user.Password);
 
             if (!passwordIsValid)
@@ -79,6 +84,30 @@ namespace OnlineSchoolData.Repositories
 
             return user.ToUser();
         }
+
+        public async Task<User> ApproveUserasync(Guid userId, ClaimsPrincipal approver)
+        {
+            var userEntity = await context.Users
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (userEntity is null)
+            {
+                throw new ArgumentException($"User with id: {userId} does not exist");
+            }
+
+            if (approver.IsInRole(Roles.Teacher) && userEntity.Role.Name != Roles.Student)
+            {
+                throw new InvalidOperationException();
+            }
+
+            userEntity.Status = AccountStatus.Approved;
+            context.Update(userEntity);
+            await context.SaveChangesAsync();
+
+            return userEntity.ToUser();
+        }
+
 
         public async Task<User> GetUserAsync(string usernameOrEmail)
         {

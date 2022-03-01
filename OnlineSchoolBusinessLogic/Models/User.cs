@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OnlineSchoolBusinessLogic.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineSchoolBusinessLogic.Models
 {
@@ -23,6 +24,9 @@ namespace OnlineSchoolBusinessLogic.Models
         public string Email { get; set; } = null!;
 
         public string RoleName { get; set; } = null!;
+
+        [Required]
+        public AccountStatus Status { get; set; } = AccountStatus.Pending;
 
         public Guid? ClassId { get; set; }
 

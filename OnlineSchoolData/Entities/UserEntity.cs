@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OnlineSchoolBusinessLogic.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineSchoolData.Entities
 {
@@ -21,6 +22,9 @@ namespace OnlineSchoolData.Entities
         [EmailAddress]
         [MaxLength(100)]
         public string Email { get; set; } = null!;
+
+        [Required]
+        public AccountStatus Status { get; set; } = AccountStatus.Pending;
 
         [Required]
         public RoleEntity Role { get; set; } = null!;
