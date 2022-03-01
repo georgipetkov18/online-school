@@ -54,7 +54,7 @@ namespace OnlineSchoolBusinessLogic.Services
             return new AuthenticateModel(user.Username, user.Email, user.RoleName, jwtTokenString, refreshToken.Token);
         }
 
-        public async Task<AuthenticateModel> RefreshTokenAsync(ClaimsPrincipal user, string refreshToken)
+        public async Task<AuthenticateModel> RefreshTokenAsync(ClaimsPrincipal user)
         {
             var userEmail = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
 
@@ -62,6 +62,9 @@ namespace OnlineSchoolBusinessLogic.Services
 
             return await AuthenticateAsync(userModel.Email, userModel.Password, true);
         }
+
+        public async Task<User> ApproveUserAsync(Guid userId, ClaimsPrincipal approver) =>
+            await usersRepository.ApproveUserAsync(userId, approver);
 
         public async Task RegisterAsync(User user) =>
             await this.usersRepository.RegisterAsync(user);

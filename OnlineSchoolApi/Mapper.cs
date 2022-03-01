@@ -82,6 +82,19 @@ namespace OnlineSchoolApi
             };
         }
 
+        public static UserResponse ToUserResponse(this User user)
+        {
+            return new UserResponse
+            {
+                Username = user.Username,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                RoleName = user.RoleName,
+                Status = user.Status,
+            };
+        }
+
         public static Dictionary<string, List<TimetableEntryResponse>> ToTimetableResponse(
             this IEnumerable<IGrouping<string, TimetableEntry>> groups)
         {

@@ -7,7 +7,8 @@ namespace OnlineSchoolBusinessLogic.Interfaces
     {
         Task<AuthenticateModel> AuthenticateAsync(string usernameOrEmail, string password, bool hashedPassword = false);
         Task RegisterAsync(User user);
-        Task<AuthenticateModel> RefreshTokenAsync(ClaimsPrincipal user, string refreshToken);
+        Task<AuthenticateModel> RefreshTokenAsync(ClaimsPrincipal user);
+        Task<User> ApproveUserAsync(Guid userId, ClaimsPrincipal approver);
     }
 
 }

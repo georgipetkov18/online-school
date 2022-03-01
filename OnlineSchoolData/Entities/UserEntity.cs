@@ -30,5 +30,6 @@ namespace OnlineSchoolData.Entities
         public RoleEntity Role { get; set; } = null!;
         public ICollection<StudentEntity> Students { get; set; } = null!;
         public ICollection<TeacherEntity> Teachers { get; set; } = null!;
+        public ICollection<AdministratorEntity> Administrators { get; set; } = null!;
     }
 }

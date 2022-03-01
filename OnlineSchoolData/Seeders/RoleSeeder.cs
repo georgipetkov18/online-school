@@ -13,7 +13,8 @@ namespace OnlineSchoolData.Seeders
             {
                 await context.Roles.AddRangeAsync(
                     new RoleEntity { Name = Roles.Student },
-                    new RoleEntity { Name = Roles.Teacher }
+                    new RoleEntity { Name = Roles.Teacher },
+                    new RoleEntity { Name = Roles.Administrator }
                 );
 
                 await context.SaveChangesAsync();

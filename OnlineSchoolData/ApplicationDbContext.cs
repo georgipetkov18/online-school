@@ -10,6 +10,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<UserEntity> Users { get; set; } = null!;
     public DbSet<TeacherEntity> Teachers { get; set; } = null!;
     public DbSet<StudentEntity> Students { get; set; } = null!;
+    public DbSet<AdministratorEntity> Administrators{ get; set; } = null!;
     public DbSet<ClassEntity> Classes { get; set; } = null!;
     public DbSet<TimetableEntity> Timetable { get; set; } = null!;
     public DbSet<RoleEntity> Roles { get; set; } = null!;
@@ -37,6 +38,10 @@ public class ApplicationDbContext : DbContext
             builder
                 .HasMany(u => u.Students)
                 .WithOne(s => s.User);
+
+            builder
+                .HasMany(u => u.Administrators)
+                .WithOne(a => a.User);
 
             builder.HasIndex(u => u.Email).IsUnique();
             builder.HasIndex(u => u.Username).IsUnique();

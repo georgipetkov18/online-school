@@ -43,6 +43,14 @@ namespace OnlineSchoolData.Mappers
             };
         }
 
+        public static AdministratorEntity ToAdministartorEntity(this User admin, UserEntity user)
+        {
+            return new AdministratorEntity
+            {
+                User = user,
+            };
+        }
+
         public static UserEntity ToUserEntity(this User user, RoleEntity role)
         {
             return new UserEntity
@@ -54,7 +62,7 @@ namespace OnlineSchoolData.Mappers
                 Password = BCrypt.Net.BCrypt.HashPassword(user.Password),
                 Role = role,
             };
-        }
+        }        
 
         public static User ToUser(this UserEntity userEntity)
         {
@@ -67,6 +75,7 @@ namespace OnlineSchoolData.Mappers
                 Password = userEntity.Password,
                 Email = userEntity.Email,
                 RoleName = userEntity.Role.Name,
+                Status = userEntity.Status
             };
         }
     }

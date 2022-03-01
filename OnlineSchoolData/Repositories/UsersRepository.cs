@@ -3,6 +3,7 @@ using OnlineSchoolBusinessLogic.Common;
 using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolBusinessLogic.Models;
 using OnlineSchoolData.Mappers;
+using System.Security.Claims;
 
 namespace OnlineSchoolData.Repositories
 {
@@ -39,6 +40,10 @@ namespace OnlineSchoolData.Repositories
 
             switch (role.Name)
             {
+                case Roles.Administrator:
+                    await context.Administrators.AddAsync(user.ToAdministartorEntity(userEntity));
+                    break;
+
                 case Roles.Student:
                     if (user.ClassId is null || !await this.context.Classes.AnyAsync(c => c.Id == user.ClassId))
                     {
@@ -85,7 +90,7 @@ namespace OnlineSchoolData.Repositories
             return user.ToUser();
         }
 
-        public async Task<User> ApproveUserasync(Guid userId, ClaimsPrincipal approver)
+        public async Task<User> ApproveUserAsync(Guid userId, ClaimsPrincipal approver)
         {
             var userEntity = await context.Users
                 .Include(u => u.Role)
@@ -107,7 +112,6 @@ namespace OnlineSchoolData.Repositories
 
             return userEntity.ToUser();
         }
-
 
         public async Task<User> GetUserAsync(string usernameOrEmail)
         {

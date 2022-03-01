@@ -72,7 +72,7 @@ namespace OnlineSchoolApi.Controllers
 
             try
             {
-                var authenticatedUser = await usersService.RefreshTokenAsync(User, refreshToken);
+                var authenticatedUser = await usersService.RefreshTokenAsync(User);
                 var cookieOptions = GetRefreshTokenOptions();
 
                 this.Response.Cookies.Append("refreshToken", authenticatedUser.RefreshToken, cookieOptions);
@@ -90,6 +90,26 @@ namespace OnlineSchoolApi.Controllers
             }
         }
 
+        [HttpPut("[action]/{userId}")]
+        [Authorize]
+        public async Task<IActionResult> Approve(Guid userId)
+        {
+            try
+            {
+                var user = await usersService.ApproveUserAsync(userId, User);
+                return Ok(user.ToUserResponse());
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (InvalidOperationException)
+            {
+                return Forbid();
+            }
+        }
+
+
         private CookieOptions GetRefreshTokenOptions()
         {
             return new CookieOptions
@@ -97,13 +117,6 @@ namespace OnlineSchoolApi.Controllers
                 HttpOnly = true,
                 Expires = DateTime.UtcNow.AddDays(7)
             };
-        }
-
-        [Authorize]
-        [HttpGet("test")]
-        public IActionResult Test()
-        {
-            return Ok();
         }
     }
 }
