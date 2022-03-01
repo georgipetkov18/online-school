@@ -1,18 +1,22 @@
-<form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+<form #loginForm="ngForm" (ngSubmit)="onSubmit()" class="app-form">
     <section class="form-fields">
         <div class="form-group">
-            <label for="usernameOrEmail">Enter username or email</label>
-            <input type="text" id="usernameOrEmail" name="usernameOrEmail" class="form-control">
+            <label for="usernameOrEmail">Въведи потрбителско име или имейл</label>
+            <input type="text" id="usernameOrEmail" name="usernameOrEmail" class="form-control" ngModel required>
         </div>
 
         <div class="form-group">
-            <label for="password">Enter password</label>
-            <input type="password" id="password" name="password" class="form-control">
+            <label for="password">Въведи парола</label>
+            <input type="password" id="password" name="password" class="form-control" ngModel required>
         </div>
     </section>
 
+    <section class="form-error" *ngIf="errorOccured">
+        Въведени са невалидни данни!
+    </section>
+
     <section class="form-buttons">
-        <button type="submit" class="btn btn-success">Login</button>
-        <button type="button" class="btn btn-danger">Clear form</button>
+        <button type="submit" class="btn btn-success">Вход</button>
+        <button type="button" class="btn btn-danger">Изчисти формата</button>
     </section>
 </form>

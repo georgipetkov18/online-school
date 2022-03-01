@@ -1,17 +1,29 @@
+* {
+    box-sizing: border-box;
+}
+
 .form-fields {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 }
 
 .form-fields .form-group {
-    margin-bottom: 2.5rem;
+    margin-top: 2rem;
 }
 
 .form-buttons {
-    display: flex;
-    justify-content: space-around;
-    padding: 0 15rem;
+    text-align: center;
 }
 
 .form-buttons .btn {
-    min-width: 18rem;
+    width: 18rem;
+    margin: 1rem;
+}
+
+.form-error {
+    margin-top: -1rem;
+    color: red;
+}
+
+input.ng-invalid.ng-touched {
+    border: 1px solid red;
 }
