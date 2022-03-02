@@ -11,8 +11,8 @@
         </div>
     </section>
 
-    <section class="form-error" *ngIf="errorOccured">
-        Въведени са невалидни данни!
+    <section class="alert alert-danger" *ngIf="errorMessage">
+        {{errorMessage}}
     </section>
 
     <section class="form-buttons">

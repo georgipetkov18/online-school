@@ -19,11 +19,6 @@
     margin: 1rem;
 }
 
-.form-error {
-    margin-top: -1rem;
-    color: red;
-}
-
 input.ng-invalid.ng-touched {
     border: 1px solid red;
 }

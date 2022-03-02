@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 
 import { UsersService } from '../../services/users.service';
 
@@ -10,22 +9,13 @@ import { UsersService } from '../../services/users.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
   @ViewChild('loginForm') loginForm!: NgForm;
-  public loginSubscription!: Subscription;
-  public loginErrorSubscription!: Subscription;
-  public errorOccured = false;
+  public errorMessage!: string;
 
   constructor(private usersService: UsersService, private router: Router) { }
 
   ngOnInit(): void {
-    this.loginSubscription = this.usersService.userLoggedIn.subscribe(() => {
-      this.router.navigate(['/']);
-    });
-
-    this.loginErrorSubscription = this.usersService.loginError.subscribe(() => {
-      this.errorOccured = true;
-    });
   }
 
   onSubmit() {
@@ -36,12 +26,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     const usernameOrEmail = this.loginForm.value['usernameOrEmail'];
     const password = this.loginForm.value['password'];
 
-    this.usersService.login(usernameOrEmail, password);
+    this.usersService.login(usernameOrEmail, password)
+      .subscribe(response => {
+        this.router.navigate(['/']);
+      }, errorMessage => {
+        this.errorMessage = errorMessage;
+      }
+    );
   }
-
-  ngOnDestroy(): void {
-    this.loginSubscription.unsubscribe();
-    this.loginErrorSubscription.unsubscribe();
-  }
-
 }

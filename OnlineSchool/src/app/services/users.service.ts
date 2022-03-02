@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 import { AuthenticateRequest } from '../models/request/authenticate-request.model';
 import { AuthenticateResponse } from '../models/response/authenticate-response.model';
@@ -11,25 +11,25 @@ import { AuthenticateResponse } from '../models/response/authenticate-response.m
 })
 export class UsersService {
 
-  public userLoggedIn = new Subject<void>();
-  public loginError = new Subject<void>();
-
   constructor(private http: HttpClient) { }
 
   public login(usernameOrEmail: string, password: string) {
     const authenticateModel = new AuthenticateRequest(usernameOrEmail, password);
 
-    this.http.post<AuthenticateResponse>('/api/authenticate', authenticateModel)
+    return this.http.post<AuthenticateResponse>('/api/authenticate', authenticateModel)
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          this.loginError.next();
-          return throwError(error);
-        })
+          let errorMessage = 'Нещо се обърка!';
+          if (error.status !== 400) {
+            return throwError(errorMessage);    
+          }
+          errorMessage = 'Въведени са невалидни данни!';
+          return throwError(errorMessage);
+        }), 
+        tap(response => {
+          sessionStorage.setItem('token', response.jwtToken);
+        }
       )
-      .subscribe(response => {
-        sessionStorage.setItem('token', response.jwtToken);
-        this.userLoggedIn.next();
-      }
     );
   }
 }
