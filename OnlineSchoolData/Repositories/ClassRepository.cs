@@ -42,6 +42,7 @@ namespace OnlineSchoolData.Repositories
         {
             var classEntity = await this.context.Classes
                 .Include(c => c.Students)
+                .AsSplitQuery()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == classId);
 
