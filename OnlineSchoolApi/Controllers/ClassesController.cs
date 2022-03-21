@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineSchoolApi.InputModels;
-using OnlineSchoolApi.ResponseModels;
 using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolData.CustomExceptions;
 
 namespace OnlineSchoolApi.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]")]
     public class ClassesController : ControllerBase
     {
         private readonly IClassService classService;
@@ -17,7 +16,14 @@ namespace OnlineSchoolApi.Controllers
             this.classService = classService;
         }
 
-        [HttpGet("{classId}")]
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var classes = await this.classService.GetAllClassesAsync();
+            return Ok(classes);
+        }
+
+        [HttpGet("[action]/{classId}")]
         public async Task<IActionResult> Get(Guid classId)
         {
             if (!ModelState.IsValid)
@@ -37,7 +43,7 @@ namespace OnlineSchoolApi.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Add(ClassInputModel classInputModel)
         {
             if (!ModelState.IsValid)
@@ -57,7 +63,7 @@ namespace OnlineSchoolApi.Controllers
             }
         }
 
-        [HttpPut("{classId}")]
+        [HttpPut("[action]/{classId}")]
         public async Task<IActionResult> Update(Guid classId, ClassInputModel classInputModel)
         {
             if (!ModelState.IsValid)
@@ -77,7 +83,7 @@ namespace OnlineSchoolApi.Controllers
             }
         }
 
-        [HttpDelete("{classId}")]
+        [HttpDelete("[action]/{classId}")]
         public async Task<IActionResult> Delete(Guid classId)
         {
             if (!ModelState.IsValid)

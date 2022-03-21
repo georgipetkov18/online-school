@@ -7,7 +7,7 @@ using OnlineSchoolData.CustomExceptions;
 namespace OnlineSchoolApi.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public class StudentsController : ControllerBase
     {
         private readonly IStudentsService studentService;

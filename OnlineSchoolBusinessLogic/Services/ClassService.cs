@@ -16,6 +16,9 @@ namespace OnlineSchoolBusinessLogic.Services
 
         public async Task DeleteClassAsync(Guid classId) => await this.classRepository.DeleteClassAsync(classId);
 
+        public async Task<IEnumerable<Class>> GetAllClassesAsync()
+            => await this.classRepository.GetAllClassesAsync();
+
         public async Task<Class> GetClassAsync(Guid classId) => await this.classRepository.GetClassAsync(classId);
 
         public async Task<Class> UpdateClassAsync(Guid classId, Class _class)

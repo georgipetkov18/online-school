@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineSchoolApi.InputModels;
-using OnlineSchoolApi.ResponseModels;
 using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolData.CustomExceptions;
 
 namespace OnlineSchoolApi.Controllers;
 
 [ApiController]
-[Route("api/[controller]/[action]")]
+[Route("api/[controller]")]
 public class SubjectsController : ControllerBase
 {
     private readonly ISubjectsService subjectService;
@@ -17,7 +16,14 @@ public class SubjectsController : ControllerBase
         this.subjectService = subjectService;
     }
 
-    [HttpGet("{subjectId}")]
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var subjects = await this.subjectService.GetAllSubjectsAsync();
+        return Ok(subjects);
+    }
+
+    [HttpGet("[action]/{subjectId}")]
     public async Task<IActionResult> Get(Guid subjectId)
     {
         if (!ModelState.IsValid)
@@ -37,7 +43,7 @@ public class SubjectsController : ControllerBase
         }
     }
 
-    [HttpGet]
+    [HttpGet("[action]")]
     public async Task<IActionResult> Get()
     {
         if (!ModelState.IsValid)
@@ -53,7 +59,7 @@ public class SubjectsController : ControllerBase
         return this.NoContent();
     }
 
-    [HttpPost]
+    [HttpPost("[action]")]
     public async Task<IActionResult> Add(SubjectInputModel subjectInputModel)
     {
         if (!ModelState.IsValid)
@@ -73,7 +79,7 @@ public class SubjectsController : ControllerBase
         }
     }
 
-    [HttpPut("{subjectId}")]
+    [HttpPut("[action]/{subjectId}")]
     public async Task<IActionResult> Update(Guid subjectId, SubjectInputModel subjectInputModel)
     {
         if (!ModelState.IsValid)
@@ -93,7 +99,7 @@ public class SubjectsController : ControllerBase
         }
     }
 
-    [HttpDelete("{subjectId}")]
+    [HttpDelete("[action]/{subjectId}")]
     public async Task<IActionResult> Delete(Guid subjectId)
     {
         if (!ModelState.IsValid)

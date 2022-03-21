@@ -58,7 +58,7 @@
                 autocomplete="off" #userSpecific (ngModelChange)="onGetOptions(userSpecific, menu)" ngModel required #userInput>
             </div>
             <div class="dropdown" >
-              <div id="myDropdown" class="dropdown-content show" #menu>
+              <div id="myDropdown" class="dropdown-content" #menu>
                 <a *ngFor="let suggestion of suggestions" class="dropdown-item">
                   {{suggestion}}
                 </a>

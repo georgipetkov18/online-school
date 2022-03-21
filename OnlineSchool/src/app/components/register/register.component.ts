@@ -5,6 +5,9 @@ import { ToastrService } from 'ngx-toastr';
 
 import { UsersService } from '../../services/users.service';
 import { RegisterRequest } from '../../models/request/register-request.model';
+import { ClassesService } from '../../services/classes.service';
+import { SubjectsService } from '../../services/subjects.service';
+import { ClassResponse } from 'src/app/models/response/class-response.model';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +23,9 @@ export class RegisterComponent implements OnInit {
   constructor(
     private usersService: UsersService,
     private toastr: ToastrService,
-    private router: Router) { }
+    private router: Router,
+    private classesService: ClassesService,
+    private subjectsService: SubjectsService) { }
 
   ngOnInit(): void {
   }
@@ -43,7 +48,7 @@ export class RegisterComponent implements OnInit {
     const userSpecific = this.registerForm.value['userSpecific'];
     const registerRequest = new RegisterRequest(username, password, firstName, lastName, email, this.role);
     this.role === 'teacher' ? registerRequest.subjectId = userSpecific : registerRequest.classId = userSpecific;
-    
+
     this.usersService.register(registerRequest)
       .subscribe({
         next: response => {
@@ -53,7 +58,7 @@ export class RegisterComponent implements OnInit {
           this.errorMessage = errorMessage;
         }
       }
-    );
+      );
   }
 
   onGetOptions(input: HTMLInputElement, menu: HTMLDivElement) {
@@ -67,19 +72,31 @@ export class RegisterComponent implements OnInit {
       switch (this.role) {
         case 'student':
           // TODO: Get classes with given input
-          this.suggestions = ['sug1', 'sug2'];
+          this.classesService.getAllClasses().subscribe({
+            next: classes => {
+              this.suggestions = classes
+                .filter(s => s.name.includes(input.value))
+                .map(c => c.name);
+            }
+          })
           break;
-      
+
         case 'teacher':
           // TODO: Get subjects with given input
-          this.suggestions = ['sug1', 'sug2'];
+          this.subjectsService.getAllSubjects().subscribe({
+            next: subjects => {
+              this.suggestions = subjects
+                .filter(s => s.name.includes(input.value))
+                .map(s => s.name);
+            }
+          })
           break;
       }
     }
   }
 
   onSelect(role: 'student' | 'teacher') {
-    this.role = role;    
+    this.role = role;
   }
 
   onFormReset() {
