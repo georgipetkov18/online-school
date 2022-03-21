@@ -1,0 +1,12 @@
+.navbar {
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.navbar a {
+    font-weight: 700;
+}
+
+.navbar-right {
+    margin-left: auto;
+}
