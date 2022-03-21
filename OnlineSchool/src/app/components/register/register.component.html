@@ -59,7 +59,7 @@
             </div>
             <div class="dropdown" >
               <div id="myDropdown" class="dropdown-content" #menu>
-                <a *ngFor="let suggestion of suggestions" class="dropdown-item">
+                <a *ngFor="let suggestion of suggestions" class="dropdown-item" (click)="onChooseSuggestion(suggestion, userSpecific, menu)">
                   {{suggestion}}
                 </a>
               </div>

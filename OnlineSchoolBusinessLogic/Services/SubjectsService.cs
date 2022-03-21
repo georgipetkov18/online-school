@@ -17,7 +17,7 @@ namespace OnlineSchoolBusinessLogic.Services
 
         public async Task DeleteSubjectAsync(Guid subjectId) => await this.subjectsRepository.DeleteSubjectAsync(subjectId);
 
-        public async Task<IEnumerable<Subject>> GetAllSubjectsAsync() => await this.subjectsRepository.GetAllSubjectsAsync();
+        public async Task<IEnumerable<Subject>> GetAllSubjectsAsync(string filter) => await this.subjectsRepository.GetAllSubjectsAsync(filter);
 
         public async Task<Subject> GetSubjectAsync(Guid subjectId) => await this.subjectsRepository.GetSubjectAsync(subjectId);
 

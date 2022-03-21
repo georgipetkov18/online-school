@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SubjectResponse } from '../models/response/subject-response.model';
 
@@ -9,7 +9,10 @@ export class SubjectsService {
 
   constructor(private http: HttpClient) { }
 
-  public getAllSubjects() {
-    return this.http.get<SubjectResponse[]>('/api/subjects');
+  public getAllSubjects(filter: string) {
+    return this.http.get<SubjectResponse[]>('/api/subjects', 
+    {
+      params: new HttpParams().append('filter', filter)
+    });
   }
 }

@@ -62,37 +62,42 @@ export class RegisterComponent implements OnInit {
   }
 
   onGetOptions(input: HTMLInputElement, menu: HTMLDivElement) {
-    if (input.value === '') {
+    const value = input.value;
+    if (value === '') {
       this.suggestions = [];
-      menu.classList.remove('show');
+      menu.classList.toggle('show');
       return;
     }
     else {
       menu.classList.add('show');
       switch (this.role) {
         case 'student':
-          // TODO: Get classes with given input
-          this.classesService.getAllClasses().subscribe({
+          this.classesService.getAllClasses(value).subscribe({
             next: classes => {
-              this.suggestions = classes
-                .filter(s => s.name.includes(input.value))
-                .map(c => c.name);
+              this.suggestions = classes.map(c => c.name);
             }
           })
           break;
 
         case 'teacher':
-          // TODO: Get subjects with given input
-          this.subjectsService.getAllSubjects().subscribe({
+          if (value.length < 3) {
+            this.suggestions = [];
+            menu.classList.toggle('show');
+            return;
+          }
+          this.subjectsService.getAllSubjects(value).subscribe({
             next: subjects => {
-              this.suggestions = subjects
-                .filter(s => s.name.includes(input.value))
-                .map(s => s.name);
+              this.suggestions = subjects.map(s => s.name);
             }
           })
           break;
       }
     }
+  }
+
+  onChooseSuggestion(suggestion: string, input: HTMLInputElement, menu: HTMLDivElement) {
+    input.value = suggestion;
+    menu.classList.toggle('show');
   }
 
   onSelect(role: 'student' | 'teacher') {

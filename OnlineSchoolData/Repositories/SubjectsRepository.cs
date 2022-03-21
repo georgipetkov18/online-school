@@ -38,9 +38,12 @@ namespace OnlineSchoolData.Repositories
             await this.context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Subject>> GetAllSubjectsAsync()
+        public async Task<IEnumerable<Subject>> GetAllSubjectsAsync(string filter)
         {
-            var subjectEntities = await this.context.Subjects.AsNoTracking().ToListAsync();
+            var subjectEntities = await this.context.Subjects
+                .Where(s => s.Name.Contains(filter))
+                .AsNoTracking()
+                .ToListAsync();
 
             return subjectEntities.ToSubjects();
         }

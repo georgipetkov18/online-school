@@ -17,9 +17,9 @@ public class SubjectsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] FilterInputModel filterInputModel)
     {
-        var subjects = await this.subjectService.GetAllSubjectsAsync();
+        var subjects = await this.subjectService.GetAllSubjectsAsync(filterInputModel.Filter);
         return Ok(subjects);
     }
 
@@ -41,22 +41,6 @@ public class SubjectsController : ControllerBase
             ModelState.AddModelError("Id", ex.Message);
             return this.BadRequest(ModelState);
         }
-    }
-
-    [HttpGet("[action]")]
-    public async Task<IActionResult> Get()
-    {
-        if (!ModelState.IsValid)
-        {
-            return this.BadRequest(ModelState);
-        }
-
-        var subjects = await this.subjectService.GetAllSubjectsAsync();
-        if (subjects.Any())
-        {
-            return this.Ok(subjects);
-        }
-        return this.NoContent();
     }
 
     [HttpPost("[action]")]

@@ -8,7 +8,7 @@ namespace OnlineSchoolBusinessLogic.Interfaces
 
         Task<Subject> GetSubjectAsync(Guid subjectId);
 
-        Task<IEnumerable<Subject>> GetAllSubjectsAsync();
+        Task<IEnumerable<Subject>> GetAllSubjectsAsync(string filter);
 
         Task<Subject> UpdateSubjectAsync(Guid subjectId, Subject subject);
 

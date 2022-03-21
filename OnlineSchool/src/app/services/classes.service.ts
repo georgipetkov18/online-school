@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ClassResponse } from '../models/response/class-response.model';
 
@@ -9,7 +9,10 @@ export class ClassesService {
 
   constructor(private http: HttpClient) { }
 
-  public getAllClasses() {
-    return this.http.get<ClassResponse[]>('/api/classes');
+  public getAllClasses(filter: string) {
+    return this.http.get<ClassResponse[]>('/api/classes', 
+    {
+      params: new HttpParams().append('filter', filter)
+    });
   }
 }

@@ -8,7 +8,7 @@ public interface IClassRepository
 
     Task<Class> GetClassAsync(Guid classId);
 
-    Task<IEnumerable<Class>> GetAllClassesAsync();
+    Task<IEnumerable<Class>> GetAllClassesAsync(string filter);
 
     Task<Class> UpdateClassAsync(Guid classId, Class _class);
 

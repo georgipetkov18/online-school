@@ -17,9 +17,9 @@ namespace OnlineSchoolApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] FilterInputModel filterInputModel)
         {
-            var classes = await this.classService.GetAllClassesAsync();
+            var classes = await this.classService.GetAllClassesAsync(filterInputModel.Filter);
             return Ok(classes);
         }
 
