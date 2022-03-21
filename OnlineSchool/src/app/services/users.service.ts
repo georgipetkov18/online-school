@@ -40,12 +40,16 @@ export class UsersService {
     return this.http.post<RegisterResponse>('/api/register', registerRequest)
       .pipe(
         catchError((error: HttpErrorResponse) => {
+          console.log(error);
+          
           let errorMessage = 'Нещо се обърка!';
           if (error.error && error.error.User) {
+            console.log(error.error.User[0]);
+            
             errorMessage = error.error.User[0];
           }
 
-          return throwError(() => errorMessage);
+          return throwError(errorMessage);
         })
       )
   }

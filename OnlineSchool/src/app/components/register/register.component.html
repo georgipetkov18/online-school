@@ -1,4 +1,25 @@
 <form #registerForm="ngForm" (ngSubmit)="onSubmit()" class="app-form">
+    <section class="form-roles">
+        <h3 class="role-heading text-center">
+            Аз съм
+        </h3>
+
+        <div class="role-type">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" (change)="onSelect('student')" checked>
+                <label class="form-check-label" for="flexRadioDefault1">
+                    Ученик
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" (change)="onSelect('teacher')">
+                <label class="form-check-label" for="flexRadioDefault2">
+                    Учител
+                </label>
+            </div>
+        </div>
+    </section>
+
     <section class="form-fields">
         <div class="form-group">
             <label for="username">Потребителско име *</label>
@@ -8,6 +29,11 @@
         <div class="form-group">
             <label for="password">Парола *</label>
             <input type="password" id="password" name="password" class="form-control" ngModel required>
+        </div>
+
+        <div class="form-group">
+            <label for="rePassword">Потвърди парола *</label>
+            <input type="password" id="rePassword" name="rePassword" class="form-control" ngModel required>
         </div>
 
         <div class="form-group">
@@ -24,6 +50,21 @@
             <label for="email">Имейл *</label>
             <input type="text" id="email" name="email" class="form-control" ngModel required>
         </div>
+
+        <div class="form-group mb-3">
+            <label for="userSpecific">{{role === 'teacher' ? 'Предмет *' : 'Клас *'}}</label>
+            <div class="input-group">
+              <input id="userSpecific" class="form-control search-input" [placeholder]="role === 'teacher' ? 'Предмет' : 'Клас'" name="user" type="text"
+                autocomplete="off" #userSpecific (ngModelChange)="onGetOptions(userSpecific, menu)" ngModel required #userInput>
+            </div>
+            <div class="dropdown" >
+              <div id="myDropdown" class="dropdown-content show" #menu>
+                <a *ngFor="let suggestion of suggestions" class="dropdown-item">
+                  {{suggestion}}
+                </a>
+              </div>
+            </div>
+          </div>
     </section>
 
     <section class="alert alert-danger" *ngIf="errorMessage">

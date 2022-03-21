@@ -20,19 +20,19 @@ namespace OnlineSchoolData.Repositories
         {
             if (await this.context.Users.AnyAsync(u => u.Username == user.Username))
             {
-                throw new ArgumentException($"Username: {user.Username} already exists!");
+                throw new ArgumentException($"Потребителското име: {user.Username} вече съществува!");
             }
 
             if (await this.context.Users.AnyAsync(u => u.Email == user.Email))
             {
-                throw new ArgumentException($"Email: {user.Email} is already taken!");
+                throw new ArgumentException($"Имейлът: {user.Email} вече е използван!");
             }
 
             var role = await this.context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == user.RoleName.ToLower());
 
             if (role is null)
             {
-                throw new ArgumentException($"Role with name {user.RoleName} does not exist!");
+                throw new ArgumentException($"Ролята: {user.RoleName} не съществува!");
             }
             var userEntity = user.ToUserEntity(role);
 
@@ -47,7 +47,7 @@ namespace OnlineSchoolData.Repositories
                 case Roles.Student:
                     if (user.ClassId is null || !await this.context.Classes.AnyAsync(c => c.Id == user.ClassId))
                     {
-                        throw new ArgumentException($"Provide a valid classId");
+                        throw new ArgumentException($"Класът не съществува");
                     }
                     await this.context.Students.AddAsync(user.ToStudentEntity(userEntity));
                     break;
@@ -55,7 +55,7 @@ namespace OnlineSchoolData.Repositories
                 case Roles.Teacher:
                     if (user.SubjectId is null || !await this.context.Subjects.AnyAsync(s => s.Id == user.SubjectId))
                     {
-                        throw new ArgumentException($"Provide a valid subjectId");
+                        throw new ArgumentException($"Предметът не съществува");
                     }
                     await this.context.Teachers.AddAsync(user.ToTeacherEntity(userEntity));
                     break;

@@ -14,6 +14,8 @@ import { RegisterRequest } from '../../models/request/register-request.model';
 export class RegisterComponent implements OnInit {
   @ViewChild('registerForm') registerForm!: NgForm;
   public errorMessage!: string;
+  public suggestions!: string[];
+  public role: 'student' | 'teacher' = 'student';
 
   constructor(
     private usersService: UsersService,
@@ -28,14 +30,20 @@ export class RegisterComponent implements OnInit {
       this.errorMessage = 'Всички полета са задължителни';
       return;
     }
-    const username = this.registerForm.value['username'];
     const password = this.registerForm.value['password'];
+    const rePass = this.registerForm.value['rePassword'];
+    if (password !== rePass) {
+      this.errorMessage = 'Паролите не съвпадат';
+      return;
+    }
+    const username = this.registerForm.value['username'];
     const firstName = this.registerForm.value['firstName'];
     const lastName = this.registerForm.value['lastName'];
     const email = this.registerForm.value['email'];
-    const roleName = 'student';
-    const registerRequest = new RegisterRequest(username, password, firstName, lastName, email, roleName);
-
+    const userSpecific = this.registerForm.value['userSpecific'];
+    const registerRequest = new RegisterRequest(username, password, firstName, lastName, email, this.role);
+    this.role === 'teacher' ? registerRequest.subjectId = userSpecific : registerRequest.classId = userSpecific;
+    
     this.usersService.register(registerRequest)
       .subscribe({
         next: response => {
@@ -46,6 +54,32 @@ export class RegisterComponent implements OnInit {
         }
       }
     );
+  }
+
+  onGetOptions(input: HTMLInputElement, menu: HTMLDivElement) {
+    if (input.value === '') {
+      this.suggestions = [];
+      menu.classList.remove('show');
+      return;
+    }
+    else {
+      menu.classList.add('show');
+      switch (this.role) {
+        case 'student':
+          // TODO: Get classes with given input
+          this.suggestions = ['sug1', 'sug2'];
+          break;
+      
+        case 'teacher':
+          // TODO: Get subjects with given input
+          this.suggestions = ['sug1', 'sug2'];
+          break;
+      }
+    }
+  }
+
+  onSelect(role: 'student' | 'teacher') {
+    this.role = role;    
   }
 
   onFormReset() {
