@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { UsersService } from '../../services/users.service';
 
@@ -13,7 +14,10 @@ export class LoginComponent implements OnInit {
   @ViewChild('loginForm') loginForm!: NgForm;
   public errorMessage!: string;
 
-  constructor(private usersService: UsersService, private router: Router) { }
+  constructor(
+    private usersService: UsersService, 
+    private router: Router,
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
   }

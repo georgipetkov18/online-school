@@ -1,10 +1,12 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
 import { AuthenticateRequest } from '../models/request/authenticate-request.model';
+import { RegisterRequest } from '../models/request/register-request.model';
 import { AuthenticateResponse } from '../models/response/authenticate-response.model';
+import { RegisterResponse } from '../models/response/register-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +23,7 @@ export class UsersService {
         catchError((error: HttpErrorResponse) => {
           let errorMessage = 'Нещо се обърка!';
           if (error.status !== 400) {
-            return throwError(errorMessage);    
+            return throwError(() => errorMessage);    
           }
           errorMessage = 'Въведени са невалидни данни!';
           return throwError(errorMessage);
@@ -31,5 +33,20 @@ export class UsersService {
         }
       )
     );
+  }
+
+
+  public register(registerRequest: RegisterRequest) {
+    return this.http.post<RegisterResponse>('/api/register', registerRequest)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          let errorMessage = 'Нещо се обърка!';
+          if (error.error && error.error.User) {
+            errorMessage = error.error.User[0];
+          }
+
+          return throwError(() => errorMessage);
+        })
+      )
   }
 }

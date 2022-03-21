@@ -56,7 +56,7 @@ namespace OnlineSchoolApi.Controllers
             }
             catch (ArgumentException ex)
             {
-                ModelState.AddModelError(user.RoleName, ex.Message);
+                ModelState.AddModelError("User", ex.Message);
                 return BadRequest(ModelState);
             }
         }
