@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
   public errorMessage!: string;
 
   constructor(
-    private usersService: UsersService, 
+    private usersService: UsersService,
     private router: Router,
     private toastr: ToastrService) { }
 
@@ -24,18 +24,26 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.loginForm.invalid) {
-      //TODO: Implement user experience
+      this.errorMessage = 'Всички полета са задължителни';
       return;
     }
     const usernameOrEmail = this.loginForm.value['usernameOrEmail'];
     const password = this.loginForm.value['password'];
 
     this.usersService.login(usernameOrEmail, password)
-      .subscribe(response => {
-        this.router.navigate(['/']);
-      }, errorMessage => {
-        this.errorMessage = errorMessage;
+      .subscribe({
+        next: response => {
+          this.toastr.success('Успешно влизане в системата');
+          this.router.navigate(['/']);
+        },
+        error: errorMessage => {
+          this.errorMessage = errorMessage;
+        }
       }
     );
+  }
+
+  onFormReset() {
+    this.loginForm.reset();
   }
 }

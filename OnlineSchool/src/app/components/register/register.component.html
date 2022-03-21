@@ -1,1 +1,37 @@
-<p>register works!</p>
+<form #registerForm="ngForm" (ngSubmit)="onSubmit()" class="app-form">
+    <section class="form-fields">
+        <div class="form-group">
+            <label for="username">Потребителско име *</label>
+            <input type="text" id="username" name="username" class="form-control" ngModel required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Парола *</label>
+            <input type="password" id="password" name="password" class="form-control" ngModel required>
+        </div>
+
+        <div class="form-group">
+            <label for="firstName">Име *</label>
+            <input type="text" id="firstName" name="firstName" class="form-control" ngModel required>
+        </div>
+
+        <div class="form-group">
+            <label for="lastName">Фамилия *</label>
+            <input type="text" id="lastName" name="lastName" class="form-control" ngModel required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Имейл *</label>
+            <input type="text" id="email" name="email" class="form-control" ngModel required>
+        </div>
+    </section>
+
+    <section class="alert alert-danger" *ngIf="errorMessage">
+        {{errorMessage}}
+    </section>
+
+    <section class="form-buttons">
+        <button type="submit" class="btn btn-success">Регистрация</button>
+        <button type="button" class="btn btn-danger" (click)="onFormReset()">Изчисти формата</button>
+    </section>
+</form>
