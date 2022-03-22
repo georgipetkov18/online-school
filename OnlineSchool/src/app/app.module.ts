@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HeaderComponent } from './components/header/header.component';
+import { SubjectsModule } from './components/subjects/subjects.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { HeaderComponent } from './components/header/header.component';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    SubjectsModule,
     FormsModule,
     ToastrModule.forRoot(),
   ],

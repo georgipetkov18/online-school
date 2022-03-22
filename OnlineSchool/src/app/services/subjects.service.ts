@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { environment } from '../../environments/environment';
+import { SubjectRequest } from '../models/request/subject-request.model';
 import { SubjectResponse } from '../models/response/subject-response.model';
 
 @Injectable({
@@ -18,7 +19,8 @@ export class SubjectsService {
     });
   }
 
-  public addSubject() {
-    // /api/subjects/add
+  public addSubject(name: string, code: string) {
+    const subjectRequest = new SubjectRequest(name, code);
+    return this.http.post<SubjectResponse>(environment.routes.subjects + '/add', subjectRequest);
   }
 }
