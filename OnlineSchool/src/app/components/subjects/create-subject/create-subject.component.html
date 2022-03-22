@@ -1,6 +1,6 @@
 <h3 class="text-center">Добавяне на предмет</h3>
 
-<form #createSubjectForm="ngForm" class="app-form">
+<form #createSubjectForm="ngForm" (ngSubmit)="onSubmit()" class="app-form">
     <section class="form-fields">
         <div class="form-group">
             <label for="name">Име *</label>
@@ -18,7 +18,7 @@
     </section>
 
     <section class="form-buttons">
-        <button type="submit" class="btn btn-success">Вход</button>
+        <button type="submit" class="btn btn-success">Създай</button>
         <button type="button" class="btn btn-danger" (click)="utilityService.resetForm(createSubjectForm)">
             Изчисти полетата
         </button>

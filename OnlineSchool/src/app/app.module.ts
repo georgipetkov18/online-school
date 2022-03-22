@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,12 +22,13 @@ import { SubjectsModule } from './components/subjects/subjects.module';
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule,
     SubjectsModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
     FormsModule,
     ToastrModule.forRoot(),
   ],
-  providers: [ToastrService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -51,16 +51,8 @@ public class SubjectsController : ControllerBase
             return this.BadRequest(ModelState);
         }
 
-        try
-        {
-            var createdSubject = await this.subjectService.AddSubjectAsync(subjectInputModel.ToSubject());
-            return this.CreatedAtAction(nameof(Get), new { subjectId = createdSubject.Id }, createdSubject);
-        }
-        catch (InvalidIdException ex)
-        {
-            ModelState.AddModelError("Id", ex.Message);
-            return this.BadRequest(ModelState);
-        }
+        var createdSubject = await this.subjectService.AddSubjectAsync(subjectInputModel.ToSubject());
+        return this.CreatedAtAction(nameof(Get), new { subjectId = createdSubject.Id }, createdSubject);
     }
 
     [HttpPut("[action]/{subjectId}")]
