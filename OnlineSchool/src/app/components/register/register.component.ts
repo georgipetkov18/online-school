@@ -7,7 +7,6 @@ import { UsersService } from '../../services/users.service';
 import { RegisterRequest } from '../../models/request/register-request.model';
 import { ClassesService } from '../../services/classes.service';
 import { SubjectsService } from '../../services/subjects.service';
-import { ClassResponse } from 'src/app/models/response/class-response.model';
 
 @Component({
   selector: 'app-register',

@@ -55,7 +55,7 @@
             <label for="userSpecific">{{role === 'teacher' ? 'Предмет *' : 'Клас *'}}</label>
             <div class="input-group">
               <input id="userSpecific" class="form-control search-input" [placeholder]="role === 'teacher' ? 'Предмет' : 'Клас'" name="user" type="text"
-                autocomplete="off" #userSpecific (ngModelChange)="onGetOptions(userSpecific, menu)" ngModel required #userInput>
+                autocomplete="off" #userSpecific (ngModelChange)="onGetOptions(userSpecific, menu)" ngModel required>
             </div>
             <div class="dropdown" >
               <div id="myDropdown" class="dropdown-content" #menu>
