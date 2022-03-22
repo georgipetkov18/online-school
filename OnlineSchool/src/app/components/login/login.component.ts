@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
+import { UtilityService } from '../../services/utility.service';
 import { UsersService } from '../../services/users.service';
 
 @Component({
@@ -15,6 +16,7 @@ export class LoginComponent implements OnInit {
   public errorMessage!: string;
 
   constructor(
+    public utilityService: UtilityService,
     private usersService: UsersService,
     private router: Router,
     private toastr: ToastrService) { }
@@ -41,9 +43,5 @@ export class LoginComponent implements OnInit {
         }
       }
     );
-  }
-
-  onFormReset() {
-    this.loginForm.reset();
   }
 }

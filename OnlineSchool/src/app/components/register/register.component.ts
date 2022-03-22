@@ -7,6 +7,7 @@ import { UsersService } from '../../services/users.service';
 import { RegisterRequest } from '../../models/request/register-request.model';
 import { ClassesService } from '../../services/classes.service';
 import { SubjectsService } from '../../services/subjects.service';
+import { UtilityService } from '../../services/utility.service';
 
 @Component({
   selector: 'app-register',
@@ -20,6 +21,7 @@ export class RegisterComponent implements OnInit {
   public role: 'student' | 'teacher' = 'student';
 
   constructor(
+    public utilityService: UtilityService,
     private usersService: UsersService,
     private toastr: ToastrService,
     private router: Router,
@@ -101,9 +103,5 @@ export class RegisterComponent implements OnInit {
 
   onSelect(role: 'student' | 'teacher') {
     this.role = role;
-  }
-
-  onFormReset() {
-    this.registerForm.reset();
   }
 }

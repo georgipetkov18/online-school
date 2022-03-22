@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilityService } from '../../../services/utility.service';
 
 @Component({
   selector: 'app-create-subject',
@@ -6,8 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./create-subject.component.css']
 })
 export class CreateSubjectComponent implements OnInit {
+  public errorMessage!: string;
 
-  constructor() { }
+  constructor(public utilityService: UtilityService) { }
 
   ngOnInit(): void {
   }

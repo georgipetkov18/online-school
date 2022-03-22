@@ -73,6 +73,8 @@
 
     <section class="form-buttons">
         <button type="submit" class="btn btn-success">Регистрация</button>
-        <button type="button" class="btn btn-danger" (click)="onFormReset()">Изчисти формата</button>
+        <button type="button" class="btn btn-danger" (click)="utilityService.resetForm(registerForm)">
+            Изчисти полетата
+        </button>
     </section>
 </form>
