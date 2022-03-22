@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -12,6 +12,7 @@ import { RegisterResponse } from '../models/response/register-response.model';
   providedIn: 'root'
 })
 export class UsersService {
+  private intervalRef: any = null;
 
   constructor(private http: HttpClient) { }
 
@@ -23,16 +24,17 @@ export class UsersService {
         catchError((error: HttpErrorResponse) => {
           let errorMessage = 'Нещо се обърка!';
           if (error.status !== 400) {
-            return throwError(() => errorMessage);    
+            return throwError(() => errorMessage);
           }
           errorMessage = 'Въведени са невалидни данни!';
           return throwError(errorMessage);
-        }), 
+        }),
         tap(response => {
+          this.autoRefreshToken(response.jwtToken);
           sessionStorage.setItem('token', response.jwtToken);
         }
-      )
-    );
+        )
+      );
   }
 
 
@@ -41,16 +43,39 @@ export class UsersService {
       .pipe(
         catchError((error: HttpErrorResponse) => {
           console.log(error);
-          
+
           let errorMessage = 'Нещо се обърка!';
           if (error.error && error.error.User) {
             console.log(error.error.User[0]);
-            
+
             errorMessage = error.error.User[0];
           }
 
           return throwError(errorMessage);
         })
       )
+  }
+
+  public logout() {
+    sessionStorage.clear();
+    if (this.intervalRef) {
+      clearTimeout(this.intervalRef);
+    }
+  }
+
+  private refreshToken() {
+    this.http.post<AuthenticateResponse>('/api/refresh-token', {}, {
+      headers: new HttpHeaders().append('Authorization', `Bearer ${sessionStorage.getItem('token')}`)
+    }).subscribe((response) => {      
+      this.autoRefreshToken(response.jwtToken);
+      sessionStorage.setItem('token', response.jwtToken);
+    })
+  }
+
+  private autoRefreshToken(jwtToken: string) {
+    const token = JSON.parse(atob(jwtToken.split('.')[1]));
+    const expiresOnDate = new Date(token.exp * 1000);
+    
+    this.intervalRef = setTimeout(this.refreshToken.bind(this), expiresOnDate.getTime() - new Date().getTime() - 10000);
   }
 }
