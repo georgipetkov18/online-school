@@ -15,17 +15,17 @@ export class SubjectsService {
   constructor(private http: HttpClient) { }
 
   public getAllSubjects(filter: string) {
-    return this.http.get<SubjectResponse[]>(environment.routes.subjects, 
-    {
-      params: new HttpParams().append('filter', filter)
-    });
+    return this.http.get<SubjectResponse[]>(environment.routes.subjects,
+      {
+        params: new HttpParams().append('filter', filter)
+      });
   }
 
   public addSubject(name: string, code: string) {
     const subjectRequest = new SubjectRequest(name, code);
     return this.http.post<SubjectResponse>(environment.routes.subjects + '/add', subjectRequest)
-    .pipe(catchError(_ => {
-      return throwError('Всички полета са задължителни');
-    }));
+      .pipe(catchError(_ => {
+        return throwError('Всички полета са задължителни');
+      }));
   }
 }
