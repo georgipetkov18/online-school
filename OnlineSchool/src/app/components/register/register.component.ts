@@ -8,6 +8,8 @@ import { RegisterRequest } from '../../models/request/register-request.model';
 import { ClassesService } from '../../services/classes.service';
 import { SubjectsService } from '../../services/subjects.service';
 import { UtilityService } from '../../services/utility.service';
+import { ClassResponse } from '../../models/response/class-response.model';
+import { SubjectResponse } from 'src/app/models/response/subject-response.model';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +19,7 @@ import { UtilityService } from '../../services/utility.service';
 export class RegisterComponent implements OnInit {
   @ViewChild('registerForm') registerForm!: NgForm;
   public errorMessage!: string;
-  public suggestions!: string[];
+  public suggestions!: ClassResponse[] | SubjectResponse[];
   public role: 'student' | 'teacher' = 'student';
 
   constructor(
@@ -75,7 +77,7 @@ export class RegisterComponent implements OnInit {
         case 'student':
           this.classesService.getAllClasses(event).subscribe({
             next: classes => {
-              this.suggestions = classes.map(c => c.name);
+              this.suggestions = classes;
             }
           })
           break;
@@ -88,7 +90,7 @@ export class RegisterComponent implements OnInit {
           }
           this.subjectsService.getAllSubjects(event).subscribe({
             next: subjects => {
-              this.suggestions = subjects.map(s => s.name);
+              this.suggestions = subjects;
             }
           })
           break;
