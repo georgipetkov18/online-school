@@ -19,6 +19,7 @@ namespace OnlineSchoolData.Repositories
         public async Task AddTimetableEntryAsync(TimetableEntry timetableEntry)
         {
             await this.context.Timetable.AddAsync(timetableEntry.ToTimetableEntity());
+            await this.context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<TimetableEntry>> GetCurrentDayEntriesAsync(Guid userId)

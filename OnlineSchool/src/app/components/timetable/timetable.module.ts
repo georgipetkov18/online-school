@@ -6,12 +6,14 @@ import { EditTimetableComponent } from "./edit-timetable/edit-timetable.componen
 
 import { TimetableRoutingModule } from "./timetable-routing.module";
 import { TimetableComponent } from "./timetable.component";
+import { CreateTimetableComponent } from './create-timetable/create-timetable.component';
 
 @NgModule({
     declarations: [
         TimetableComponent,
         DisplayTimetableComponent,
-        EditTimetableComponent
+        EditTimetableComponent,
+        CreateTimetableComponent
     ],
     imports: [
         CommonModule,
