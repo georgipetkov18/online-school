@@ -95,6 +95,18 @@ namespace OnlineSchoolApi
             };
         }
 
+        public static TimetableEntry ToTimetableEntry(this TimetableEntryInputModel timetableEntryInputModel)
+        {
+            return new TimetableEntry
+            {
+                DayOfWeek = timetableEntryInputModel.DayOfWeek,
+                SubjectId = timetableEntryInputModel.SubjectId,
+                ClassId = timetableEntryInputModel.ClassId,
+                LessonId = timetableEntryInputModel.LessonId,
+                TeacherId = timetableEntryInputModel.TeacherId,
+            };
+        }
+
         public static Dictionary<string, List<TimetableEntryResponse>> ToTimetableResponse(
             this IEnumerable<IGrouping<string, TimetableEntry>> groups)
         {

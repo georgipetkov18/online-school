@@ -1,26 +1,24 @@
 ﻿using OnlineSchoolBusinessLogic.Common;
 using System.ComponentModel.DataAnnotations;
 
-namespace OnlineSchoolBusinessLogic.Models
+namespace OnlineSchoolApi.InputModels
 {
-    public class TimetableEntry
+    public class TimetableEntryInputModel
     {
-        public Guid Id { get; set; }
-
         [Required]
         [DayOfWeek]
         public string DayOfWeek { get; set; } = null!;
 
-        public Subject Subject { get; set; } = null!;
+        [Required]
         public Guid SubjectId { get; set; }
 
-        public Lesson Lesson { get; set; } = null!;
+        [Required]
         public Guid LessonId { get; set; }
 
-        public Class Class { get; set; } = null!;
+        [Required]
         public Guid ClassId { get; set; }
 
-        public Teacher Teacher { get; set; } = null!;
+        [Required]
         public Guid TeacherId { get; set; }
-    } 
+    }
 }

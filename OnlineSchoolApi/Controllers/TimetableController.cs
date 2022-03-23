@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OnlineSchoolApi.InputModels;
 using OnlineSchoolBusinessLogic.Common;
 using OnlineSchoolBusinessLogic.Interfaces;
 
@@ -15,6 +16,26 @@ namespace OnlineSchoolApi.Controllers
         public TimetableController(ITimetableService timetableService)
         {
             this.timetableService = timetableService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(TimetableInputModel timetableInputModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await this.timetableService.AddTimetable(timetableInputModel.Entries.Select(e => e.ToTimetableEntry()));
+                return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError("Input", ex.Message);
+                return BadRequest(ModelState);
+            }
         }
 
         [HttpGet]

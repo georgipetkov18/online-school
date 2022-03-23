@@ -18,6 +18,29 @@ namespace OnlineSchoolData.Repositories
 
         public async Task AddTimetableEntryAsync(TimetableEntry timetableEntry)
         {
+            var classExists = await this.context.Classes.AnyAsync(c => c.Id == timetableEntry.ClassId);
+            if (!classExists)
+            {
+                throw new ArgumentException("Class does not exist");
+            }
+
+            var subjectExists = await this.context.Subjects.AnyAsync(c => c.Id == timetableEntry.SubjectId);
+            if (!subjectExists)
+            {
+                throw new ArgumentException("Subject does not exist");
+            }
+
+            var lessonExists = await this.context.Lessons.AnyAsync(c => c.Id == timetableEntry.LessonId);
+            if (!lessonExists)
+            {
+                throw new ArgumentException("Lesson does not exist");
+            }
+
+            var teacherExists = await this.context.Teachers.AnyAsync(c => c.Id == timetableEntry.TeacherId);
+            if (!teacherExists)
+            {
+                throw new ArgumentException("Teacher does not exist");
+            }
             await this.context.Timetable.AddAsync(timetableEntry.ToTimetableEntity());
             await this.context.SaveChangesAsync();
         }

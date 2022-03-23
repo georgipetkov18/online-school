@@ -13,6 +13,14 @@ namespace OnlineSchoolBusinessLogic.Services
             this.timetableRepository = timetableRepository;
         }
 
+        public async Task AddTimetable(IEnumerable<TimetableEntry> timetable)
+        {
+            foreach (var entry in timetable)
+            {
+                await timetableRepository.AddTimetableEntryAsync(entry);
+            }
+        }
+
         public async Task AddTimetableEntryAsync(TimetableEntry timetableEntry) =>
             await this.timetableRepository.AddTimetableEntryAsync(timetableEntry);
 
