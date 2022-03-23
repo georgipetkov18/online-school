@@ -56,7 +56,7 @@ export class RegisterComponent implements OnInit {
       this.errorMessage = this.role === 'teacher' ? 'Предметът не същестува' : 'Класът не съществува';
       return;
     }
-    
+
     const item = filtered[0];
     const registerRequest = new RegisterRequest(username, password, firstName, lastName, email, this.role);
     this.role === 'teacher' ? registerRequest.subjectId = item.id : registerRequest.classId = item.id;
@@ -106,7 +106,7 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  onChooseSuggestion(suggestion: string, input: HTMLInputElement, menu: HTMLDivElement) {
+  onChooseSuggestion(suggestion: string, menu: HTMLDivElement) {
     this.userSpecificInput = suggestion;
     menu.classList.toggle('show');
   }
