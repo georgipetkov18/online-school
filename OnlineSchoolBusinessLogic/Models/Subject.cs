@@ -7,11 +7,11 @@ namespace OnlineSchoolBusinessLogic.Models
         public Guid Id { get; init; }
 
         [Required]
-        [MaxLength(40)]
+        [StringLength(40, MinimumLength = 2)]
         public string Name { get; init; } = string.Empty;
 
         [Required]
-        [MaxLength(30)]
+        [StringLength(40, MinimumLength = 2)]
         public string Code { get; init; } = string.Empty;
     }
 }

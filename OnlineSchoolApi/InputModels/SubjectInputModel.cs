@@ -5,11 +5,11 @@ namespace OnlineSchoolApi.InputModels
     public class SubjectInputModel
     {
         [Required]
-        [MaxLength(40)]
+        [StringLength(40, MinimumLength = 2)]
         public string Name { get; set; } = null!;
 
         [Required]
-        [MaxLength(40)]
+        [StringLength(40, MinimumLength = 2)]
         public string Code { get; set; } = null!;
     }
 }
