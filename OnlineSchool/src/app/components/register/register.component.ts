@@ -21,6 +21,7 @@ export class RegisterComponent implements OnInit {
   public errorMessage!: string;
   public suggestions!: ClassResponse[] | SubjectResponse[];
   public role: 'student' | 'teacher' = 'student';
+  public userSpecificInput!: string;
 
   constructor(
     public utilityService: UtilityService,
@@ -48,10 +49,17 @@ export class RegisterComponent implements OnInit {
     const firstName = this.registerForm.value['firstName'];
     const lastName = this.registerForm.value['lastName'];
     const email = this.registerForm.value['email'];
-    const userSpecific = this.registerForm.value['userSpecific'];
+    const userSpecific = this.registerForm.value['userSpecific'];    
+    const filtered = this.suggestions.filter(s => s.name.toLowerCase() === userSpecific.toLowerCase());
     
+    if (filtered.length <= 0) {
+      this.errorMessage = this.role === 'teacher' ? 'Предметът не същестува' : 'Класът не съществува';
+      return;
+    }
+    
+    const item = filtered[0];
     const registerRequest = new RegisterRequest(username, password, firstName, lastName, email, this.role);
-    this.role === 'teacher' ? registerRequest.subjectId = userSpecific : registerRequest.classId = userSpecific;
+    this.role === 'teacher' ? registerRequest.subjectId = item.id : registerRequest.classId = item.id;
 
     this.usersService.register(registerRequest)
       .subscribe({
@@ -65,7 +73,7 @@ export class RegisterComponent implements OnInit {
       );
   }
 
-  onGetOptions(event: string, menu: HTMLDivElement) {  
+  onGetOptions(event: string, menu: HTMLDivElement) {
     if (event === '') {
       this.suggestions = [];
       menu.classList.toggle('show');
@@ -99,7 +107,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onChooseSuggestion(suggestion: string, input: HTMLInputElement, menu: HTMLDivElement) {
-    input.value = suggestion;
+    this.userSpecificInput = suggestion;
     menu.classList.toggle('show');
   }
 

@@ -5,6 +5,7 @@ import { ClassResponse } from '../models/response/class-response.model';
 import { environment } from '../../environments/environment';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { ClassRequest } from '../models/request/class-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,8 @@ export class ClassesService {
   }
 
   public addClass(name: string) {
-    const classResponse = new ClassResponse(name);
-    return this.http.post<ClassResponse>(environment.routes.classes + '/add', classResponse)
+    const classRequest = new ClassRequest(name);
+    return this.http.post<ClassResponse>(environment.routes.classes + '/add', classRequest)
       .pipe(catchError(_ => {
         return throwError('Всички полета са задължителни');
       }));
