@@ -42,8 +42,6 @@ export class UsersService {
     return this.http.post<RegisterResponse>('/api/register', registerRequest)
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          console.log(error);
-
           let errorMessage = 'Нещо се обърка!';
           if (error.error && error.error.User) {
             console.log(error.error.User[0]);
@@ -66,16 +64,21 @@ export class UsersService {
   private refreshToken() {
     this.http.post<AuthenticateResponse>('/api/refresh-token', {}, {
       headers: new HttpHeaders().append('Authorization', `Bearer ${sessionStorage.getItem('token')}`)
-    }).subscribe((response) => {      
-      this.autoRefreshToken(response.jwtToken);
-      sessionStorage.setItem('token', response.jwtToken);
+    }).subscribe({
+      next: response => {
+        this.autoRefreshToken(response.jwtToken);
+        sessionStorage.setItem('token', response.jwtToken);
+      },
+      error: _ => {
+        this.logout();
+      }
     })
   }
 
   private autoRefreshToken(jwtToken: string) {
     const token = JSON.parse(atob(jwtToken.split('.')[1]));
     const expiresOnDate = new Date(token.exp * 1000);
-    
+
     this.intervalRef = setTimeout(this.refreshToken.bind(this), expiresOnDate.getTime() - new Date().getTime() - 10000);
   }
 }

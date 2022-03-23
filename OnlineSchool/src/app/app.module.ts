@@ -12,6 +12,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { HeaderComponent } from './components/header/header.component';
 import { SubjectsModule } from './components/subjects/subjects.module';
 import { ClassesModule } from './components/classes/classes.module';
+import { TimetableModule } from './components/timetable/timetable.module';
 
 @NgModule({
   declarations: [
@@ -23,12 +24,13 @@ import { ClassesModule } from './components/classes/classes.module';
   imports: [
     BrowserModule,
     HttpClientModule,
-    SubjectsModule,
-    ClassesModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     ToastrModule.forRoot(),
+    SubjectsModule,
+    ClassesModule,
+    TimetableModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
