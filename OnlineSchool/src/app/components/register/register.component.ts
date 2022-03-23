@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -47,6 +47,7 @@ export class RegisterComponent implements OnInit {
     const lastName = this.registerForm.value['lastName'];
     const email = this.registerForm.value['email'];
     const userSpecific = this.registerForm.value['userSpecific'];
+    
     const registerRequest = new RegisterRequest(username, password, firstName, lastName, email, this.role);
     this.role === 'teacher' ? registerRequest.subjectId = userSpecific : registerRequest.classId = userSpecific;
 
@@ -62,9 +63,8 @@ export class RegisterComponent implements OnInit {
       );
   }
 
-  onGetOptions(input: HTMLInputElement, menu: HTMLDivElement) {
-    const value = input.value;
-    if (value === '') {
+  onGetOptions(event: string, menu: HTMLDivElement) {  
+    if (event === '') {
       this.suggestions = [];
       menu.classList.toggle('show');
       return;
@@ -73,7 +73,7 @@ export class RegisterComponent implements OnInit {
       menu.classList.add('show');
       switch (this.role) {
         case 'student':
-          this.classesService.getAllClasses(value).subscribe({
+          this.classesService.getAllClasses(event).subscribe({
             next: classes => {
               this.suggestions = classes.map(c => c.name);
             }
@@ -81,12 +81,12 @@ export class RegisterComponent implements OnInit {
           break;
 
         case 'teacher':
-          if (value.length < 3) {
+          if (event.length < 3) {
             this.suggestions = [];
             menu.classList.toggle('show');
             return;
           }
-          this.subjectsService.getAllSubjects(value).subscribe({
+          this.subjectsService.getAllSubjects(event).subscribe({
             next: subjects => {
               this.suggestions = subjects.map(s => s.name);
             }
