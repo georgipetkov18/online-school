@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormGroup, NgForm } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +7,10 @@ import { NgForm } from '@angular/forms';
 export class UtilityService {
 
   constructor() { }
+
+  public resetGroup(form: FormGroup) {
+    form.reset();
+  }
 
   public resetForm(form: NgForm) {
     form.reset();

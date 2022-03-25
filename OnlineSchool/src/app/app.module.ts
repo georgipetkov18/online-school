@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
@@ -13,6 +13,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { SubjectsModule } from './components/subjects/subjects.module';
 import { ClassesModule } from './components/classes/classes.module';
 import { TimetableModule } from './components/timetable/timetable.module';
+import { FormComponent } from './components/shared/form/form.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { TimetableModule } from './components/timetable/timetable.module';
     LoginComponent,
     RegisterComponent,
     HeaderComponent,
+    FormComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,6 +29,7 @@ import { TimetableModule } from './components/timetable/timetable.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     ToastrModule.forRoot(),
     SubjectsModule,
     ClassesModule,

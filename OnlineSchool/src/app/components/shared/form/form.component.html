@@ -1,0 +1,28 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="app-form">
+    <ng-container *ngTemplateOutlet="beforeInputs"></ng-container>
+
+    <section class="form-fields">
+        <div class="form-group" *ngFor="let control of formControls">
+            <label [for]="control.name">{{control.label}}</label>
+            <input 
+            [type]="control.inputType" 
+            [id]="control.name" 
+            [name]="control.name" 
+            [formControl]="control.formControl"
+            class="form-control">
+        </div>
+    </section>
+
+    <ng-container *ngTemplateOutlet="afterInputs;afterInputsContext"></ng-container>
+  
+    <section class="alert alert-danger" *ngIf="errorMessage">
+        {{errorMessage}}
+    </section>
+
+    <section class="form-buttons">
+        <button type="submit" class="btn btn-success">{{submitBtnText}}</button>
+        <button type="button" class="btn btn-danger" (click)="utilityService.resetGroup(form)">
+            Изчисти полетата
+        </button>
+    </section>
+</form>
