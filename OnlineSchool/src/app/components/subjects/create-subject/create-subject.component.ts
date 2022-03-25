@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+
 import { SubjectsService } from '../../../services/subjects.service';
 import { UtilityService } from '../../../services/utility.service';
+import { IAppFormControl } from '../../shared/form/form.component';
 
 @Component({
   selector: 'app-create-subject',
@@ -10,8 +12,17 @@ import { UtilityService } from '../../../services/utility.service';
   styleUrls: ['./create-subject.component.css']
 })
 export class CreateSubjectComponent implements OnInit {
-  @ViewChild('createSubjectForm') public subjectsForm!: NgForm;
   public errorMessage!: string;
+  public formSetup: IAppFormControl[] = [
+    {
+     name: 'name',
+     label: 'Име *' 
+    },
+    {
+      name: 'code',
+      label: 'Код *' 
+     },
+  ]
 
   constructor(
     public utilityService: UtilityService,
@@ -21,14 +32,14 @@ export class CreateSubjectComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit() {
-    if (this.subjectsForm.invalid) {
+  onSubmit(subjectsForm: FormGroup) {
+    if (subjectsForm.invalid) {
       this.errorMessage = 'Всички полета са задължителни';
       return;
     }
 
-    const name = this.subjectsForm.value['name'];
-    const code = this.subjectsForm.value['code'];
+    const name = subjectsForm.value['name'];
+    const code = subjectsForm.value['code'];
 
     this.subjectsService.addSubject(name, code).subscribe({
       next: () => {

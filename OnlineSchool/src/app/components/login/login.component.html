@@ -1,24 +1,4 @@
 <h3 class="text-center">Вход</h3>
 
-<form #loginForm="ngForm" (ngSubmit)="onSubmit()" class="app-form">
-    <section class="form-fields">
-        <div class="form-group">
-            <label for="usernameOrEmail">Потрбителско име или имейл *</label>
-            <input type="text" id="usernameOrEmail" name="usernameOrEmail" class="form-control" ngModel required>
-        </div>
-
-        <div class="form-group">
-            <label for="password">Парола *</label>
-            <input type="password" id="password" name="password" class="form-control" ngModel required>
-        </div>
-    </section>
-
-    <section class="alert alert-danger" *ngIf="errorMessage">
-        {{errorMessage}}
-    </section>
-
-    <section class="form-buttons">
-        <button type="submit" class="btn btn-success">Вход</button>
-        <button type="button" class="btn btn-danger" (click)="utilityService.resetForm(loginForm)">Изчисти полетата</button>
-    </section>
-</form>
+<app-form [formControlsSetup]="formSetup" [errorMessage]="errorMessage" submitBtnText="Вход"
+    (formSubmitted)="onSubmit($event)"></app-form>

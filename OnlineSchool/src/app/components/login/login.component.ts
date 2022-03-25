@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormGroup, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 import { UtilityService } from '../../services/utility.service';
 import { UsersService } from '../../services/users.service';
+import { IAppFormControl } from '../shared/form/form.component';
 
 @Component({
   selector: 'app-login',
@@ -12,9 +13,18 @@ import { UsersService } from '../../services/users.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  @ViewChild('loginForm') loginForm!: NgForm;
   public errorMessage!: string;
-
+  public formSetup: IAppFormControl[] = [
+    {
+     name: 'usernameOrEmail',
+     label: 'Потрбителско име или имейл *' 
+    },
+    {
+      name: 'password',
+      label: 'Парола *',
+      inputType: 'password'
+    }
+  ]
   constructor(
     public utilityService: UtilityService,
     private usersService: UsersService,
@@ -24,13 +34,13 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit() {
-    if (this.loginForm.invalid) {
+  onSubmit(loginForm: FormGroup) {
+    if (loginForm.invalid) {
       this.errorMessage = 'Всички полета са задължителни';
       return;
     }
-    const usernameOrEmail = this.loginForm.value['usernameOrEmail'];
-    const password = this.loginForm.value['password'];
+    const usernameOrEmail = loginForm.value['usernameOrEmail'];
+    const password = loginForm.value['password'];
 
     this.usersService.login(usernameOrEmail, password)
       .subscribe({

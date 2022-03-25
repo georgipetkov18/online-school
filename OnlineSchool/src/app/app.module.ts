@@ -13,7 +13,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { SubjectsModule } from './components/subjects/subjects.module';
 import { ClassesModule } from './components/classes/classes.module';
 import { TimetableModule } from './components/timetable/timetable.module';
-import { FormComponent } from './components/shared/form/form.component';
+import { SharedModule } from './components/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,6 @@ import { FormComponent } from './components/shared/form/form.component';
     LoginComponent,
     RegisterComponent,
     HeaderComponent,
-    FormComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +33,7 @@ import { FormComponent } from './components/shared/form/form.component';
     SubjectsModule,
     ClassesModule,
     TimetableModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

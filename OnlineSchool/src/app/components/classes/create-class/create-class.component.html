@@ -1,21 +1,5 @@
 <h3 class="text-center">Добавяне на клас</h3>
 
-<form #createClassForm="ngForm" (ngSubmit)="onSubmit()" class="app-form">
-    <section class="form-fields">
-        <div class="form-group">
-            <label for="name">Име *</label>
-            <input type="text" id="name" name="name" class="form-control" ngModel required>
-        </div>
-    </section>
 
-    <section class="alert alert-danger" *ngIf="errorMessage">
-        {{errorMessage}}
-    </section>
-
-    <section class="form-buttons">
-        <button type="submit" class="btn btn-success">Създай</button>
-        <button type="button" class="btn btn-danger" (click)="utilityService.resetForm(createClassForm)">
-            Изчисти полетата
-        </button>
-    </section>
-</form>
+<app-form [formControlsSetup]="formSetup" [errorMessage]="errorMessage" submitBtnText="Създай"
+    (formSubmitted)="onSubmit($event)"></app-form>

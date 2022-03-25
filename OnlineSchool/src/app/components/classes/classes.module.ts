@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
 import { CreateClassComponent } from '../classes/create-class/create-class.component';
+import { SharedModule } from "../shared/shared.module";
 import { ClassesRoutingModule } from "./classes-routing.module";
 import { ClassesComponent } from "./classes.component";
 
@@ -15,6 +16,7 @@ import { ClassesComponent } from "./classes.component";
         CommonModule,
         FormsModule,
         ClassesRoutingModule,
+        SharedModule
     ],
     providers: [],
 })
