@@ -14,6 +14,7 @@ import { SubjectsModule } from './components/subjects/subjects.module';
 import { ClassesModule } from './components/classes/classes.module';
 import { TimetableModule } from './components/timetable/timetable.module';
 import { SharedModule } from './components/shared/shared.module';
+import { LessonsModule } from './components/lessons/lessons.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { SharedModule } from './components/shared/shared.module';
     ToastrModule.forRoot(),
     SubjectsModule,
     ClassesModule,
+    LessonsModule,
     TimetableModule,
     SharedModule
   ],
