@@ -46,16 +46,9 @@ namespace OnlineSchoolApi.Controllers
                 return this.BadRequest(ModelState);
             }
 
-            try
-            {
-                var createdLesson = await this.lessonService.AddLessonAsync(lessonInputModel.ToLesson());
-                return this.CreatedAtAction(nameof(Get), new { lessonId = createdLesson.Id }, createdLesson);
-            }
-            catch (InvalidIdException ex)
-            {
-                ModelState.AddModelError("Id", ex.Message);
-                return this.BadRequest(ModelState);
-            }
+            var createdLesson = await this.lessonService.AddLessonAsync(lessonInputModel.ToLesson());
+            return this.CreatedAtAction(nameof(Get), new { lessonId = createdLesson.Id }, createdLesson);
+
         }
 
         [HttpPut("{lessonId}")]

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
+import { LessonsService } from '../../../services/lessons.service';
 import { IAppFormControl } from '../../shared/form/form.component';
 
 @Component({
@@ -23,13 +25,27 @@ export class CreateLessonsComponent implements OnInit {
     }
   ]
 
-  constructor() { }
+  constructor(private toastr: ToastrService, private lessonsService: LessonsService) { }
 
   ngOnInit(): void {
   }
 
   onSubmit(lessonsForm: FormGroup) {
-
+    if (lessonsForm.invalid) {
+      this.toastr.error('Всички полета са задължителни');
+      return;
+    }
+    const from = lessonsForm.value['from'] + ':00';
+    const durationInMinutes = +lessonsForm.value['duration'];
+    this.lessonsService.addLesson(from, durationInMinutes).subscribe({
+      next: lesson => {
+        this.toastr.success('Часът е създаден успешно');
+        console.log(lesson);
+      },
+      error: errorMessage => {
+        this.toastr.error(errorMessage);
+      }
+    })
   }
 
 }

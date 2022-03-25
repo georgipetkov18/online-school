@@ -6,7 +6,8 @@ export const environment = {
   production: false,
   routes: {
     subjects: '/api/subjects',
-    classes: '/api/classes'
+    classes: '/api/classes',
+    lessons: '/api/lessons'
   }
 };
 
