@@ -20,8 +20,8 @@ export class RegisterComponent implements OnInit {
   @ViewChild('registerForm') registerForm!: NgForm;
   public errorMessage!: string;
   public suggestions!: ClassResponse[] | SubjectResponse[];
+  public data: string[] = [];
   public role: 'student' | 'teacher' = 'student';
-  public userSpecificInput!: string;
 
   constructor(
     public utilityService: UtilityService,
@@ -73,43 +73,38 @@ export class RegisterComponent implements OnInit {
       );
   }
 
-  onGetOptions(event: string, menu: HTMLDivElement) {
-    if (event === '') {
+  onChangeSearch(search: string) {
+    if (search === '') {
       this.suggestions = [];
-      menu.classList.toggle('show');
+      this.data = [];
       return;
     }
-    else {
-      menu.classList.add('show');
-      switch (this.role) {
-        case 'student':
-          this.classesService.getAllClasses(event).subscribe({
-            next: classes => {
-              this.suggestions = classes;
-            }
-          })
-          break;
-
-        case 'teacher':
-          if (event.length < 3) {
-            this.suggestions = [];
-            menu.classList.toggle('show');
-            return;
+    
+    switch (this.role) {
+      case 'student':
+        this.classesService.getAllClasses(search).subscribe({
+          next: classes => {
+            this.suggestions = classes;
+            this.data = this.suggestions.map(s => s.name);            
           }
-          this.subjectsService.getAllSubjects(event).subscribe({
-            next: subjects => {
-              this.suggestions = subjects;
-            }
-          })
-          break;
-      }
+        })
+        break;
+
+      case 'teacher':
+        if (search.length < 3) {
+          this.suggestions = [];
+          return;
+        }
+        this.subjectsService.getAllSubjects(search).subscribe({
+          next: subjects => {
+            this.suggestions = subjects;
+            this.data = this.suggestions.map(s => s.name);
+          }
+        })
+        break;
     }
   }
 
-  onChooseSuggestion(suggestion: string, menu: HTMLDivElement) {
-    this.userSpecificInput = suggestion;
-    menu.classList.toggle('show');
-  }
 
   onSelect(role: 'student' | 'teacher') {
     this.role = role;

@@ -6,13 +6,15 @@
 
         <div class="role-type">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" (change)="onSelect('student')" checked>
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                    (change)="onSelect('student')" checked>
                 <label class="form-check-label" for="flexRadioDefault1">
                     Ученик
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" (change)="onSelect('teacher')">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                    (change)="onSelect('teacher')">
                 <label class="form-check-label" for="flexRadioDefault2">
                     Учител
                 </label>
@@ -51,21 +53,20 @@
             <input type="text" id="email" name="email" class="form-control" ngModel required>
         </div>
 
-        <div class="form-group mb-3">
+        <div class="form-group">
             <label for="userSpecific">{{role === 'teacher' ? 'Предмет *' : 'Клас *'}}</label>
-            <div class="input-group">
-              <input id="userSpecific" class="form-control search-input" [placeholder]="role === 'teacher' ? 'Предмет' : 'Клас'" name="userSpecific" type="text"
-                autocomplete="off" #userSpecific (ngModelChange)="onGetOptions($event, menu)" [(ngModel)]="userSpecificInput" required>
-            </div>
-            <div class="dropdown" >
-              <div id="myDropdown" class="dropdown-content" #menu>
-                <a *ngFor="let suggestion of suggestions" class="dropdown-item" (click)="onChooseSuggestion(suggestion.name, menu)">
-                  {{suggestion.name}}
-                </a>
-              </div>
-            </div>
-          </div>
+        <ng-autocomplete 
+        [data]="data"
+        (inputChanged)='onChangeSearch($event)'
+        [itemTemplate]="itemTemplate"
+        [notFoundTemplate]="notFoundTemplate"
+        id="userSpecific"
+        name="userSpecific"
+        ngModel>
+        </ng-autocomplete>
+        </div>
     </section>
+
 
     <section class="alert alert-danger" *ngIf="errorMessage">
         {{errorMessage}}
@@ -78,3 +79,11 @@
         </button>
     </section>
 </form>
+
+<ng-template #itemTemplate let-item>
+    <a [innerHTML]="item"></a>
+</ng-template>
+
+<ng-template #notFoundTemplate let-notFound>
+    <div>Няма резултати</div>
+</ng-template>
