@@ -55,15 +55,9 @@
 
         <div class="form-group">
             <label for="userSpecific">{{role === 'teacher' ? 'Предмет *' : 'Клас *'}}</label>
-        <ng-autocomplete 
-        [data]="data"
-        (inputChanged)='onChangeSearch($event)'
-        [itemTemplate]="itemTemplate"
-        [notFoundTemplate]="notFoundTemplate"
-        id="userSpecific"
-        name="userSpecific"
-        ngModel>
-        </ng-autocomplete>
+            <ng-autocomplete [data]="data" (inputChanged)='onChangeSearch($event)' [itemTemplate]="itemTemplate"
+                [notFoundTemplate]="notFoundTemplate" id="userSpecific" name="userSpecific" ngModel>
+            </ng-autocomplete>
         </div>
     </section>
 

@@ -7,6 +7,7 @@ import { EditTimetableComponent } from "./edit-timetable/edit-timetable.componen
 import { TimetableRoutingModule } from "./timetable-routing.module";
 import { TimetableComponent } from "./timetable.component";
 import { CreateTimetableComponent } from './create-timetable/create-timetable.component';
+import { SharedModule } from "../shared/shared.module";
 
 @NgModule({
     declarations: [
@@ -19,6 +20,7 @@ import { CreateTimetableComponent } from './create-timetable/create-timetable.co
         CommonModule,
         FormsModule,
         TimetableRoutingModule,
+        SharedModule
     ],
     providers: [],
 })

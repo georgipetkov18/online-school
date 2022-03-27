@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -37,7 +36,6 @@ import { LessonsModule } from './components/lessons/lessons.module';
     LessonsModule,
     TimetableModule,
     SharedModule,
-    AutocompleteLibModule
   ],
   providers: [],
   bootstrap: [AppComponent]
