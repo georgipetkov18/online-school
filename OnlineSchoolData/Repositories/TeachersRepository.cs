@@ -20,7 +20,7 @@ namespace OnlineSchoolData.Repositories
             var teacherEntities = await this.context.Teachers
                 .Include(t => t.User)
                     .ThenInclude(u => u.Role)
-                .Where(t => t.User.Role.Name == Roles.Teacher && $"{t.User.FirstName} {t.User.LastName}".Contains(filter))
+                .Where(t => t.User.Role.Name == Roles.Teacher && (t.User.FirstName + " " + t.User.LastName).Contains(filter))
                 .AsNoTracking()
                 .ToListAsync();
 

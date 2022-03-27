@@ -1,17 +1,15 @@
 import { AutoComplete } from "../auto-complete.model";
 
-export class SubjectResponse implements AutoComplete {
+export class TeacherResponse implements AutoComplete {
     private _autoCompleteIdentifier = '';
     constructor(
-        public id: string,
-        public name: string,
-        public code: string,
+        public firstName: string,
+        public lastName: string,
     ) { };
 
     get autoCompleteIdentifier() {
-        return this.name;
+        return `${this.firstName} ${this.lastName}`;
     }
-    
     set autoCompleteIdentifier(value: string) {
         this._autoCompleteIdentifier = value;
     }

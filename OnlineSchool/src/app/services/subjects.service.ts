@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { SubjectRequest } from '../models/request/subject-request.model';
@@ -15,10 +15,11 @@ export class SubjectsService {
   constructor(private http: HttpClient) { }
 
   public getAllSubjects(filter: string) {
-    return this.http.get<SubjectResponse[]>(environment.routes.subjects,
-      {
-        params: new HttpParams().append('filter', filter)
-      });
+    return this.http.get<SubjectResponse[]>(environment.routes.subjects, {
+      params: new HttpParams().append('filter', filter)
+    }).pipe(tap(subjects => {
+      return subjects.forEach(s => s.autoCompleteIdentifier = s.name)
+    }));;
   }
 
   public addSubject(name: string, code: string) {

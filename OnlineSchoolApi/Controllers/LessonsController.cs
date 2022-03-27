@@ -7,7 +7,7 @@ using OnlineSchoolData.CustomExceptions;
 namespace OnlineSchoolApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     public class LessonsController : ControllerBase
     {
         private readonly ILessonsService lessonService;
@@ -24,7 +24,7 @@ namespace OnlineSchoolApi.Controllers
             return Ok(lessons);
         }
 
-        [HttpGet("{lessonId}")]
+        [HttpGet("[action]/{lessonId}")]
         public async Task<IActionResult> Get(Guid lessonId)
         {
             if (!ModelState.IsValid)
@@ -45,7 +45,7 @@ namespace OnlineSchoolApi.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Add(LessonInputModel lessonInputModel)
         {
             if (!ModelState.IsValid)
@@ -58,7 +58,7 @@ namespace OnlineSchoolApi.Controllers
 
         }
 
-        [HttpPut("{lessonId}")]
+        [HttpPut("[action]/{lessonId}")]
         public async Task<IActionResult> Update(Guid lessonId, LessonInputModel lessonInputModel)
         {
             if (!ModelState.IsValid)
@@ -78,7 +78,7 @@ namespace OnlineSchoolApi.Controllers
             }
         }
 
-        [HttpDelete("{lessonId}")]
+        [HttpDelete("[action]/{lessonId}")]
         public async Task<IActionResult> Delete(Guid lessonId)
         {
             if (!ModelState.IsValid)

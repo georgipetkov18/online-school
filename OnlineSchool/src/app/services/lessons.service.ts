@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
+import { AutoComplete } from '../models/auto-complete.model';
 import { Lesson } from '../models/lesson.model';
 
 @Injectable({
@@ -24,5 +25,13 @@ export class LessonsService {
         return throwError(errorMessage);
       })
     );
+  }
+
+  public getAllLessons(filter: string) {
+    return this.http.get<Lesson[]>(environment.routes.lessons, {
+      params: new HttpParams().append('filter', filter)
+    }).pipe(tap(lessons => {
+      return lessons.forEach(l => l.autoCompleteIdentifier = l.from)
+    }));
   }
 }

@@ -27,6 +27,8 @@ builder.Services.AddScoped<ITimetableRepository, TimetableRepository>();
 builder.Services.AddScoped<ITimetableService, TimetableService>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IUsersService, UsersService>();
+builder.Services.AddScoped<ITeachersRepository, TeachersRepository>();
+builder.Services.AddScoped<ITeachersService, TeachersService>();
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

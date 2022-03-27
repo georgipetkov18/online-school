@@ -7,7 +7,8 @@ export const environment = {
   routes: {
     subjects: '/api/subjects',
     classes: '/api/classes',
-    lessons: '/api/lessons'
+    lessons: '/api/lessons',
+    teachers: '/api/teachers'
   }
 };
 
