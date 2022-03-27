@@ -7,9 +7,10 @@ import { TimetableEntryRequest } from 'src/app/models/request/timetable-entry-re
 import { SubjectsService } from 'src/app/services/subjects.service';
 import { LessonsService } from 'src/app/services/lessons.service';
 import { TeachersService } from 'src/app/services/teachers.service';
-import { Lesson } from 'src/app/models/lesson.model';
+import { LessonResponse } from 'src/app/models/response/lesson-response.model';
 import { SubjectResponse } from 'src/app/models/response/subject-response.model';
 import { TeacherResponse } from 'src/app/models/response/teacher-response.model';
+import { AutoComplete } from 'src/app/models/auto-complete.model';
 
 @Component({
   selector: 'app-create-timetable',
@@ -22,9 +23,16 @@ export class CreateTimetableComponent implements OnInit {
   public suggestions: string[] = [];
   public lessonsArray: number[] = [];
   public timetable: (TimetableEntryRequest | null)[][] = [];
+  public submitEnabled = false;
   private modalRef!: NgbModalRef;
   private currentRow = -1;
   private currentCol = -1;
+  private suggestionsFull: AutoComplete[] = [];
+  private ids = {
+    subject: '',
+    lesson: '',
+    teacher: '',
+  }
 
   constructor(
     private modalService: NgbModal,
@@ -51,46 +59,70 @@ export class CreateTimetableComponent implements OnInit {
     this.modalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
-  onChangeSearch(source: 'subjects' | 'lessons' | 'teachers', search: string) {
-    let suggestionsObs: Observable<Lesson[] | SubjectResponse[] | TeacherResponse[]> = new Observable();
+  onChangeSearch(source: 'subject' | 'lesson' | 'teacher', search: string) {
+    let suggestionsObs: Observable<LessonResponse[] | SubjectResponse[] | TeacherResponse[]> = new Observable();
 
     switch (source) {
-      case 'subjects':
+      case 'subject':
         if (search.length < 3) {
           this.suggestions = [];
+          this.suggestionsFull = [];
           return;
         }
         suggestionsObs = this.subjectsService.getAllSubjects(search);
         break;
 
-      case 'lessons':
+      case 'lesson':
         if (search === '') {
           this.suggestions = [];
+          this.suggestionsFull = [];
           return;
         }
         suggestionsObs = this.lessonsService.getAllLessons(search);
         break;
 
-      case 'teachers':
+      case 'teacher':
         if (search.length < 3) {
           this.suggestions = [];
+          this.suggestionsFull = [];
           return;
         }
         suggestionsObs = this.teachersService.getAllTeachers(search);
         break;
     }
     suggestionsObs.subscribe({
-      next: suggestions => {                
-        this.suggestions = suggestions.map(s => s.autoCompleteIdentifier);               
+      next: suggestions => {
+        this.suggestionsFull = suggestions;          
+        this.suggestions = suggestions.map(s => s.autoCompleteIdentifier);
       }
     })
+  }
+
+  setId(source: 'subject' | 'lesson' | 'teacher', value: string) {
+    const currentElement = this.suggestionsFull.find(s => s.autoCompleteIdentifier === value);
+    
+    if (!currentElement) {
+      this.ids[source] = '';
+      this.submitEnabled = false;
+      return;
+    }
+    this.ids[source] = currentElement.id;
+
+    if (this.ids.lesson && this.ids.subject && this.ids.teacher) {
+      this.submitEnabled = true;
+    }    
+  }
+
+  removeId(source: 'subject' | 'lesson' | 'teacher') {
+    this.ids[source] = '';
+    this.submitEnabled = false;    
   }
 
   onFocus() {
     this.suggestions = [];
   }
 
-  onSubmitModal(modalForm: NgForm) {
+  onSubmitModal(modalForm: NgForm) {    
     // Get data from the form
     // Create timetable entry but do not send it to the backend
     // Save the returned output into this.timetable[this.currentRow][this.currentCol]

@@ -1,8 +1,9 @@
-import { AutoComplete } from "./auto-complete.model";
+import { AutoComplete } from "../auto-complete.model";
 
-export class Lesson implements AutoComplete {
+export class LessonResponse implements AutoComplete {
     private _autoCompleteIdentifier = '';
     constructor(
+        public id: string,
         public from: string,
         public durationInMinutes: number
     ) { };

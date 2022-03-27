@@ -3,6 +3,7 @@ import { AutoComplete } from "../auto-complete.model";
 export class TeacherResponse implements AutoComplete {
     private _autoCompleteIdentifier = '';
     constructor(
+        public id: string,
         public firstName: string,
         public lastName: string,
     ) { };

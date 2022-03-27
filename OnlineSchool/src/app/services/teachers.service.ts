@@ -1,9 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
-import { AutoComplete } from '../models/auto-complete.model';
 import { TeacherResponse } from '../models/response/teacher-response.model';
 
 @Injectable({

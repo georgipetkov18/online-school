@@ -19,7 +19,7 @@ namespace OnlineSchoolApi.Controllers
         public async Task<IActionResult> GetAll([FromQuery] FilterInputModel filterInputModel)
         {
             var teachers = await this.teachersService.GetAllTeachersAsync(filterInputModel.Filter);
-            return Ok(teachers.Select(x => x.ToTeacherResponse()));
+            return Ok(teachers);
         }
     }
 }

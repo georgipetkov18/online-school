@@ -57,30 +57,31 @@
             <div class="mb-3">
                 <div class="modal-input-group">
                     <label for="modal-subject">Предмет *</label>
-                    <ng-autocomplete [data]="suggestions" (inputChanged)="onChangeSearch('subjects', $event)"
-                        (inputFocused)="onFocus()" [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate"
-                        id="modal-subject" name="modalSubject" ngModel>
+                    <ng-autocomplete [data]="suggestions" (inputChanged)="onChangeSearch('subject', $event)"
+                        (selected)="setId('subject', $event)" (inputCleared)="removeId('subject')" (inputFocused)="onFocus()" [itemTemplate]="itemTemplate"
+                        [notFoundTemplate]="notFoundTemplate" id="modal-subject" name="modalSubject" ngModel>
                     </ng-autocomplete>
                 </div>
 
                 <label for="modal-lesson">Час *</label>
                 <div class="modal-input-group">
-                    <ng-autocomplete [data]="suggestions" (inputChanged)="onChangeSearch('lessons', $event)"
-                        (inputFocused)="onFocus()" [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate"
-                        id="modal-lesson" name="modalLesson" ngModel>
+                    <ng-autocomplete [data]="suggestions" (inputChanged)="onChangeSearch('lesson', $event)"
+                        (selected)="setId('lesson', $event)" (inputCleared)="removeId('lesson')" (inputFocused)="onFocus()" [itemTemplate]="itemTemplate"
+                        [notFoundTemplate]="notFoundTemplate" id="modal-lesson" name="modalLesson" ngModel>
                     </ng-autocomplete>
                 </div>
                 <label for="modal-teacher">Учител *</label>
                 <div class="modal-input-group">
-                    <ng-autocomplete [data]="suggestions" (inputChanged)="onChangeSearch('teachers', $event)"
-                        (inputFocused)="onFocus()" [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate"
-                        id="modal-teacher" name="modalTeacher" ngModel>
+                    <ng-autocomplete [data]="suggestions" (inputChanged)="onChangeSearch('teacher', $event)"
+                        (selected)="setId('teacher', $event)" (inputCleared)="removeId('teacher')" (inputFocused)="onFocus()" [itemTemplate]="itemTemplate"
+                        [notFoundTemplate]="notFoundTemplate" id="modal-teacher" name="modalTeacher" ngModel>
                     </ng-autocomplete>
                 </div>
             </div>
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="onSubmitModal(modalForm)">Създай</button>
+        <button type="button" class="btn btn-outline-dark" (click)="onSubmitModal(modalForm)"
+            [disabled]="!submitEnabled">Създай</button>
     </div>
 </ng-template>
