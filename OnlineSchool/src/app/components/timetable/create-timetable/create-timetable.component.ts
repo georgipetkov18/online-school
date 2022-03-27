@@ -71,9 +71,11 @@ export class CreateTimetableComponent implements OnInit {
 
   onSubmitModal(modalForm: NgForm) {
     // Get data from the form
-    // Call the creaty timetable entry endpoint
+    // Create timetable entry but do not send it to the backend
     // Save the returned output into this.timetable[this.currentRow][this.currentCol]
     // Close modal
+    this.currentRow = -1;
+    this.currentCol = -1;
   }
 
   private updateTable() {

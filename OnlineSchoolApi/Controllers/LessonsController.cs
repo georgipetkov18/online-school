@@ -17,6 +17,13 @@ namespace OnlineSchoolApi.Controllers
             this.lessonService = lessonService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] FilterInputModel filterInputModel)
+        {
+            var lessons = await this.lessonService.GetAllLessonsAsync(filterInputModel.Filter);
+            return Ok(lessons);
+        }
+
         [HttpGet("{lessonId}")]
         public async Task<IActionResult> Get(Guid lessonId)
         {

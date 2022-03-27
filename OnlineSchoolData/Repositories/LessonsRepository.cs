@@ -38,6 +38,16 @@ namespace OnlineSchoolData.Repositories
             await this.context.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<Lesson>> GetAllLessonsAsync(string filter)
+        {
+            var lessonEntities = await this.context.Lessons
+                .Where(s => s.From.ToString().Contains(filter))
+                .AsNoTracking()
+                .ToListAsync();
+
+            return lessonEntities.Select(l => l.ToLesson());
+        }
+
         public async Task<Lesson> GetLessonAsync(Guid lessonId)
         {
             var lessonEntity = await this.GetLessonByIdAsync(lessonId, false);

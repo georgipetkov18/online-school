@@ -55,23 +55,28 @@
     <div class="modal-body">
         <form #modalForm="ngForm">
             <div class="mb-3">
-                <label for="modal-subject">Предмет *</label>
-                <ng-autocomplete [data]="suggestions" (inputChanged)="onChangeSearch('subjects', $event)"
-                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate" id="modal-subject"
-                    name="modalSubject" ngModel>
-                </ng-autocomplete>
+                <div class="modal-input-group">
+                    <label for="modal-subject">Предмет *</label>
+                    <ng-autocomplete [data]="suggestions" (inputChanged)="onChangeSearch('subjects', $event)"
+                        [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate" id="modal-subject"
+                        name="modalSubject" ngModel>
+                    </ng-autocomplete>
+                </div>
 
                 <label for="modal-lesson">Час *</label>
-                <ng-autocomplete [data]="[suggestions]" (inputChanged)="onChangeSearch('lessons', $event)"
-                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate" id="modal-lesson"
-                    name="modalLesson" ngModel>
-                </ng-autocomplete>
-
+                <div class="modal-input-group">
+                    <ng-autocomplete [data]="[suggestions]" (inputChanged)="onChangeSearch('lessons', $event)"
+                        [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate" id="modal-lesson"
+                        name="modalLesson" ngModel>
+                    </ng-autocomplete>
+                </div>
                 <label for="modal-teacher">Учител *</label>
-                <ng-autocomplete [data]="[suggestions]" (inputChanged)="onChangeSearch('teachers', $event)"
-                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate" id="modal-teacher"
-                    name="modalTeacher" ngModel>
-                </ng-autocomplete>
+                <div class="modal-input-group">
+                    <ng-autocomplete [data]="[suggestions]" (inputChanged)="onChangeSearch('teachers', $event)"
+                        [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate" id="modal-teacher"
+                        name="modalTeacher" ngModel>
+                    </ng-autocomplete>
+                </div>
             </div>
         </form>
     </div>
