@@ -5,12 +5,12 @@ import { Observable } from 'rxjs';
 
 import { TimetableEntryRequest } from 'src/app/models/request/timetable-entry-request.model';
 import { SubjectsService } from 'src/app/services/subjects.service';
-import { SubjectResponse } from 'src/app/models/response/subject-response.model';
 import { LessonsService } from 'src/app/services/lessons.service';
 import { TeachersService } from 'src/app/services/teachers.service';
-import { TeacherResponse } from 'src/app/models/response/teacher-response.model';
-import { Lesson } from 'src/app/models/lesson.model';
 import { AutoComplete } from 'src/app/models/auto-complete.model';
+import { Lesson } from 'src/app/models/lesson.model';
+import { SubjectResponse } from 'src/app/models/response/subject-response.model';
+import { TeacherResponse } from 'src/app/models/response/teacher-response.model';
 
 @Component({
   selector: 'app-create-timetable',
@@ -53,7 +53,7 @@ export class CreateTimetableComponent implements OnInit {
   }
 
   onChangeSearch(source: 'subjects' | 'lessons' | 'teachers', search: string) {
-    let suggestionsObs: Observable<AutoComplete[]> = new Observable();
+    let suggestionsObs: Observable<Lesson[] | SubjectResponse[] | TeacherResponse[]> = new Observable();
 
     switch (source) {
       case 'subjects':
@@ -81,12 +81,8 @@ export class CreateTimetableComponent implements OnInit {
         break;
     }
     suggestionsObs.subscribe({
-      next: suggestions => {
-        console.log(suggestions);
-        
-        this.suggestions = suggestions.map(s => s.autoCompleteIdentifier);
-        console.log(this.suggestions);
-        
+      next: suggestions => {                
+        this.suggestions = suggestions.map(s => s.autoCompleteIdentifier);               
       }
     })
   }
