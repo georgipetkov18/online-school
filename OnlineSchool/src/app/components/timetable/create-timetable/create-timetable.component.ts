@@ -11,6 +11,10 @@ import { LessonResponse } from 'src/app/models/response/lesson-response.model';
 import { SubjectResponse } from 'src/app/models/response/subject-response.model';
 import { TeacherResponse } from 'src/app/models/response/teacher-response.model';
 import { AutoComplete } from 'src/app/models/auto-complete.model';
+import { ToastrService } from 'ngx-toastr';
+import { TimetableValue } from 'src/app/models/timetable-value.model';
+import { ClassResponse } from 'src/app/models/response/class-response.model';
+import { ClassesService } from 'src/app/services/classes.service';
 
 @Component({
   selector: 'app-create-timetable',
@@ -18,11 +22,13 @@ import { AutoComplete } from 'src/app/models/auto-complete.model';
   styleUrls: ['./create-timetable.component.css']
 })
 export class CreateTimetableComponent implements OnInit {
-  public daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  public daysOfWeek: DayOfWeek[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   public lessonsCount = 7;
   public suggestions: string[] = [];
   public lessonsArray: number[] = [];
-  public timetable: (TimetableEntryRequest | null)[][] = [];
+  public timetable: (TimetableValue | null)[][] = [];
+  public classes: ClassResponse[] = [];
+  public classesNames: string[] = [];
   public submitEnabled = false;
   private modalRef!: NgbModalRef;
   private currentRow = -1;
@@ -32,13 +38,16 @@ export class CreateTimetableComponent implements OnInit {
     subject: '',
     lesson: '',
     teacher: '',
+    class: '',
   }
 
   constructor(
     private modalService: NgbModal,
+    private toastr: ToastrService,
     private subjectsService: SubjectsService,
     private lessonsService: LessonsService,
-    private teachersService: TeachersService) { }
+    private teachersService: TeachersService,
+    private classesService: ClassesService) { }
 
   ngOnInit(): void {
     this.lessonsArray = Array(this.lessonsCount).fill(0).map((_, i) => i);
@@ -57,6 +66,16 @@ export class CreateTimetableComponent implements OnInit {
     this.currentRow = row;
     this.currentCol = col;
     this.modalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  onFilterClasses(search: string) {
+    if (search === '') {
+      return;
+    }
+    this.classesService.getAllClasses(search).subscribe(classes => {
+      this.classes = classes;
+      this.classesNames = classes.map(c => c.name);
+    })
   }
 
   onChangeSearch(source: 'subject' | 'lesson' | 'teacher', search: string) {
@@ -92,15 +111,25 @@ export class CreateTimetableComponent implements OnInit {
     }
     suggestionsObs.subscribe({
       next: suggestions => {
-        this.suggestionsFull = suggestions;          
+        this.suggestionsFull = suggestions;
         this.suggestions = suggestions.map(s => s.autoCompleteIdentifier);
       }
     })
   }
 
+  setClassId(value: string) {
+    const currentElement = this.classes.find(s => s.name === value);
+    if (!currentElement) {
+      this.ids.class = '';
+      this.submitEnabled = false;
+      return;
+    }
+    this.ids.class = currentElement.id;
+  }
+
   setId(source: 'subject' | 'lesson' | 'teacher', value: string) {
     const currentElement = this.suggestionsFull.find(s => s.autoCompleteIdentifier === value);
-    
+
     if (!currentElement) {
       this.ids[source] = '';
       this.submitEnabled = false;
@@ -110,23 +139,40 @@ export class CreateTimetableComponent implements OnInit {
 
     if (this.ids.lesson && this.ids.subject && this.ids.teacher) {
       this.submitEnabled = true;
-    }    
+    }
   }
 
   removeId(source: 'subject' | 'lesson' | 'teacher') {
     this.ids[source] = '';
-    this.submitEnabled = false;    
+    this.submitEnabled = false;
   }
 
   onFocus() {
     this.suggestions = [];
   }
 
-  onSubmitModal(modalForm: NgForm) {    
-    // Get data from the form
-    // Create timetable entry but do not send it to the backend
-    // Save the returned output into this.timetable[this.currentRow][this.currentCol]
-    // Close modal
+  onSubmitModal(modalForm: NgForm) {
+    if (modalForm.invalid) {
+      this.toastr.error('Въведени са невалидни данни');
+      return;
+    }
+    const subject = modalForm.value['modalSubject'];
+    const lesson = modalForm.value['modalLesson'];
+    const teacher = modalForm.value['modalTeacher'];
+    const timetableEntry = new TimetableEntryRequest(
+      this.daysOfWeek[this.currentCol],
+      this.ids.subject,
+      this.ids.lesson,
+      this.ids.class,
+      this.ids.teacher);
+
+    const timetableValue = new TimetableValue([
+      subject, lesson, teacher
+    ], timetableEntry);
+
+    this.timetable[this.currentRow][this.currentCol] = timetableValue;
+
+    this.modalRef.close();
     this.currentRow = -1;
     this.currentCol = -1;
   }
@@ -136,3 +182,5 @@ export class CreateTimetableComponent implements OnInit {
   }
 
 }
+
+export type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday';

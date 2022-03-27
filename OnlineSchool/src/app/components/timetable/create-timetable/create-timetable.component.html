@@ -1,3 +1,13 @@
+<div class="buttons text-center">
+    <button class="btn btn-primary" (click)="addRow()">Добави
+        час</button>
+
+    <label for="userSpecific">Клас</label>
+    <ng-autocomplete [data]="classesNames" (inputChanged)="onFilterClasses($event)" [itemTemplate]="itemTemplate" (selected)="setClassId($event)"
+        [notFoundTemplate]="notFoundTemplate" id="userSpecific" name="userSpecific" ngModel>
+    </ng-autocomplete>
+</div>
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -26,18 +36,15 @@
                     </svg>
 
                     <div *ngIf="timetable[number][j]" class="table-entry-filled">
-                        Hello
+                        <p *ngFor="let row of timetable[number][j]?.rowsToDisplay">
+                            {{row}}
+                        </p>
                     </div>
                 </div>
             </td>
         </tr>
     </tbody>
 </table>
-
-<div class="buttons text-center">
-    <button class="btn btn-primary" (click)="addRow()">Добави
-        час</button>
-</div>
 
 <ng-template #itemTemplate let-item>
     <a [innerHTML]="item"></a>
@@ -58,23 +65,26 @@
                 <div class="modal-input-group">
                     <label for="modal-subject">Предмет *</label>
                     <ng-autocomplete [data]="suggestions" (inputChanged)="onChangeSearch('subject', $event)"
-                        (selected)="setId('subject', $event)" (inputCleared)="removeId('subject')" (inputFocused)="onFocus()" [itemTemplate]="itemTemplate"
-                        [notFoundTemplate]="notFoundTemplate" id="modal-subject" name="modalSubject" ngModel>
+                        (selected)="setId('subject', $event)" (inputCleared)="removeId('subject')"
+                        (inputFocused)="onFocus()" [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate"
+                        id="modal-subject" name="modalSubject" ngModel>
                     </ng-autocomplete>
                 </div>
 
-                <label for="modal-lesson">Час *</label>
+                <label for="modal-lesson">Начало на часа *</label>
                 <div class="modal-input-group">
                     <ng-autocomplete [data]="suggestions" (inputChanged)="onChangeSearch('lesson', $event)"
-                        (selected)="setId('lesson', $event)" (inputCleared)="removeId('lesson')" (inputFocused)="onFocus()" [itemTemplate]="itemTemplate"
-                        [notFoundTemplate]="notFoundTemplate" id="modal-lesson" name="modalLesson" ngModel>
+                        (selected)="setId('lesson', $event)" (inputCleared)="removeId('lesson')"
+                        (inputFocused)="onFocus()" [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate"
+                        id="modal-lesson" name="modalLesson" ngModel>
                     </ng-autocomplete>
                 </div>
                 <label for="modal-teacher">Учител *</label>
                 <div class="modal-input-group">
                     <ng-autocomplete [data]="suggestions" (inputChanged)="onChangeSearch('teacher', $event)"
-                        (selected)="setId('teacher', $event)" (inputCleared)="removeId('teacher')" (inputFocused)="onFocus()" [itemTemplate]="itemTemplate"
-                        [notFoundTemplate]="notFoundTemplate" id="modal-teacher" name="modalTeacher" ngModel>
+                        (selected)="setId('teacher', $event)" (inputCleared)="removeId('teacher')"
+                        (inputFocused)="onFocus()" [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate"
+                        id="modal-teacher" name="modalTeacher" ngModel>
                     </ng-autocomplete>
                 </div>
             </div>
