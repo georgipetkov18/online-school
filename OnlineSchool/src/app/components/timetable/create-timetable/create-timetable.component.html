@@ -11,9 +11,14 @@
     </thead>
     <tbody>
         <tr class="content-row" *ngFor="let number of lessonsArray">
-            <td class="table-entry">{{number}}</td>
+            <td class="table-entry">
+                <div class="table-entry-container">
+                    {{number}}
+                </div>
+            </td>
+            
             <td *ngFor="let day of daysOfWeek" class="table-entry">
-                <div class="icon-container">
+                <div class="table-entry-container">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-plus-circle-dotted"
                         viewBox="0 0 16 16">
                         <path
