@@ -7,7 +7,6 @@ import { TimetableEntryRequest } from 'src/app/models/request/timetable-entry-re
 import { SubjectsService } from 'src/app/services/subjects.service';
 import { LessonsService } from 'src/app/services/lessons.service';
 import { TeachersService } from 'src/app/services/teachers.service';
-import { AutoComplete } from 'src/app/models/auto-complete.model';
 import { Lesson } from 'src/app/models/lesson.model';
 import { SubjectResponse } from 'src/app/models/response/subject-response.model';
 import { TeacherResponse } from 'src/app/models/response/teacher-response.model';
