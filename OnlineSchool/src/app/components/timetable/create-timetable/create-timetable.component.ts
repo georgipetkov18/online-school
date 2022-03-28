@@ -25,7 +25,7 @@ import { Router } from '@angular/router';
 })
 export class CreateTimetableComponent implements OnInit {
   public daysOfWeek: DayOfWeek[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-  public lessonsCount = 7;
+  public lessonsCount = 1;
   public suggestions: string[] = [];
   public lessonsArray: number[] = [];
   public timetable: (TimetableValue | null)[][] = [];
@@ -123,7 +123,6 @@ export class CreateTimetableComponent implements OnInit {
 
   setClassId(value: string) {
     const currentElement = this.classes.find(s => s.name === value);
-    console.log('current ', currentElement);
     
     if (!currentElement) {
       this.ids.class = '';
