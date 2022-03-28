@@ -15,6 +15,8 @@ import { ToastrService } from 'ngx-toastr';
 import { TimetableValue } from 'src/app/models/timetable-value.model';
 import { ClassResponse } from 'src/app/models/response/class-response.model';
 import { ClassesService } from 'src/app/services/classes.service';
+import { TimetableService } from 'src/app/services/timetable.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-timetable',
@@ -47,7 +49,9 @@ export class CreateTimetableComponent implements OnInit {
     private subjectsService: SubjectsService,
     private lessonsService: LessonsService,
     private teachersService: TeachersService,
-    private classesService: ClassesService) { }
+    private classesService: ClassesService,
+    private timetableService: TimetableService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.lessonsArray = Array(this.lessonsCount).fill(0).map((_, i) => i);
@@ -119,12 +123,16 @@ export class CreateTimetableComponent implements OnInit {
 
   setClassId(value: string) {
     const currentElement = this.classes.find(s => s.name === value);
+    console.log('current ', currentElement);
+    
     if (!currentElement) {
       this.ids.class = '';
       this.submitEnabled = false;
       return;
     }
     this.ids.class = currentElement.id;
+    console.log(this.ids);
+    
   }
 
   setId(source: 'subject' | 'lesson' | 'teacher', value: string) {
@@ -175,6 +183,30 @@ export class CreateTimetableComponent implements OnInit {
     this.modalRef.close();
     this.currentRow = -1;
     this.currentCol = -1;
+  }
+
+  saveProgramme() {
+    const entries: TimetableEntryRequest[] = []; 
+    for (let i = 0; i < this.timetable.length; i++) {
+      const row = this.timetable[i];
+      for (let j = 0; j < row.length; j++) {
+        const value = row[j];
+        if (value) {
+          value.entry.classId = this.ids.class;
+          entries.push(value.entry);
+        }
+      }
+    }
+    
+    this.timetableService.addTimetable(entries).subscribe({
+      next: () => {
+        this.toastr.success('Програмата беше създадена успешно');
+        this.router.navigate(['/', 'timetable', 'create'])
+      },
+      error: errorMessage => {
+        this.toastr.error(errorMessage);
+      }
+    })
   }
 
   private updateTable() {

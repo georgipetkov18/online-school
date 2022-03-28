@@ -43,3 +43,22 @@ table {
 .modal-input-group {
     margin-bottom: 1rem;
 }
+
+.buttons {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    margin-bottom: 2rem;
+}
+
+.buttons .input-group {
+    max-width: 20rem;
+}
+
+.buttons button {
+    height: min-content;
+}
+
+.buttons-item button {
+    margin-right: 1rem;
+}

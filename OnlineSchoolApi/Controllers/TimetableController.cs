@@ -6,7 +6,6 @@ using OnlineSchoolBusinessLogic.Interfaces;
 
 namespace OnlineSchoolApi.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class TimetableController : ControllerBase

@@ -1,11 +1,22 @@
 <div class="buttons text-center">
-    <button class="btn btn-primary" (click)="addRow()">Добави
-        час</button>
+    <div class="buttons-item">
+        <button class="btn btn-primary" (click)="addRow()">
+            Добави час
+        </button>
+        <button class="btn btn-success" (click)="saveProgramme()">
+            Запази програма
+        </button>
+    </div>
 
-    <label for="userSpecific">Клас</label>
-    <ng-autocomplete [data]="classesNames" (inputChanged)="onFilterClasses($event)" [itemTemplate]="itemTemplate" (selected)="setClassId($event)"
-        [notFoundTemplate]="notFoundTemplate" id="userSpecific" name="userSpecific" ngModel>
-    </ng-autocomplete>
+    <div class="buttons-item">
+        <div class="input-group">
+            <label for="userSpecific">Клас</label>
+            <ng-autocomplete [data]="classesNames" (inputChanged)="onFilterClasses($event)"
+                [itemTemplate]="itemTemplate" (selected)="setClassId($event)" [notFoundTemplate]="notFoundTemplate"
+                id="userSpecific" name="userSpecific" ngModel>
+            </ng-autocomplete>
+        </div>
+    </div>
 </div>
 
 <table class="table table-striped">

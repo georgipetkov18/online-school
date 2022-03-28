@@ -34,10 +34,10 @@ namespace OnlineSchoolData.Mappers
         {
             return new TimetableEntity
             {
-                Subject = timetableEntry.Subject.ToSubjectEntity(),
-                Lesson = timetableEntry.Lesson.ToLessonEntity(),
-                Class = timetableEntry.Class.ToClassEntity(),
-                Teacher = new TeacherEntity { Id = timetableEntry.Teacher.Id },
+                SubjectId = timetableEntry.SubjectId,
+                LessonId = timetableEntry.LessonId,
+                ClassId = timetableEntry.ClassId,
+                TeacherId = timetableEntry.TeacherId,
                 Day = Enum.Parse<DayOfWeek>(timetableEntry.DayOfWeek),
             };
         }

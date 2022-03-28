@@ -8,7 +8,8 @@ export const environment = {
     subjects: '/api/subjects',
     classes: '/api/classes',
     lessons: '/api/lessons',
-    teachers: '/api/teachers'
+    teachers: '/api/teachers',
+    timetable: '/api/timetable',
   }
 };
 

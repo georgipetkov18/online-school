@@ -21,25 +21,25 @@ namespace OnlineSchoolData.Repositories
             var classExists = await this.context.Classes.AnyAsync(c => c.Id == timetableEntry.ClassId);
             if (!classExists)
             {
-                throw new ArgumentException("Class does not exist");
+                throw new ArgumentException("Класът не съществува");
             }
 
             var subjectExists = await this.context.Subjects.AnyAsync(c => c.Id == timetableEntry.SubjectId);
             if (!subjectExists)
             {
-                throw new ArgumentException("Subject does not exist");
+                throw new ArgumentException("Предметът не съществува");
             }
 
             var lessonExists = await this.context.Lessons.AnyAsync(c => c.Id == timetableEntry.LessonId);
             if (!lessonExists)
             {
-                throw new ArgumentException("Lesson does not exist");
+                throw new ArgumentException("Учебният час не съществува");
             }
 
             var teacherExists = await this.context.Teachers.AnyAsync(c => c.Id == timetableEntry.TeacherId);
             if (!teacherExists)
             {
-                throw new ArgumentException("Teacher does not exist");
+                throw new ArgumentException("Учителят не съществува");
             }
             await this.context.Timetable.AddAsync(timetableEntry.ToTimetableEntity());
             await this.context.SaveChangesAsync();
