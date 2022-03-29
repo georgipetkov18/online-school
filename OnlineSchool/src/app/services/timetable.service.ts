@@ -15,7 +15,10 @@ export class TimetableService {
   constructor(private http: HttpClient, private usersService: UsersService) { }
 
   public addTimetable(entries: TimetableEntryRequest[]) {
-    return this.http.post<void>(`${environment.routes.timetable}/add`, { entries }).pipe(
+    const token = this.usersService.getCurrentUserToken();
+    return this.http.post<void>(`${environment.routes.timetable}/add`, { entries }, {
+      headers: new HttpHeaders().append('Authorization', `Bearer ${token}`)
+    }).pipe(
       catchError(error => {
         let errorMessage = 'Нещо се обърка';
         if (error && error.error && error.error.Input) {
@@ -31,10 +34,6 @@ export class TimetableService {
 
   public getTimetable() {
     const token = this.usersService.getCurrentUserToken();
-    if (!token) {
-      throw new Error('Няма регистрран потребител');
-    }
-
     return this.http.get<FullTimetable>(environment.routes.timetable + '/Full', {
       headers: new HttpHeaders().append('Authorization', `Bearer ${token}`)
     });

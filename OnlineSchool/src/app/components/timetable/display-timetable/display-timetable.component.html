@@ -1,1 +1,22 @@
-<p>Display timetable works</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col" class="table-col">Понеделник</th>
+            <th scope="col" class="table-col">Вторник</th>
+            <th scope="col" class="table-col">Сряда</th>
+            <th scope="col" class="table-col">Четвъртък</th>
+            <th scope="col" class="table-col">Петък</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="content-row" *ngFor="let row of rows">
+            <td class="table-entry">
+                <div class="table-entry-container">
+                    <div class="table-entry-filled">
+                       test
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
