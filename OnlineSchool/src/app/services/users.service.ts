@@ -61,6 +61,10 @@ export class UsersService {
     }
   }
 
+  public getCurrentUserToken() {
+    return sessionStorage.getItem('token');
+  }
+
   private refreshToken() {
     this.http.post<AuthenticateResponse>('/api/refresh-token', {}, {
       headers: new HttpHeaders().append('Authorization', `Bearer ${sessionStorage.getItem('token')}`)

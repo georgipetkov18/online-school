@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TimetableService } from 'src/app/services/timetable.service';
 
 @Component({
   selector: 'app-display-timetable',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DisplayTimetableComponent implements OnInit {
 
-  constructor() { }
+  constructor(private timetableService: TimetableService) { }
 
   ngOnInit(): void {
+    // Try catch this
+    this.timetableService.getTimetable().subscribe(timetable => console.log(timetable))
   }
 
 }

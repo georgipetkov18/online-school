@@ -1,22 +1,22 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { FullTimetable } from '../models/full-timetable.model';
 import { TimetableEntryRequest } from '../models/request/timetable-entry-request.model';
+import { UsersService } from './users.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimetableService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private usersService: UsersService) { }
 
   public addTimetable(entries: TimetableEntryRequest[]) {
     return this.http.post<void>(`${environment.routes.timetable}/add`, { entries }).pipe(
       catchError(error => {
-        console.log(error);
-        
         let errorMessage = 'Нещо се обърка';
         if (error && error.error && error.error.Input) {
           errorMessage = error.error.Input[0];
@@ -27,5 +27,16 @@ export class TimetableService {
         return throwError(errorMessage);
       })
     );
+  }
+
+  public getTimetable() {
+    const token = this.usersService.getCurrentUserToken();
+    if (!token) {
+      throw new Error('Няма регистрран потребител');
+    }
+
+    return this.http.get<FullTimetable>(environment.routes.timetable + '/Full', {
+      headers: new HttpHeaders().append('Authorization', `Bearer ${token}`)
+    });
   }
 }
