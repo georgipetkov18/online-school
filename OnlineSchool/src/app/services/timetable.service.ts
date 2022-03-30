@@ -53,9 +53,9 @@ export class TimetableService {
       entries.push([]);
       Object.values(timetable).forEach(value => {
         const current = value[i];
-        if (current) {
+        // if (current) {
           entries[i].push(current);
-        }
+        // }
       })
     }
     return entries;
