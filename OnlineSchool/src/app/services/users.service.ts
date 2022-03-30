@@ -44,8 +44,6 @@ export class UsersService {
         catchError((error: HttpErrorResponse) => {
           let errorMessage = 'Нещо се обърка!';
           if (error.error && error.error.User) {
-            console.log(error.error.User[0]);
-
             errorMessage = error.error.User[0];
           }
 
@@ -65,7 +63,7 @@ export class UsersService {
     return sessionStorage.getItem('token');
   }
 
-  private refreshToken() {
+  public refreshToken() {
     this.http.post<AuthenticateResponse>('/api/refresh-token', {}, {
       headers: new HttpHeaders().append('Authorization', `Bearer ${sessionStorage.getItem('token')}`)
     }).subscribe({
