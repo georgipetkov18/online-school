@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FullTimetable } from 'src/app/models/full-timetable.model';
+import { TimetableEntryResponse } from 'src/app/models/response/timetable-entry-response.model';
 import { TimetableService } from 'src/app/services/timetable.service';
+import { DayOfWeek } from '../create-timetable/create-timetable.component';
 
 @Component({
   selector: 'app-display-timetable',
@@ -8,24 +10,15 @@ import { TimetableService } from 'src/app/services/timetable.service';
   styleUrls: ['./display-timetable.component.css']
 })
 export class DisplayTimetableComponent implements OnInit {
-  public timetable!: FullTimetable;
-  public rows: number[] = [];
+  public daysOfWeek: DayOfWeek[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  public data: TimetableEntryResponse[][] = [];
 
   constructor(private timetableService: TimetableService) { }
 
   ngOnInit(): void {
     // Try catch this
     this.timetableService.getTimetable().subscribe(timetable => {
-      this.timetable = timetable;
-      console.log(this.timetable);
-      
-      const maxValue = Object.values(this.timetable)
-        .map(t => t.length)
-        .reduce((acc, x) => x > acc ? x : acc);
-
-      this.rows = Array(maxValue).fill(0).map((_, i) => i);
-      
+      this.data = this.timetableService.formatTableData(timetable);
     })
   }
-
 }

@@ -9,11 +9,11 @@
         </tr>
     </thead>
     <tbody>
-        <tr class="content-row" *ngFor="let row of rows">
-            <td class="table-entry">
+        <tr class="content-row" *ngFor="let row of data; let i = index">
+            <td class="table-entry" *ngFor="let entry of data[i]">
                 <div class="table-entry-container">
                     <div class="table-entry-filled">
-                       test
+                        {{entry.name}}
                     </div>
                 </div>
             </td>
