@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ToastrModule } from 'ngx-toastr';
@@ -15,6 +15,7 @@ import { ClassesModule } from './components/classes/classes.module';
 import { TimetableModule } from './components/timetable/timetable.module';
 import { SharedModule } from './components/shared/shared.module';
 import { LessonsModule } from './components/lessons/lessons.module';
+import { SignalRService } from './services/signal-r.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,15 @@ import { LessonsModule } from './components/lessons/lessons.module';
     TimetableModule,
     SharedModule,
   ],
-  providers: [],
+  providers: [
+    SignalRService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (signalRService: SignalRService) => () => signalRService.initiateConnection(),
+      deps: [SignalRService],
+      multi: true,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

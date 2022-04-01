@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OnlineSchoolBusinessLogic.Common;
+using OnlineSchoolBusinessLogic.Hubs;
 using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolBusinessLogic.Services;
 using OnlineSchoolData;
@@ -31,6 +32,7 @@ builder.Services.AddScoped<ITeachersRepository, TeachersRepository>();
 builder.Services.AddScoped<ITeachersService, TeachersService>();
 
 
+builder.Services.AddSignalR();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineSchool"));
@@ -114,11 +116,20 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
 app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapControllers();
+//app.MapControllers();
+
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<TimetableHub>("api/timetableHub");
+});
 
 using var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetService<ApplicationDbContext>()!;

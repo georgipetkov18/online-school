@@ -15,6 +15,8 @@ namespace OnlineSchoolBusinessLogic.Interfaces
 
         Task<TimetableEntry?> GetCurrentEntryAsync(ClaimsPrincipal user);
 
+        Task<TimetableEntriesInfo> GetEntriesInfoAsync(ClaimsPrincipal user);
+
         Task AddTimetableEntryAsync(TimetableEntry timetableEntry);
 
         Task AddTimetable(IEnumerable<TimetableEntry> timetable);

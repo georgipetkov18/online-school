@@ -42,13 +42,29 @@ namespace OnlineSchoolBusinessLogic.Services
             return await this.timetableRepository.GetEntriesByDayOfWeekAsync(userId, dayOfWeek);
         }
 
+        public async Task<TimetableEntriesInfo> GetEntriesInfoAsync(ClaimsPrincipal user)
+        {
+            var userId = GetId(user);
+            var current = await this.timetableRepository.GetCurrentEntryAsync(userId);
+            var next = await this.timetableRepository.GetNextEntryAsync(userId);
+            var now = DateTime.Now;
+            var sendInfoAfter = next?.Lesson.From - new TimeSpan(now.Hour, now.Minute, now.Second);
+            return new TimetableEntriesInfo 
+            { 
+                //SendInfoAfter = sendInfoAfter is null ? new TimeSpan() : sendInfoAfter.Value,
+                SendInfoAfter = TimeSpan.FromSeconds(5),
+                Current = current, 
+                Next = next 
+            };
+        }
+
         public async Task<TimetableEntry?> GetNextEntryAsync(ClaimsPrincipal user)
         {
             var userId = GetId(user);
             return await this.timetableRepository.GetNextEntryAsync(userId);
         }
 
-        public async Task<IEnumerable<IGrouping<string, TimetableEntry>>> GetTimetableAsync(ClaimsPrincipal user) 
+        public async Task<IEnumerable<IGrouping<string, TimetableEntry>>> GetTimetableAsync(ClaimsPrincipal user)
         {
             var userId = GetId(user);
             var timetable = await this.timetableRepository.GetTimetableAsync(userId);
