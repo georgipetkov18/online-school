@@ -1,8 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from './services/users.service';
-import { HubConnectionBuilder } from '@microsoft/signalr';
-import { environment } from 'src/environments/environment';
 import { SignalRService } from './services/signal-r.service';
 
 @Component({
@@ -21,7 +18,7 @@ export class AppComponent implements OnInit {
       console.log(hubHelloMessage);
     });
 
-    this.signalRService.connection.invoke('SendInfoHandler')
+    this.signalRService.connection.invoke('GetData')
   }
 
   title = 'OnlineSchool';

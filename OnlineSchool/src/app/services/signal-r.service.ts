@@ -33,8 +33,8 @@ export class SignalRService {
   }
 
   private setClientMethods(): void {
-    this.connection.on('SendInfo', (message: string) => {
-      console.log('get data ', message);
+    this.connection.on('Test', (message: string) => {
+      console.log(message);
       
       this.hubHelloMessage.next(message);
     });

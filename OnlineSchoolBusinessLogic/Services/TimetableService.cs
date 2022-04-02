@@ -50,9 +50,8 @@ namespace OnlineSchoolBusinessLogic.Services
             var now = DateTime.Now;
             var sendInfoAfter = next?.Lesson.From - new TimeSpan(now.Hour, now.Minute, now.Second);
             return new TimetableEntriesInfo 
-            { 
-                //SendInfoAfter = sendInfoAfter is null ? new TimeSpan() : sendInfoAfter.Value,
-                SendInfoAfter = TimeSpan.FromSeconds(5),
+            {
+                SendInfoAfter = sendInfoAfter is null ? new TimeSpan() : sendInfoAfter.Value,
                 Current = current, 
                 Next = next 
             };
