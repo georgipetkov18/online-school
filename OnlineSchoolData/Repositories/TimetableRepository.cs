@@ -76,7 +76,7 @@ namespace OnlineSchoolData.Repositories
 
             var currentEntry = currentDayEntries
                 .OrderByDescending(x => x.Lesson.From)
-                .FirstOrDefault(x => x.Lesson.From <= nowTimeSpan && x.Lesson.From.Add(new TimeSpan(0, x.Lesson.DurationInMinutes, 0)) >= nowTimeSpan);
+                .FirstOrDefault(x => x.Lesson.From <= nowTimeSpan && x.Lesson.From.Add(TimeSpan.FromMinutes(x.Lesson.DurationInMinutes)) > nowTimeSpan);
 
             return currentEntry;
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolBusinessLogic.Models;
 
@@ -10,10 +11,12 @@ namespace OnlineSchoolBusinessLogic.Hubs
     public class TimetableHub : Hub<ITimetableHub>
     {
         private readonly ITimetableService timetableService;
+        private readonly ILogger<ITimetableService> logger;
 
-        public TimetableHub(ITimetableService timetableService)
+        public TimetableHub(ITimetableService timetableService, ILogger<ITimetableService> logger)
         {
             this.timetableService = timetableService;
+            this.logger = logger;
         }
 
         public async Task GetData()
@@ -30,9 +33,17 @@ namespace OnlineSchoolBusinessLogic.Hubs
                 {
                     try
                     {
-                        var delay = info.Next is null ? await GetFutureDayDelayAsync() : GetDelay(info.Next);
-                        await Task.Delay(delay);
-                        await OnLessonBegan();
+                        if (info.Next is not null)
+                        {
+                            var delay = GetDelay(info.Next);
+                            await Clients.Caller.WaitingForLesson(info.Next);
+                            await Task.Delay(delay);
+                            await OnLessonBegan();
+                        }
+                        else
+                        {
+                            await OnLastLessonEnded();
+                        }
                     }
                     catch (ArgumentNullException)
                     {
@@ -53,12 +64,7 @@ namespace OnlineSchoolBusinessLogic.Hubs
 
         private async Task OnLessonEnded(TimetableEntriesInfo info)
         {
-            if (info.Next is null)
-            {
-                await Clients.Caller.LastLessonEnded();
-                await OnLessonBegan();
-            }
-            else
+            if (info.Next is not null)
             {
                 await Clients.Caller.LessonEnded();
                 var now = DateTime.Now;
@@ -66,6 +72,19 @@ namespace OnlineSchoolBusinessLogic.Hubs
                 await Task.Delay(delay);
                 await OnLessonBegan();
             }
+            else
+            {
+                await OnLastLessonEnded();
+            }
+            
+        }
+
+        private async Task OnLastLessonEnded()
+        {
+            var delay = await GetFutureDayDelayAsync();
+            await Clients.Caller.LastLessonEnded();
+            await Task.Delay(delay);
+            await OnLessonBegan();
         }
 
         private TimeSpan GetDelay(TimetableEntry nextEntry)
@@ -106,6 +125,7 @@ namespace OnlineSchoolBusinessLogic.Hubs
         Task LessonBegan(TimetableEntriesInfo info);
         Task LessonEnded();
         Task LastLessonEnded();
+        Task WaitingForLesson(TimetableEntry next);
         Task NoLessons();
     }
 }

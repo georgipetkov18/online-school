@@ -5,7 +5,7 @@ namespace OnlineSchoolData.Entities
     public class LessonEntity : BaseEntity
     {
         [Required]
-        [Range(typeof(TimeSpan), "07:30", "19:00")]
+        //[Range(typeof(TimeSpan), "07:30", "19:00")]
         public TimeSpan From { get; set; }
 
         [Required]

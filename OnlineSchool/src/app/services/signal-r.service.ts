@@ -63,6 +63,10 @@ export class SignalRService {
     this.connection.on('NoLessons', () => {
       console.log('no lessons');
     });
+
+    this.connection.on('WaitingForLesson', (next) => {
+      console.log(next);
+    });
   }
 
 }
