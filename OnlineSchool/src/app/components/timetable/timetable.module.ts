@@ -9,6 +9,7 @@ import { TimetableComponent } from "./timetable.component";
 import { CreateTimetableComponent } from './create-timetable/create-timetable.component';
 import { SharedModule } from "../shared/shared.module";
 import { HourPipe } from "src/pipes/hour.pipe";
+import { TimetableInfoComponent } from './timetable-info/timetable-info.component';
 
 @NgModule({
     declarations: [
@@ -16,7 +17,8 @@ import { HourPipe } from "src/pipes/hour.pipe";
         DisplayTimetableComponent,
         EditTimetableComponent,
         CreateTimetableComponent,
-        HourPipe
+        HourPipe,
+        TimetableInfoComponent
     ],
     imports: [
         CommonModule,

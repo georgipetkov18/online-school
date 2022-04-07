@@ -32,7 +32,7 @@ namespace OnlineSchoolApi
             };
         }
 
-        public static AuthenticateResponse ToAuthenticateResponse(this AuthenticateModel authenticateModel)
+        public static AuthenticateResponse ToAuthenticateResponse(this AuthenticateModel authenticateModel, DateTimeOffset expiresAfter)
         {
             return new AuthenticateResponse
             {
@@ -40,6 +40,7 @@ namespace OnlineSchoolApi
                 Email = authenticateModel.Email,
                 Role = authenticateModel.Role,
                 JwtToken = authenticateModel.JwtToken,
+                ExpiresAfter = expiresAfter,
             };
         }
 

@@ -38,15 +38,7 @@ import { SignalRService } from './services/signal-r.service';
     TimetableModule,
     SharedModule,
   ],
-  providers: [
-    SignalRService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: (signalRService: SignalRService) => () => signalRService.initiateConnection(),
-      deps: [SignalRService],
-      multi: true,
-    }
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

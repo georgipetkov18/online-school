@@ -1,22 +1,37 @@
 import { Injectable } from '@angular/core';
-import { HubConnectionBuilder, HubConnection } from '@microsoft/signalr';
-import { BehaviorSubject } from 'rxjs';
+import { HubConnectionBuilder, HubConnection, IHttpConnectionOptions } from '@microsoft/signalr';
+import { Subject } from 'rxjs';
+
+import { TimetableEntriesInfo } from '../models/response/timetable-entries-info-response.model';
+import { UsersService } from './users.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SignalRService {
   public connection!: HubConnection;
-  public hubHelloMessage = new BehaviorSubject<string | null>(null);
+  // public hubHelloMessage = new BehaviorSubject<string | null>(null);
+  public lessonBegan = new Subject<TimetableEntriesInfo>();
+  public lessonEnded = new Subject<void>();
+  public lastLessonEnded = new Subject<void>();
 
-  constructor() {}
+  constructor(private usersService: UsersService) { }
 
-  public initiateConnection(): Promise<void>{
+  public initiateConnection(): Promise<void> {
+    const token = this.usersService.getCurrentUserToken();
+    if (token === null) {
+      throw new Error('Необходим е вход в системата');
+    }
+    const options: IHttpConnectionOptions = {
+      accessTokenFactory: () => {
+        return token;
+      }
+    }
     return new Promise((resolve, reject) => {
       this.connection = new HubConnectionBuilder()
-        .withUrl('/api/timetableHub')
+        .withUrl('/api/timetableHub', options)
         .build();
-  
+
       this.setClientMethods();
 
       this.connection
@@ -33,11 +48,17 @@ export class SignalRService {
   }
 
   private setClientMethods(): void {
-    this.connection.on('Test', (message: string) => {
-      console.log(message);
-      
-      this.hubHelloMessage.next(message);
+    this.connection.on('LessonBegan', (info: TimetableEntriesInfo) => {
+      this.lessonBegan.next(info);
+    });
+
+    this.connection.on('LessonEnded', () => {
+      this.lessonEnded.next();
+    });
+
+    this.connection.on('LastLessonEnded', () => {
+      this.lastLessonEnded.next();
     });
   }
-  
+
 }

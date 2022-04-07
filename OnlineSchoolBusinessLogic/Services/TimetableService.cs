@@ -47,11 +47,8 @@ namespace OnlineSchoolBusinessLogic.Services
             var userId = GetId(user);
             var current = await this.timetableRepository.GetCurrentEntryAsync(userId);
             var next = await this.timetableRepository.GetNextEntryAsync(userId);
-            var now = DateTime.Now;
-            var sendInfoAfter = next?.Lesson.From - new TimeSpan(now.Hour, now.Minute, now.Second);
             return new TimetableEntriesInfo 
             {
-                SendInfoAfter = sendInfoAfter is null ? new TimeSpan() : sendInfoAfter.Value,
                 Current = current, 
                 Next = next 
             };

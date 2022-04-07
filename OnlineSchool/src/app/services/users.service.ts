@@ -24,16 +24,21 @@ export class UsersService {
         catchError((error: HttpErrorResponse) => {
           let errorMessage = 'Нещо се обърка!';
           if (error.status !== 400) {
-            return throwError(() => errorMessage);
+            return throwError(errorMessage);
           }
           errorMessage = 'Въведени са невалидни данни!';
           return throwError(errorMessage);
         }),
         tap(response => {
+          console.log('after type ', typeof (response.expiresAfter));
+          console.log('after ', response.expiresAfter);
+
+          console.log('date after ', new Date(response.expiresAfter));
+
+
           this.autoRefreshToken(response.jwtToken);
           sessionStorage.setItem('token', response.jwtToken);
-        }
-        )
+        })
       );
   }
 

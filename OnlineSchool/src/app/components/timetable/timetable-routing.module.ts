@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DisplayTimetableComponent } from './display-timetable/display-timetable.component';
 import { EditTimetableComponent } from './edit-timetable/edit-timetable.component';
 import { CreateTimetableComponent } from './create-timetable/create-timetable.component';
+import { TimetableInfoComponent } from './timetable-info/timetable-info.component';
 
 const routes: Routes = [
     {
@@ -11,6 +12,7 @@ const routes: Routes = [
             {path: 'display', component: DisplayTimetableComponent},
             {path: 'edit', component: EditTimetableComponent},
             {path: 'create', component: CreateTimetableComponent},
+            {path: 'info', component: TimetableInfoComponent}
         ]
     }
 ];

@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolBusinessLogic.Models;
 
 namespace OnlineSchoolBusinessLogic.Hubs
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TimetableHub : Hub<ITimetableHub>
     {
         private readonly ITimetableService timetableService;
