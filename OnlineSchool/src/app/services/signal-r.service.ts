@@ -59,6 +59,10 @@ export class SignalRService {
     this.connection.on('LastLessonEnded', () => {
       this.lastLessonEnded.next();
     });
+
+    this.connection.on('NoLessons', () => {
+      console.log('no lessons');
+    });
   }
 
 }

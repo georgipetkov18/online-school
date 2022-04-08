@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -21,8 +21,11 @@ export class TimetableService {
     return this.http.post<void>(`${environment.routes.timetable}/add`, { entries }, {
       headers: new HttpHeaders().append('Authorization', `Bearer ${token}`)
     }).pipe(
-      catchError(error => {
+      catchError((error: HttpErrorResponse) => {
         let errorMessage = 'Нещо се обърка';
+        if (error.status === 401) {
+          errorMessage = 'Небходимо е да влезете в системата';
+        }
         if (error && error.error && error.error.Input) {
           errorMessage = error.error.Input[0];
         }

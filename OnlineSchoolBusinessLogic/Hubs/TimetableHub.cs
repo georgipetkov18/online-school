@@ -28,14 +28,25 @@ namespace OnlineSchoolBusinessLogic.Hubs
             {
                 if (info.Current is null)
                 {
-                    var delay = await GetDelayAsync();
-                    await Task.Delay(delay).ContinueWith(async state => { await OnLessonBegan(); });
+                    try
+                    {
+                        var delay = info.Next is null ? await GetFutureDayDelayAsync() : GetDelay(info.Next);
+                        await Task.Delay(delay);
+                        await OnLessonBegan();
+                    }
+                    catch (ArgumentNullException)
+                    {
+                        await Clients.Caller.NoLessons();
+                    }
                 }
                 else
                 {
                     await Clients.Caller.LessonBegan(info);
-                    await Task.Delay(TimeSpan.FromMinutes(info.Current.Lesson.DurationInMinutes))
-                        .ContinueWith(async state => { await OnLessonEnded(info); });
+                    var now = DateTime.Now;
+                    var nowSpan = new TimeSpan(now.Hour, now.Minute, now.Second);
+                    var lessonEndsSpan = info.Current.Lesson.From.Add(TimeSpan.FromMinutes(info.Current.Lesson.DurationInMinutes));
+                    await Task.Delay(lessonEndsSpan - nowSpan);
+                    await OnLessonEnded(info);
                 }
             }
         }
@@ -52,11 +63,19 @@ namespace OnlineSchoolBusinessLogic.Hubs
                 await Clients.Caller.LessonEnded();
                 var now = DateTime.Now;
                 var delay = info.Next.Lesson.From - new TimeSpan(now.Hour, now.Minute, now.Second);
-                await Task.Delay(delay).ContinueWith(async state => { await OnLessonBegan(); });
+                await Task.Delay(delay);
+                await OnLessonBegan();
             }
         }
 
-        private async Task<TimeSpan> GetDelayAsync()
+        private TimeSpan GetDelay(TimetableEntry nextEntry)
+        {
+            var now = DateTime.Now;
+            var nowSpan = new TimeSpan(now.Hour, now.Minute, now.Second);
+            return nextEntry.Lesson.From - nowSpan;
+        }
+
+        private async Task<TimeSpan> GetFutureDayDelayAsync()
         {
             var now = DateTime.Now;
             var daysToAdd = 1;
@@ -73,6 +92,10 @@ namespace OnlineSchoolBusinessLogic.Hubs
             var day = now.AddDays(daysToAdd).DayOfWeek;
             var entries = await this.timetableService.GetEntriesByDayOfWeekAsync(Context.User, day.ToString());
             var firstEntry = entries.OrderBy(x => x.Lesson.From).FirstOrDefault();
+            if (firstEntry is null)
+            {
+                throw new ArgumentNullException(nameof(firstEntry), "There are no lessons");
+            }
             var delay = firstEntry.Lesson.From.Add(TimeSpan.FromDays(daysToAdd)) - new TimeSpan(now.Hour, now.Minute, now.Second);
             return delay;
         }
@@ -83,5 +106,6 @@ namespace OnlineSchoolBusinessLogic.Hubs
         Task LessonBegan(TimetableEntriesInfo info);
         Task LessonEnded();
         Task LastLessonEnded();
+        Task NoLessons();
     }
 }
