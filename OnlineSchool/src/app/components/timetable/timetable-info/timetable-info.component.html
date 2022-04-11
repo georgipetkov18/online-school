@@ -2,22 +2,26 @@
 
 <section class="app-card-container">
     <div class="app-card">
-        <p class="app-card-name">{{current.name}}</p>
-        <p>{{current.code}}</p>
-        <p>{{current.from | hour}} - {{current.to | hour}}</p>
-        <div class="buttons">
-            <button class="btn btn-outline-success">Влез в Google Meet</button>
-            <button class="btn btn-outline-primary">Копирай кода</button>
+        <div class="app-card-content">
+            <p class="app-card-name">{{current.name}}</p>
+            <p>{{current.code}}</p>
+            <p>{{current.from | hour}} - {{current.to | hour}}</p>
+            <div class="buttons">
+                <button class="btn btn-outline-success">Влез в Google Meet</button>
+                <button class="btn btn-outline-primary">Копирай кода</button>
+            </div>
         </div>
     </div>
 
     <div class="app-card">
-        <p class="app-card-name">{{next.name}}</p>
-        <p>{{next.code}}</p>
-        <p>{{next.from | hour}} - {{next.to | hour}}</p>
-        <div class="buttons">
-            <button class="btn btn-outline-success">Влез в Google Meet</button>
-            <button class="btn btn-outline-primary">Копирай кода</button>
+        <div class="app-card-content">
+            <p class="app-card-name">{{next.name}}</p>
+            <p>{{next.code}}</p>
+            <p>{{next.from | hour}} - {{next.to | hour}}</p>
+            <div class="buttons">
+                <button class="btn btn-outline-success">Влез в Google Meet</button>
+                <button class="btn btn-outline-primary">Копирай кода</button>
+            </div>
         </div>
     </div>
 </section>
