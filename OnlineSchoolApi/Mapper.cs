@@ -115,7 +115,9 @@ namespace OnlineSchoolApi
 
             foreach (var group in groups)
             {
-                output.Add(group.Key, group.Select(e => e.ToTimetableEntryResponse()).ToList());
+                output.Add(group.Key, group.Select(e => e.ToTimetableEntryResponse())
+                    .OrderBy(r => r.From)
+                    .ToList());
             }
             return output;
         }

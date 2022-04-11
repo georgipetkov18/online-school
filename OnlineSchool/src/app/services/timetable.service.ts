@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { DayOfWeek } from '../components/timetable/create-timetable/create-timetable.component';
 import { FullTimetable } from '../models/full-timetable.model';
 import { TimetableEntryRequest } from '../models/request/timetable-entry-request.model';
 import { TimetableEntryResponse } from '../models/response/timetable-entry-response.model';
@@ -13,6 +12,13 @@ import { UsersService } from './users.service';
   providedIn: 'root'
 })
 export class TimetableService {
+  private dayIndex = new Map([
+    ['monday', 0],
+    ['tuesday', 1],
+    ['wednesday', 2],
+    ['thursday', 3],
+    ['friday', 4],
+  ]);
 
   constructor(private http: HttpClient, private usersService: UsersService) { }
 
@@ -44,6 +50,28 @@ export class TimetableService {
     });
   }
 
+  // public formatTableData(timetable: FullTimetable) {
+  //   const entries: TimetableEntryResponse[][] = [];
+
+  //   // Get get the values of the returned object which are arrays and get the lenght of the longest one
+  //   const maxValue = Object.values(timetable)
+  //     .map(t => t.length)
+  //     .reduce((acc, x) => x > acc ? x : acc);
+
+  //   for (let i = 0; i < maxValue; i++) {
+  //     entries.push([]);
+  //     Object.entries(timetable).forEach(pair => {
+  //       const index = this.dayIndex.get(pair[0].toLowerCase());
+  //       if (index !== undefined) {
+  //         const value = pair[1];
+  //         const current = value[i];
+  //         entries[i].splice(index, 0, current);
+  //       }
+  //     })
+  //   }
+  //   return entries;
+  // }
+
   public formatTableData(timetable: FullTimetable) {
     const entries: TimetableEntryResponse[][] = [];
 
@@ -53,10 +81,20 @@ export class TimetableService {
       .reduce((acc, x) => x > acc ? x : acc);
 
     for (let i = 0; i < maxValue; i++) {
-      entries.push([]);
-      Object.values(timetable).forEach(value => {
-        const current = value[i];
-          entries[i].push(current);
+      const array = Array(this.dayIndex.size).fill(undefined);
+      entries.push(array);
+    }
+
+    for (let i = 0; i < maxValue; i++) {
+      Object.entries(timetable).forEach(pair => {
+        const col = this.dayIndex.get(pair[0].toLowerCase());
+        if (col !== undefined) {
+          const value = pair[1];
+          const current = value[i];
+          if (current) {
+            entries[i].splice(col, 1, current);
+          }
+        }
       })
     }
     return entries;
