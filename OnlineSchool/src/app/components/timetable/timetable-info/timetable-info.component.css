@@ -1,0 +1,60 @@
+.app-card-container {
+    height: 60vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.app-card {
+    width: 100%;
+    border: 1px solid gray;
+    border-radius: 1rem;
+    height: 65%;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.app-card-name {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.buttons {
+    margin: 2rem 4rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.buttons .btn {
+    width: 12rem;
+}
+
+@media only screen and (max-width: 1200px) {
+    .buttons {
+        margin: 1rem 2rem;
+    }
+
+    .buttons .btn {
+        width: 10rem;
+        padding: 0.4rem;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .buttons .btn {
+        margin-bottom: 1rem;
+    }
+}
+
+@media only screen and (max-width: 520px) {
+    .app-card-container {
+        flex-direction: column;
+        margin: 3rem 1rem;
+    }
+}
