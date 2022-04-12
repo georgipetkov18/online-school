@@ -1,5 +1,5 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ToastrModule } from 'ngx-toastr';
@@ -15,8 +15,7 @@ import { ClassesModule } from './components/classes/classes.module';
 import { TimetableModule } from './components/timetable/timetable.module';
 import { SharedModule } from './components/shared/shared.module';
 import { LessonsModule } from './components/lessons/lessons.module';
-import { SignalRService } from './services/signal-r.service';
-import { AuthInterceptorService } from './components/shared/auth-interceptor.service';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
 
 @NgModule({
   declarations: [
