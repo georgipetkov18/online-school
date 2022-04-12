@@ -86,6 +86,9 @@ namespace OnlineSchoolData.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("From")
+                        .IsUnique();
+
                     b.ToTable("Lessons");
                 });
 

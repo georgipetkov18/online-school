@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OnlineSchoolData.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -72,9 +72,12 @@ namespace OnlineSchoolData.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -86,6 +89,26 @@ namespace OnlineSchoolData.Migrations
                         name: "FK_Users_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Administrators",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Administrators", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Administrators_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -122,7 +145,7 @@ namespace OnlineSchoolData.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Subject = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
+                    SubjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -130,6 +153,12 @@ namespace OnlineSchoolData.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Teachers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Teachers_Subjects_SubjectId",
+                        column: x => x.SubjectId,
+                        principalTable: "Subjects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Teachers_Users_UserId",
                         column: x => x.UserId,
@@ -146,7 +175,7 @@ namespace OnlineSchoolData.Migrations
                     Day = table.Column<int>(type: "int", nullable: false),
                     SubjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LessonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TeacherId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    TeacherId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClassId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -181,6 +210,17 @@ namespace OnlineSchoolData.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Administrators_UserId",
+                table: "Administrators",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Lessons_From",
+                table: "Lessons",
+                column: "From",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Students_ClassId",
                 table: "Students",
                 column: "ClassId");
@@ -189,6 +229,11 @@ namespace OnlineSchoolData.Migrations
                 name: "IX_Students_UserId",
                 table: "Students",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Teachers_SubjectId",
+                table: "Teachers",
+                column: "SubjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Teachers_UserId",
@@ -216,13 +261,28 @@ namespace OnlineSchoolData.Migrations
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Administrators");
+
             migrationBuilder.DropTable(
                 name: "Students");
 
@@ -236,10 +296,10 @@ namespace OnlineSchoolData.Migrations
                 name: "Lessons");
 
             migrationBuilder.DropTable(
-                name: "Subjects");
+                name: "Teachers");
 
             migrationBuilder.DropTable(
-                name: "Teachers");
+                name: "Subjects");
 
             migrationBuilder.DropTable(
                 name: "Users");
