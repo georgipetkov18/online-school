@@ -3,6 +3,7 @@ import { HubConnectionBuilder, HubConnection, IHttpConnectionOptions } from '@mi
 import { Subject } from 'rxjs';
 
 import { TimetableEntriesInfo } from '../models/response/timetable-entries-info-response.model';
+import { TimetableEntryResponse } from '../models/response/timetable-entry-response.model';
 import { UsersService } from './users.service';
 
 @Injectable({
@@ -10,10 +11,11 @@ import { UsersService } from './users.service';
 })
 export class SignalRService {
   public connection!: HubConnection;
-  // public hubHelloMessage = new BehaviorSubject<string | null>(null);
   public lessonBegan = new Subject<TimetableEntriesInfo>();
-  public lessonEnded = new Subject<void>();
+  public lessonEnded = new Subject<TimetableEntryResponse>();
+  public waitingForLesson = new Subject<TimetableEntryResponse>();
   public lastLessonEnded = new Subject<void>();
+  public noLessons = new Subject<void>();
 
   constructor(private usersService: UsersService) { }
 
@@ -52,8 +54,8 @@ export class SignalRService {
       this.lessonBegan.next(info);
     });
 
-    this.connection.on('LessonEnded', () => {
-      this.lessonEnded.next();
+    this.connection.on('LessonEnded', (next: TimetableEntryResponse) => {
+      this.lessonEnded.next(next);
     });
 
     this.connection.on('LastLessonEnded', () => {
@@ -61,11 +63,11 @@ export class SignalRService {
     });
 
     this.connection.on('NoLessons', () => {
-      console.log('no lessons');
+      this.noLessons.next();
     });
 
-    this.connection.on('WaitingForLesson', (next) => {
-      console.log(next);
+    this.connection.on('WaitingForLesson', (next: TimetableEntryResponse) => {
+      this.waitingForLesson.next(next);
     });
   }
 

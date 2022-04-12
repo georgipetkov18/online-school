@@ -66,7 +66,7 @@ namespace OnlineSchoolBusinessLogic.Hubs
         {
             if (info.Next is not null)
             {
-                await Clients.Caller.LessonEnded();
+                await Clients.Caller.LessonEnded(info.Next);
                 var now = DateTime.Now;
                 var delay = info.Next.Lesson.From - new TimeSpan(now.Hour, now.Minute, now.Second);
                 await Task.Delay(delay);
@@ -123,7 +123,7 @@ namespace OnlineSchoolBusinessLogic.Hubs
     public interface ITimetableHub
     {
         Task LessonBegan(TimetableEntriesInfo info);
-        Task LessonEnded();
+        Task LessonEnded(TimetableEntry next);
         Task LastLessonEnded();
         Task WaitingForLesson(TimetableEntry next);
         Task NoLessons();
