@@ -22,7 +22,7 @@ export class AuthorityAuthGuardService implements CanActivate {
     }
 
     const tokenDecrypted = JSON.parse(atob(token.split('.')[1]));
-    if (tokenDecrypted.role !== 'admin' && tokenDecrypted.role !== 'teacher') {
+    if (tokenDecrypted.role !== 'administrator' && tokenDecrypted.role !== 'teacher') {
       this.toastr.error('Нямате права да достъпите тази страница');
       return this.router.createUrlTree(['/']);
     }

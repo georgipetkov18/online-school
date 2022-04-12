@@ -5,14 +5,16 @@ import { DisplayTimetableComponent } from './display-timetable/display-timetable
 import { EditTimetableComponent } from './edit-timetable/edit-timetable.component';
 import { CreateTimetableComponent } from './create-timetable/create-timetable.component';
 import { TimetableInfoComponent } from './timetable-info/timetable-info.component';
+import { AdminAuthGuardService } from 'src/app/guards/admin-auth-guard.service';
+import { AuthGuardService } from 'src/app/guards/auth-guard.service';
 
 const routes: Routes = [
     {
         path: 'timetable', children: [
-            {path: 'display', component: DisplayTimetableComponent},
-            {path: 'edit', component: EditTimetableComponent},
-            {path: 'create', component: CreateTimetableComponent},
-            {path: 'info', component: TimetableInfoComponent}
+            { path: 'display', component: DisplayTimetableComponent, canActivate: [AuthGuardService] },
+            { path: 'edit', component: EditTimetableComponent, canActivate: [AdminAuthGuardService] },
+            { path: 'create', component: CreateTimetableComponent, canActivate: [AdminAuthGuardService] },
+            { path: 'info', component: TimetableInfoComponent, canActivate: [AuthGuardService] }
         ]
     }
 ];
