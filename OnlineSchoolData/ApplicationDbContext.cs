@@ -25,9 +25,15 @@ public class ApplicationDbContext : DbContext
             .HasMany(subject => subject.TimetableEntities)
             .WithOne(timetableEntity => timetableEntity.Subject);
 
-        modelBuilder.Entity<LessonEntity>()
-            .HasMany(lesson => lesson.TimetableEntities)
-            .WithOne(timetableEntity => timetableEntity.Lesson);
+        modelBuilder.Entity<LessonEntity>(builder =>
+        {
+            builder
+                .HasMany(lesson => lesson.TimetableEntities)
+                .WithOne(timetableEntity => timetableEntity.Lesson);
+
+            builder.HasIndex(lesson => lesson.From).IsUnique();
+        });
+            
 
         modelBuilder.Entity<UserEntity>(builder =>
         {
