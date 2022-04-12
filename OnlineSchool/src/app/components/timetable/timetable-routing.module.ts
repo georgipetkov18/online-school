@@ -5,16 +5,16 @@ import { DisplayTimetableComponent } from './display-timetable/display-timetable
 import { EditTimetableComponent } from './edit-timetable/edit-timetable.component';
 import { CreateTimetableComponent } from './create-timetable/create-timetable.component';
 import { TimetableInfoComponent } from './timetable-info/timetable-info.component';
-import { AdminAuthGuardService } from 'src/app/guards/admin-auth-guard.service';
-import { AuthGuardService } from 'src/app/guards/auth-guard.service';
+import { AdminAuthGuard } from 'src/app/guards/admin.guard';
+import { CommonUserAuthGuard } from 'src/app/guards/common-user.guard';
 
 const routes: Routes = [
     {
         path: 'timetable', children: [
-            { path: 'display', component: DisplayTimetableComponent, canActivate: [AuthGuardService] },
-            { path: 'edit', component: EditTimetableComponent, canActivate: [AdminAuthGuardService] },
-            { path: 'create', component: CreateTimetableComponent, canActivate: [AdminAuthGuardService] },
-            { path: 'info', component: TimetableInfoComponent, canActivate: [AuthGuardService] }
+            { path: 'display', component: DisplayTimetableComponent, canActivate: [CommonUserAuthGuard] },
+            { path: 'edit', component: EditTimetableComponent, canActivate: [AdminAuthGuard] },
+            { path: 'create', component: CreateTimetableComponent, canActivate: [AdminAuthGuard] },
+            { path: 'info', component: TimetableInfoComponent, canActivate: [CommonUserAuthGuard] }
         ]
     }
 ];

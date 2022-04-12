@@ -7,7 +7,7 @@ import { UsersService } from '../services/users.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthorityAuthGuardService implements CanActivate {
+export class AuthorityAuthGuard implements CanActivate {
 
   constructor(
     private usersService: UsersService,

@@ -7,7 +7,7 @@ import { UsersService } from '../services/users.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardService implements CanActivate {
+export class CommonUserAuthGuard implements CanActivate {
 
   constructor(
     private usersService: UsersService,
@@ -16,10 +16,17 @@ export class AuthGuardService implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     const token = this.usersService.getCurrentUserToken();
-    if (token) {
-      return true;
+    if (!token) {
+      this.toastr.error('Необходимо е първо да влезете в профила си');
+      return this.router.createUrlTree(['/login']);
     }
-    this.toastr.error('Необходимо е първо да влезете в профила си');
-    return this.router.createUrlTree(['/login']);
+
+    const tokenDecrypted = JSON.parse(atob(token.split('.')[1]));
+    if (tokenDecrypted.role === 'administrator') {
+      this.toastr.error('Нямате права да достъпите тази страница');
+      // Redirect to admin page
+      return this.router.createUrlTree(['/register']);
+    }
+    return true;
   }
 }
