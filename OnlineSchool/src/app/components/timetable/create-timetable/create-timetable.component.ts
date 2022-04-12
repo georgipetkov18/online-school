@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
@@ -16,7 +17,6 @@ import { TimetableValue } from 'src/app/models/timetable-value.model';
 import { ClassResponse } from 'src/app/models/response/class-response.model';
 import { ClassesService } from 'src/app/services/classes.service';
 import { TimetableService } from 'src/app/services/timetable.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-timetable',

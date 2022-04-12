@@ -12,7 +12,15 @@ namespace OnlineSchoolBusinessLogic.Services
             this.lessonsRepository = lessonsRepository;
         }
 
-        public async Task<Lesson> AddLessonAsync(Lesson lesson) => await this.lessonsRepository.AddLessonAsync(lesson);
+        public async Task<Lesson> AddLessonAsync(Lesson lesson)
+        {
+            var lessonExists = await this.lessonsRepository.LessonExistsAsync(lesson.From);
+            if (lessonExists)
+            {
+                throw new ArgumentException("Часът вече съществува");
+            }
+            return await this.lessonsRepository.AddLessonAsync(lesson);
+        }
 
         public async Task DeleteLessonAsync(Guid lessonId) => await this.lessonsRepository.DeleteLessonAsync(lessonId);
 

@@ -52,9 +52,17 @@ namespace OnlineSchoolApi.Controllers
             {
                 return this.BadRequest(ModelState);
             }
+            try
+            {
+                var createdLesson = await this.lessonService.AddLessonAsync(lessonInputModel.ToLesson());
+                return this.CreatedAtAction(nameof(Get), new { lessonId = createdLesson.Id }, createdLesson);
 
-            var createdLesson = await this.lessonService.AddLessonAsync(lessonInputModel.ToLesson());
-            return this.CreatedAtAction(nameof(Get), new { lessonId = createdLesson.Id }, createdLesson);
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError("LessonExists", ex.Message);
+                return this.BadRequest(ModelState);
+            }
 
         }
 

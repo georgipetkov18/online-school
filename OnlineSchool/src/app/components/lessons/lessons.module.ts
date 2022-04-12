@@ -5,6 +5,7 @@ import { LessonsComponent } from './lessons.component';
 import { SharedModule } from '../shared/shared.module';
 import { LessonsRoutingModule } from './lessons-routing.module';
 import { CreateLessonsComponent } from './create-lessons/create-lessons.component';
+import { HourPipe } from 'src/app/pipes/hour.pipe';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { CreateLessonsComponent } from './create-lessons/create-lessons.componen
     CommonModule,
     SharedModule,
     LessonsRoutingModule
-  ]
+  ],
+  providers: [HourPipe]
 })
 export class LessonsModule { }

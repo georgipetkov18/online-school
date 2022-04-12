@@ -13,4 +13,6 @@ public interface ILessonsRepository
     Task<Lesson> UpdateLessonAsync(Guid lessonId, Lesson lesson);
 
     Task DeleteLessonAsync(Guid lessonId);
+
+    Task<bool> LessonExistsAsync(TimeSpan from);
 }

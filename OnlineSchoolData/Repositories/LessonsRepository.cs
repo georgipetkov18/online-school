@@ -60,6 +60,11 @@ namespace OnlineSchoolData.Repositories
             return lessonEntity.ToLesson();
         }
 
+        public async Task<bool> LessonExistsAsync(TimeSpan from)
+        {
+            return await this.context.Lessons.AnyAsync(l => l.From == from);
+        }
+
         public async Task<Lesson> UpdateLessonAsync(Guid lessonId, Lesson lesson)
         {
             var lessonEntity = await this.GetLessonByIdAsync(lessonId);
