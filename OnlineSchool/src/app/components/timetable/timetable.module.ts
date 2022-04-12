@@ -8,7 +8,7 @@ import { TimetableRoutingModule } from "./timetable-routing.module";
 import { TimetableComponent } from "./timetable.component";
 import { CreateTimetableComponent } from './create-timetable/create-timetable.component';
 import { SharedModule } from "../shared/shared.module";
-import { HourPipe } from "src/pipes/hour.pipe";
+import { HourPipe } from "src/app/pipes/hour.pipe";
 import { TimetableInfoComponent } from './timetable-info/timetable-info.component';
 
 @NgModule({

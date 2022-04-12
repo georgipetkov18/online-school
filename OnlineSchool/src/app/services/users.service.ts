@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -69,9 +69,7 @@ export class UsersService {
   }
 
   public refreshToken() {
-    this.http.post<AuthenticateResponse>('/api/refresh-token', {}, {
-      headers: new HttpHeaders().append('Authorization', `Bearer ${sessionStorage.getItem('token')}`)
-    }).subscribe({
+    this.http.post<AuthenticateResponse>('/api/refresh-token', {}).subscribe({
       next: response => {
         this.autoRefreshToken(response.jwtToken);
         sessionStorage.setItem('token', response.jwtToken);

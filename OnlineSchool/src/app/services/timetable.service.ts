@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -6,7 +6,6 @@ import { environment } from 'src/environments/environment';
 import { FullTimetable } from '../models/full-timetable.model';
 import { TimetableEntryRequest } from '../models/request/timetable-entry-request.model';
 import { TimetableEntryResponse } from '../models/response/timetable-entry-response.model';
-import { UsersService } from './users.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,13 +19,10 @@ export class TimetableService {
     ['friday', 4],
   ]);
 
-  constructor(private http: HttpClient, private usersService: UsersService) { }
+  constructor(private http: HttpClient) { }
 
   public addTimetable(entries: TimetableEntryRequest[]) {
-    const token = this.usersService.getCurrentUserToken();
-    return this.http.post<void>(`${environment.routes.timetable}/add`, { entries }, {
-      headers: new HttpHeaders().append('Authorization', `Bearer ${token}`)
-    }).pipe(
+    return this.http.post<void>(`${environment.routes.timetable}/add`, { entries }).pipe(
       catchError((error: HttpErrorResponse) => {
         let errorMessage = 'Нещо се обърка';
         if (error.status === 401) {
@@ -44,33 +40,8 @@ export class TimetableService {
   }
 
   public getTimetable() {
-    const token = this.usersService.getCurrentUserToken();
-    return this.http.get<FullTimetable>(environment.routes.timetable + '/Full', {
-      headers: new HttpHeaders().append('Authorization', `Bearer ${token}`)
-    });
+    return this.http.get<FullTimetable>(environment.routes.timetable + '/Full');
   }
-
-  // public formatTableData(timetable: FullTimetable) {
-  //   const entries: TimetableEntryResponse[][] = [];
-
-  //   // Get get the values of the returned object which are arrays and get the lenght of the longest one
-  //   const maxValue = Object.values(timetable)
-  //     .map(t => t.length)
-  //     .reduce((acc, x) => x > acc ? x : acc);
-
-  //   for (let i = 0; i < maxValue; i++) {
-  //     entries.push([]);
-  //     Object.entries(timetable).forEach(pair => {
-  //       const index = this.dayIndex.get(pair[0].toLowerCase());
-  //       if (index !== undefined) {
-  //         const value = pair[1];
-  //         const current = value[i];
-  //         entries[i].splice(index, 0, current);
-  //       }
-  //     })
-  //   }
-  //   return entries;
-  // }
 
   public formatTableData(timetable: FullTimetable) {
     const entries: TimetableEntryResponse[][] = [];

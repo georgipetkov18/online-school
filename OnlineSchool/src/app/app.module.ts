@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -16,6 +16,7 @@ import { TimetableModule } from './components/timetable/timetable.module';
 import { SharedModule } from './components/shared/shared.module';
 import { LessonsModule } from './components/lessons/lessons.module';
 import { SignalRService } from './services/signal-r.service';
+import { AuthInterceptorService } from './components/shared/auth-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,13 @@ import { SignalRService } from './services/signal-r.service';
     TimetableModule,
     SharedModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
