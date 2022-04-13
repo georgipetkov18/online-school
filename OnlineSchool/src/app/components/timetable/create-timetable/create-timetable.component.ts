@@ -18,6 +18,7 @@ import { ClassResponse } from 'src/app/models/response/class-response.model';
 import { ClassesService } from 'src/app/services/classes.service';
 import { TimetableService } from 'src/app/services/timetable.service';
 import { Location } from '@angular/common';
+import { FullTimetable } from 'src/app/models/full-timetable.model';
 
 @Component({
   selector: 'app-create-timetable',
@@ -30,6 +31,7 @@ export class CreateTimetableComponent implements OnInit, AfterViewInit {
   public lessonsCount = 1;
   public suggestions: string[] = [];
   public lessonsArray: number[] = [];
+  public unformattedTimetable!: FullTimetable;
   public timetable: (TimetableValue | null)[][] = [];
   public classes: ClassResponse[] = [];
   public classesNames: string[] = [];
@@ -64,9 +66,11 @@ export class CreateTimetableComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.classModalRef = this.modalService.open(this.classModal, { ariaLabelledBy: 'modal-basic-title' });
-
     this.classModalRef.closed.subscribe(_ => {
       this.timetableService.getTimetableByClassId(this.ids.class).subscribe(timetable => {
+        this.unformattedTimetable = timetable;
+        console.log(timetable);
+        
         const formattedTimetable = this.timetableService.formatTableData(timetable);
         this.lessonsCount = formattedTimetable.length > 0 ? formattedTimetable.length : 1;
         if (formattedTimetable.length === 0) {
