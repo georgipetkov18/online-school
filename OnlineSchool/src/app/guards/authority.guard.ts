@@ -21,8 +21,8 @@ export class AuthorityAuthGuard implements CanActivate {
       return this.router.createUrlTree(['/login']);
     }
 
-    const tokenDecrypted = JSON.parse(atob(token.split('.')[1]));
-    if (tokenDecrypted.role !== 'administrator' && tokenDecrypted.role !== 'teacher') {
+    const role = this.usersService.getCurrentUserRole();
+    if (role !== 'administrator' && role !== 'teacher') {
       this.toastr.error('Нямате права да достъпите тази страница');
       return this.router.createUrlTree(['/']);
     }

@@ -21,10 +21,8 @@ export class AdminAuthGuard implements CanActivate {
       return this.router.createUrlTree(['/login']);
     }
 
-    const tokenDecrypted = JSON.parse(atob(token.split('.')[1]));
-    console.log(tokenDecrypted);
-
-    if (tokenDecrypted.role !== 'administrator') {
+    const role = this.usersService.getCurrentUserRole();
+    if (role !== 'administrator') {
       this.toastr.error('Нямате права да достъпите тази страница');
       return this.router.createUrlTree(['/']);
     }

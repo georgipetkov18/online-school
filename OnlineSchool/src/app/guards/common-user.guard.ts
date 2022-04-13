@@ -21,8 +21,9 @@ export class CommonUserAuthGuard implements CanActivate {
       return this.router.createUrlTree(['/login']);
     }
 
-    const tokenDecrypted = JSON.parse(atob(token.split('.')[1]));    
-    if (tokenDecrypted.role === 'administrator') {
+    const tokenDecrypted = JSON.parse(atob(token.split('.')[1]));  
+    const role = this.usersService.getCurrentUserRole();  
+    if (role === 'administrator') {
       this.toastr.error('Нямате права да достъпите тази страница');
       // Redirect to admin page
       return this.router.createUrlTree(['/register']);
