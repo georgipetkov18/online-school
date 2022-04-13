@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { FullTimetable } from '../models/full-timetable.model';
 import { TimetableEntryRequest } from '../models/request/timetable-entry-request.model';
 import { TimetableEntryResponse } from '../models/response/timetable-entry-response.model';
+import { HourPipe } from '../pipes/hour.pipe';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class TimetableService {
     ['friday', 4],
   ]);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private hourPipe: HourPipe) { }
 
   public addTimetable(entries: TimetableEntryRequest[]) {
     return this.http.post<void>(`${environment.routes.timetable}/add`, { entries }).pipe(
@@ -64,9 +65,13 @@ export class TimetableService {
       Object.entries(timetable).forEach(pair => {
         const col = this.dayIndex.get(pair[0].toLowerCase());
         if (col !== undefined) {
-          const value = pair[1];
+          const value: TimetableEntryResponse[] = pair[1];
           const current = value[i];
           if (current) {
+            const transformed = this.hourPipe.transform(current.from);
+            if (transformed) {
+              current.from = transformed;
+            }
             entries[i].splice(col, 1, current);
           }
         }
