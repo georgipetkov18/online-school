@@ -1,5 +1,6 @@
 table {
     height: 100%;
+    width: 100%;
 }
 
 .table-col {
@@ -61,4 +62,8 @@ table {
 
 .buttons-item button {
     margin-right: 1rem;
+}
+
+.small-buttons {
+    width: 80%
 }

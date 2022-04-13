@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { UsersService } from '../services/users.service';
@@ -21,7 +21,9 @@ export class AdminAuthGuard implements CanActivate {
       return this.router.createUrlTree(['/login']);
     }
 
-    const tokenDecrypted = JSON.parse(atob(token.split('.')[1]));    
+    const tokenDecrypted = JSON.parse(atob(token.split('.')[1]));
+    console.log(tokenDecrypted);
+
     if (tokenDecrypted.role !== 'administrator') {
       this.toastr.error('Нямате права да достъпите тази страница');
       return this.router.createUrlTree(['/']);

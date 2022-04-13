@@ -16,6 +16,7 @@ import { TimetableModule } from './components/timetable/timetable.module';
 import { SharedModule } from './components/shared/shared.module';
 import { LessonsModule } from './components/lessons/lessons.module';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
     LoginComponent,
     RegisterComponent,
     HeaderComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

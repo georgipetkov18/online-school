@@ -68,6 +68,15 @@ export class UsersService {
     return sessionStorage.getItem('token');
   }
 
+  public getCurrentUserRole() {
+    const token = this.getCurrentUserToken();
+    if (!token) {
+      return token;
+    }
+    const tokenDecrypted = JSON.parse(atob(token.split('.')[1]));
+    return tokenDecrypted.role;
+  }
+
   public refreshToken() {
     this.http.post<AuthenticateResponse>('/api/refresh-token', {}).subscribe({
       next: response => {
