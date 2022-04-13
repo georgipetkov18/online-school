@@ -7,6 +7,7 @@ namespace OnlineSchoolBusinessLogic.Interfaces
         Task<IEnumerable<TimetableEntry>> GetEntriesByDayOfWeekAsync(Guid userId, string dayOfWeek);
 
         Task<IEnumerable<TimetableEntry>> GetTimetableAsync(Guid userId);
+        Task<IEnumerable<TimetableEntry>> GetTimetableByClassIdAsync(Guid classId);
         Task<IEnumerable<TimetableEntry>> GetCurrentDayEntriesAsync(Guid userId);
 
         Task<TimetableEntry?> GetNextEntryAsync(Guid userId);

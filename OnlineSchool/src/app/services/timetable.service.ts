@@ -43,13 +43,17 @@ export class TimetableService {
     return this.http.get<FullTimetable>(environment.routes.timetable + '/Full');
   }
 
+  public getTimetableByClassId(classId: string) {
+    return this.http.get<FullTimetable>(`${environment.routes.timetable}/Full/${classId}`);
+  }
+
   public formatTableData(timetable: FullTimetable) {
     const entries: TimetableEntryResponse[][] = [];
 
     // Get get the values of the returned object which are arrays and get the lenght of the longest one
     const maxValue = Object.values(timetable)
       .map(t => t.length)
-      .reduce((acc, x) => x > acc ? x : acc);
+      .reduce((acc, x) => x > acc ? x : acc, [[]]);
 
     for (let i = 0; i < maxValue; i++) {
       const array = Array(this.dayIndex.size).fill(undefined);

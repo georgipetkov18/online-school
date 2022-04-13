@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -17,13 +17,15 @@ import { TimetableValue } from 'src/app/models/timetable-value.model';
 import { ClassResponse } from 'src/app/models/response/class-response.model';
 import { ClassesService } from 'src/app/services/classes.service';
 import { TimetableService } from 'src/app/services/timetable.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-create-timetable',
   templateUrl: './create-timetable.component.html',
   styleUrls: ['./create-timetable.component.css']
 })
-export class CreateTimetableComponent implements OnInit {
+export class CreateTimetableComponent implements OnInit, AfterViewInit {
+  @ViewChild('class') classModal!: any;
   public daysOfWeek: DayOfWeek[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   public lessonsCount = 1;
   public suggestions: string[] = [];
@@ -32,11 +34,13 @@ export class CreateTimetableComponent implements OnInit {
   public classes: ClassResponse[] = [];
   public classesNames: string[] = [];
   public submitEnabled = false;
-  private modalRef!: NgbModalRef;
+  public submitClass = false;
+  private infoModalRef!: NgbModalRef;
+  private classModalRef!: NgbModalRef;
   private currentRow = -1;
   private currentCol = -1;
   private suggestionsFull: AutoComplete[] = [];
-  private ids = {
+  public ids = {
     subject: '',
     lesson: '',
     teacher: '',
@@ -51,13 +55,45 @@ export class CreateTimetableComponent implements OnInit {
     private teachersService: TeachersService,
     private classesService: ClassesService,
     private timetableService: TimetableService,
-    private router: Router) { }
+    private router: Router,
+    private location: Location) { }
 
   ngOnInit(): void {
-    this.lessonsArray = Array(this.lessonsCount).fill(0).map((_, i) => i);
-    this.timetable = Array(this.lessonsCount).fill(null).map(_ =>
-      Array(this.daysOfWeek.length).fill(null)
-    );
+
+  }
+
+  ngAfterViewInit(): void {
+    this.classModalRef = this.modalService.open(this.classModal, { ariaLabelledBy: 'modal-basic-title' });
+
+    this.classModalRef.closed.subscribe(_ => {
+      this.timetableService.getTimetableByClassId(this.ids.class).subscribe(timetable => {
+        const formattedTimetable = this.timetableService.formatTableData(timetable);
+        this.lessonsCount = formattedTimetable.length > 0 ? formattedTimetable.length : 1;
+        if (formattedTimetable.length === 0) {
+          this.lessonsCount = 1;
+          this.lessonsArray = Array(this.lessonsCount).fill(0).map((_, i) => i);
+          this.timetable = Array(this.lessonsCount).fill(null).map(_ =>
+            Array(this.daysOfWeek.length).fill(null)
+          );
+          return;
+        }
+
+        this.lessonsCount = formattedTimetable.length;
+        this.lessonsArray = Array(this.lessonsCount).fill(0).map((_, i) => i);
+        this.timetable = Array(this.lessonsCount).fill(null).map(_ =>
+          Array(this.daysOfWeek.length).fill(null)
+        );
+        this.timetable = formattedTimetable.map(row => {
+          return row.map(el => el ?
+            new TimetableValue([el.name, el.from, `${el.teacher.firstName} ${el.teacher.lastName}`], el) :
+            null);
+        })
+      })
+    });
+
+    this.classModalRef.dismissed.subscribe(_ => {
+      this.location.back();
+    })
   }
 
   addRow() {
@@ -66,10 +102,10 @@ export class CreateTimetableComponent implements OnInit {
     this.updateTable();
   }
 
-  openModal(content: any, row: number, col: number) {
+  openInfoModal(content: any, row: number, col: number) {
     this.currentRow = row;
     this.currentCol = col;
-    this.modalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+    this.infoModalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
   onFilterClasses(search: string) {
@@ -123,7 +159,7 @@ export class CreateTimetableComponent implements OnInit {
 
   setClassId(value: string) {
     const currentElement = this.classes.find(s => s.name === value);
-    
+
     if (!currentElement) {
       this.ids.class = '';
       this.submitEnabled = false;
@@ -131,7 +167,7 @@ export class CreateTimetableComponent implements OnInit {
     }
     this.ids.class = currentElement.id;
     console.log(this.ids);
-    
+
   }
 
   setId(source: 'subject' | 'lesson' | 'teacher', value: string) {
@@ -158,6 +194,12 @@ export class CreateTimetableComponent implements OnInit {
     this.suggestions = [];
   }
 
+  onSubmitClassModal(form: NgForm) {
+    const classId = form.value['class'];
+    this.setClassId(classId);
+    this.classModalRef.close();
+  }
+
   onSubmitModal(modalForm: NgForm) {
     if (modalForm.invalid) {
       this.toastr.error('Въведени са невалидни данни');
@@ -179,24 +221,24 @@ export class CreateTimetableComponent implements OnInit {
 
     this.timetable[this.currentRow][this.currentCol] = timetableValue;
 
-    this.modalRef.close();
+    this.infoModalRef.close();
     this.currentRow = -1;
     this.currentCol = -1;
   }
 
   saveProgramme() {
-    const entries: TimetableEntryRequest[] = []; 
+    const entries: TimetableEntryRequest[] = [];
     for (let i = 0; i < this.timetable.length; i++) {
       const row = this.timetable[i];
       for (let j = 0; j < row.length; j++) {
         const value = row[j];
-        if (value) {
+        if (value && value.entry instanceof TimetableEntryRequest) {
           value.entry.classId = this.ids.class;
           entries.push(value.entry);
         }
       }
     }
-    
+
     this.timetableService.addTimetable(entries).subscribe({
       next: () => {
         this.toastr.success('Програмата беше създадена успешно');

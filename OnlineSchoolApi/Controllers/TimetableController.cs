@@ -80,6 +80,24 @@ namespace OnlineSchoolApi.Controllers
             }
         }
 
+        [HttpGet("{classId}")]
+        public async Task<IActionResult> Full(Guid classId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var timetableGroup = await this.timetableService.GetTimetableAsync(classId);
+                return Ok(timetableGroup.ToTimetableResponse());
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         [HttpGet]
         public async Task<IActionResult> CurrentDay()
         {

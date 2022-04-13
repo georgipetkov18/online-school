@@ -49,7 +49,7 @@ namespace OnlineSchoolData.Repositories
         {
             var currentDayOfWeek = DateTime.Now.DayOfWeek;
 
-            var userEntries = await this.GetUserEntriesAsync(userId);
+            var userEntries = await this.GetTimetableEntriesAsync(userId);
 
             return await userEntries
                 .Where(t => t.Day == currentDayOfWeek)
@@ -83,7 +83,7 @@ namespace OnlineSchoolData.Repositories
 
         public async Task<IEnumerable<TimetableEntry>> GetEntriesByDayOfWeekAsync(Guid userId, string dayOfWeek)
         {
-            var userEntries = await this.GetUserEntriesAsync(userId);
+            var userEntries = await this.GetTimetableEntriesAsync(userId);
 
             var validDayOfWeekString = char.ToUpper(dayOfWeek[0]) + dayOfWeek[1..];
             var dayOfWeekObject = Enum.Parse<DayOfWeek>(validDayOfWeekString);
@@ -120,9 +120,9 @@ namespace OnlineSchoolData.Repositories
 
         public async Task<IEnumerable<TimetableEntry>> GetTimetableAsync(Guid userId)
         {
-            var userEntries = await this.GetUserEntriesAsync(userId);
+            var timetableEntries = await this.GetTimetableEntriesAsync(userId);
 
-            return await userEntries
+            return await timetableEntries
                 .Include(t => t.Subject)
                 .Include(t => t.Lesson)
                 .Include(t => t.Class)
@@ -133,7 +133,22 @@ namespace OnlineSchoolData.Repositories
                 .ToListAsync();
         }
 
-        private async Task<IQueryable<TimetableEntity>> GetUserEntriesAsync(Guid userId)
+        public async Task<IEnumerable<TimetableEntry>> GetTimetableByClassIdAsync(Guid classId)
+        {
+
+            return await this.context.Timetable
+                .Where(t => t.ClassId == classId)
+                .Include(t => t.Subject)
+                .Include(t => t.Lesson)
+                .Include(t => t.Class)
+                .Include(t => t.Teacher)
+                    .ThenInclude(t => t.User)
+                .Select(t => t.ToTimetableEntry())
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        private async Task<IQueryable<TimetableEntity>> GetTimetableEntriesAsync(Guid userId)
         {
             var userEntity = await this.context.Users
                 .Include(u => u.Role)

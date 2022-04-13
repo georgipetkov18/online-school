@@ -7,16 +7,6 @@
             Запази програма
         </button>
     </div>
-
-    <div class="buttons-item">
-        <div class="input-group">
-            <label for="userSpecific">Клас</label>
-            <ng-autocomplete [data]="classesNames" (inputChanged)="onFilterClasses($event)"
-                [itemTemplate]="itemTemplate" (selected)="setClassId($event)" [notFoundTemplate]="notFoundTemplate"
-                id="userSpecific" name="userSpecific" ngModel>
-            </ng-autocomplete>
-        </div>
-    </div>
 </div>
 
 <table class="table table-striped">
@@ -39,7 +29,7 @@
             </td>
 
             <td *ngFor="let day of daysOfWeek;let j = index" class="table-entry">
-                <div class="table-entry-container" (click)="openModal(content, number, j)">
+                <div class="table-entry-container" (click)="openInfoModal(entryInfo, number, j)">
                     <svg *ngIf="!timetable[number][j]" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                         class="bi bi-plus-circle-dotted" viewBox="0 0 16 16">
                         <path
@@ -65,7 +55,7 @@
     <div>Няма резултати</div>
 </ng-template>
 
-<ng-template #content let-modal>
+<ng-template #entryInfo let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Добави час</h4>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
@@ -104,5 +94,29 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="onSubmitModal(modalForm)"
             [disabled]="!submitEnabled">Създай</button>
+    </div>
+</ng-template>
+
+<ng-template #class let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Избери клас</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form #classModalForm="ngForm" (ngSubmit)="onSubmitClassModal(classModalForm)">
+            <div class="mb-3">
+                <div class="modal-input-group">
+                    <label for="userSpecific">Клас</label>
+                    <ng-autocomplete [data]="classesNames" (inputChanged)="onFilterClasses($event)"
+                        [itemTemplate]="itemTemplate" (selected)="submitClass = true"
+                        [notFoundTemplate]="notFoundTemplate" id="class" name="class" ngModel>
+                    </ng-autocomplete>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="onSubmitClassModal(classModalForm)"
+            [disabled]="!submitClass">Избери</button>
     </div>
 </ng-template>

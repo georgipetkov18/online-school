@@ -68,6 +68,13 @@ namespace OnlineSchoolBusinessLogic.Services
                 .GroupBy(e => e.DayOfWeek);
         }
 
+        public async Task<IEnumerable<IGrouping<string, TimetableEntry>>> GetTimetableAsync(Guid classId)
+        {
+            var timetable = await this.timetableRepository.GetTimetableByClassIdAsync(classId);
+            return timetable
+                .GroupBy(e => e.DayOfWeek);
+        }
+
         private Guid GetId(ClaimsPrincipal user)
         {
             var userId = user.Claims.FirstOrDefault(c => c.Type == "Id")?.Value!;
