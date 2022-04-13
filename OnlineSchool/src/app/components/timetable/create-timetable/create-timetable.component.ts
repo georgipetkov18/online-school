@@ -19,6 +19,7 @@ import { ClassesService } from 'src/app/services/classes.service';
 import { TimetableService } from 'src/app/services/timetable.service';
 import { Location } from '@angular/common';
 import { FullTimetable } from 'src/app/models/full-timetable.model';
+import { TimetableEntryResponse } from 'src/app/models/response/timetable-entry-response.model';
 
 @Component({
   selector: 'app-create-timetable',
@@ -68,8 +69,8 @@ export class CreateTimetableComponent implements OnInit, AfterViewInit {
     this.classModalRef = this.modalService.open(this.classModal, { ariaLabelledBy: 'modal-basic-title' });
     this.classModalRef.closed.subscribe(_ => {
       this.timetableService.getTimetableByClassId(this.ids.class).subscribe(timetable => {
-        this.unformattedTimetable = timetable;
-        console.log(timetable);
+        // this.unformattedTimetable = timetable;
+        // console.log(timetable);
         
         const formattedTimetable = this.timetableService.formatTableData(timetable);
         this.lessonsCount = formattedTimetable.length > 0 ? formattedTimetable.length : 1;
@@ -87,6 +88,10 @@ export class CreateTimetableComponent implements OnInit, AfterViewInit {
         this.timetable = Array(this.lessonsCount).fill(null).map(_ =>
           Array(this.daysOfWeek.length).fill(null)
         );
+        console.log(formattedTimetable);
+        
+        console.log(this.timetable);
+        
         this.timetable = formattedTimetable.map(row => {
           return row.map(el => el ?
             new TimetableValue([el.name, el.from, `${el.teacher.firstName} ${el.teacher.lastName}`], el) :
@@ -224,7 +229,8 @@ export class CreateTimetableComponent implements OnInit, AfterViewInit {
     ], timetableEntry);
 
     this.timetable[this.currentRow][this.currentCol] = timetableValue;
-
+    // const day = this.daysOfWeek[this.currentCol];
+    // this.unformattedTimetable[day]![this.currentRow] = <TimetableEntryResponse>timetableValue.entry;
     this.infoModalRef.close();
     this.currentRow = -1;
     this.currentCol = -1;

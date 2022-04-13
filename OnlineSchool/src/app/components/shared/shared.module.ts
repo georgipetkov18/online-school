@@ -2,12 +2,14 @@ import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { AutocompleteLibModule } from "angular-ng-autocomplete";
+import { TranslatePipe } from "src/app/pipes/translate.pipe";
 
 import { FormComponent } from "./form/form.component";
 
 @NgModule({
     declarations: [
-        FormComponent
+        FormComponent,
+        TranslatePipe,
     ],
     imports: [
         CommonModule,
@@ -16,6 +18,7 @@ import { FormComponent } from "./form/form.component";
     ],
     exports: [
         FormComponent,
+        TranslatePipe,
         AutocompleteLibModule
     ],
     providers: [],

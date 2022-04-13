@@ -49,34 +49,50 @@ export class TimetableService {
   }
 
   public formatTableData(timetable: FullTimetable) {
-    const entries: TimetableEntryResponse[][] = [];
+    let entries: TimetableEntryResponse[][] = [];
+    entries = Array(this.dayIndex.size).fill([]);
 
-    // Get get the values of the returned object which are arrays and get the lenght of the longest one
-    const maxValue = Object.values(timetable)
-      .map(t => t.length)
-      .reduce((acc, x) => x > acc ? x : acc, [[]]);
-
-    for (let i = 0; i < maxValue; i++) {
-      const array = Array(this.dayIndex.size).fill(undefined);
-      entries.push(array);
-    }
-
-    for (let i = 0; i < maxValue; i++) {
-      Object.entries(timetable).forEach(pair => {
-        const col = this.dayIndex.get(pair[0].toLowerCase());
-        if (col !== undefined) {
-          const value: TimetableEntryResponse[] = pair[1];
-          const current = value[i];
-          if (current) {
-            const transformed = this.hourPipe.transform(current.from);
-            if (transformed) {
-              current.from = transformed;
-            }
-            entries[i].splice(col, 1, current);
-          }
+    Object.entries(timetable).forEach(pair => {
+      const dayEntries: TimetableEntryResponse[] = pair[1];
+      dayEntries.forEach((el: TimetableEntryResponse) => {
+        const transformed = this.hourPipe.transform(el.from);
+        if (transformed) {
+          el.from = transformed;
         }
-      })
-    }
+      });
+      const index = this.dayIndex.get(pair[0].toLowerCase());
+      if (index !== undefined) {
+        entries.splice(index, 1, dayEntries);
+      }
+    })
+
+
+    // // Get get the values of the returned object which are arrays and get the lenght of the longest one
+    // const maxValue = Object.values(timetable)
+    //   .map(t => t.length)
+    //   .reduce((acc, x) => x > acc ? x : acc, [[]]);
+
+    // for (let i = 0; i < maxValue; i++) {
+    //   const array = Array(this.dayIndex.size).fill(undefined);
+    //   entries.push(array);
+    // }
+
+    // for (let i = 0; i < maxValue; i++) {
+    //   Object.entries(timetable).forEach(pair => {
+    //     const col = this.dayIndex.get(pair[0].toLowerCase());
+    //     if (col !== undefined) {
+    //       const value: TimetableEntryResponse[] = pair[1];
+    //       const current = value[i];
+    //       if (current) {
+    //         const transformed = this.hourPipe.transform(current.from);
+    //         if (transformed) {
+    //           current.from = transformed;
+    //         }
+    //         entries[i].splice(col, 1, current);
+    //       }
+    //     }
+    //   })
+    // }
     return entries;
   }
 }

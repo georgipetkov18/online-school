@@ -21,6 +21,10 @@ table {
     height: 100%;
 }
 
+.table-entry-small {
+    max-width: 10px;
+}
+
 .bi-plus-circle-dotted {
     width: 3rem;
     height: 100%;
