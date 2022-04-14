@@ -71,3 +71,15 @@ table {
 .small-buttons {
     width: 80%
 }
+
+.table-entry-head {
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.table-entry {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15rem;
+}

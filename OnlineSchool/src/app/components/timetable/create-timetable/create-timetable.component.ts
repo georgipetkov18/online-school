@@ -71,32 +71,28 @@ export class CreateTimetableComponent implements OnInit, AfterViewInit {
       this.timetableService.getTimetableByClassId(this.ids.class).subscribe(timetable => {
         // this.unformattedTimetable = timetable;
         // console.log(timetable);
-        
+
         const formattedTimetable = this.timetableService.formatTableData(timetable);
         this.lessonsCount = formattedTimetable.length > 0 ? formattedTimetable.length : 1;
-        if (formattedTimetable.length === 0) {
-          this.lessonsCount = 1;
-          this.lessonsArray = Array(this.lessonsCount).fill(0).map((_, i) => i);
-          this.timetable = Array(this.lessonsCount).fill(null).map(_ =>
-            Array(this.daysOfWeek.length).fill(null)
-          );
-          return;
-        }
-
-        this.lessonsCount = formattedTimetable.length;
         this.lessonsArray = Array(this.lessonsCount).fill(0).map((_, i) => i);
         this.timetable = Array(this.lessonsCount).fill(null).map(_ =>
           Array(this.daysOfWeek.length).fill(null)
         );
-        console.log(formattedTimetable);
-        
-        console.log(this.timetable);
-        
-        this.timetable = formattedTimetable.map(row => {
-          return row.map(el => el ?
-            new TimetableValue([el.name, el.from, `${el.teacher.firstName} ${el.teacher.lastName}`], el) :
-            null);
-        })
+        if (formattedTimetable.length === 0) {
+          return;
+        }
+        console.log('formatted ', formattedTimetable);
+
+        for (let i = 0; i < formattedTimetable.length; i++) {
+          const row = formattedTimetable[i];
+          for (let j = 0; j < row.length; j++) {
+            const element = row[j];
+            this.timetable[i][j] = element ?
+              new TimetableValue([element.name, element.from,
+              `${element.teacher.firstName} ${element.teacher.lastName}`], element) :
+              null
+          }
+        }
       })
     });
 
@@ -114,6 +110,9 @@ export class CreateTimetableComponent implements OnInit, AfterViewInit {
   openInfoModal(content: any, row: number, col: number) {
     this.currentRow = row;
     this.currentCol = col;
+    console.log('row ', this.currentRow);
+    console.log('col ', this.currentCol);
+
     this.infoModalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
@@ -218,7 +217,7 @@ export class CreateTimetableComponent implements OnInit, AfterViewInit {
     const lesson = modalForm.value['modalLesson'];
     const teacher = modalForm.value['modalTeacher'];
     const timetableEntry = new TimetableEntryRequest(
-      this.daysOfWeek[this.currentCol],
+      this.daysOfWeek[this.currentRow],
       this.ids.subject,
       this.ids.lesson,
       this.ids.class,
@@ -229,11 +228,14 @@ export class CreateTimetableComponent implements OnInit, AfterViewInit {
     ], timetableEntry);
 
     this.timetable[this.currentRow][this.currentCol] = timetableValue;
+    console.log('updated timetable', this.timetable);
+
     // const day = this.daysOfWeek[this.currentCol];
     // this.unformattedTimetable[day]![this.currentRow] = <TimetableEntryResponse>timetableValue.entry;
     this.infoModalRef.close();
     this.currentRow = -1;
     this.currentCol = -1;
+
   }
 
   saveProgramme() {
@@ -248,6 +250,8 @@ export class CreateTimetableComponent implements OnInit, AfterViewInit {
         }
       }
     }
+    console.log('entries ', entries);
+
 
     this.timetableService.addTimetable(entries).subscribe({
       next: () => {
