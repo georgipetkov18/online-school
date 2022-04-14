@@ -48,6 +48,15 @@ export class TimetableService {
     return this.http.get<FullTimetable>(`${environment.routes.timetable}/Full/${classId}`);
   }
 
+  public deleteEntry(entryId: string) {
+    return this.http.delete<void>(`${environment.routes.timetable}/Delete/${entryId}`);
+  }
+
+  public updateEntry(entryId: string, entryRequest: TimetableEntryRequest) {
+    return this.http.put<TimetableEntryResponse>(
+      `${environment.routes.timetable}/Update/${entryId}`, entryRequest);
+  }
+
   public formatTableData(timetable: FullTimetable) {
     let entries: TimetableEntryResponse[][] = [];
     entries = Array(this.dayIndex.size).fill([]);

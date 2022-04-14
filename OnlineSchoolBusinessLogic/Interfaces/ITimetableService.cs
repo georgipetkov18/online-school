@@ -10,6 +10,7 @@ namespace OnlineSchoolBusinessLogic.Interfaces
         Task<IEnumerable<TimetableEntry>> GetCurrentDayEntriesAsync(ClaimsPrincipal user);
 
         Task<IEnumerable<IGrouping<string, TimetableEntry>>> GetTimetableAsync(ClaimsPrincipal user);
+
         Task<IEnumerable<IGrouping<string, TimetableEntry>>> GetTimetableAsync(Guid classId);
 
         Task<TimetableEntry?> GetNextEntryAsync(ClaimsPrincipal user);
@@ -21,5 +22,9 @@ namespace OnlineSchoolBusinessLogic.Interfaces
         Task AddTimetableEntryAsync(TimetableEntry timetableEntry);
 
         Task AddTimetable(IEnumerable<TimetableEntry> timetable);
+
+        Task<TimetableEntry> UpdateTimetableEntryAsync(Guid timetableEntryid, TimetableEntry timetableEntry);
+
+        Task DeleteTimetableEntryAsync(Guid timetableEntryid);
     }
 }

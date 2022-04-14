@@ -24,6 +24,9 @@ namespace OnlineSchoolBusinessLogic.Services
         public async Task AddTimetableEntryAsync(TimetableEntry timetableEntry) =>
             await this.timetableRepository.AddTimetableEntryAsync(timetableEntry);
 
+        public async Task DeleteTimetableEntryAsync(Guid timetableEntryid)
+            => await this.timetableRepository.DeleteTimetableEntryAsync(timetableEntryid);
+
         public async Task<IEnumerable<TimetableEntry>> GetCurrentDayEntriesAsync(ClaimsPrincipal user)
         {
             var userId = GetId(user);
@@ -74,6 +77,9 @@ namespace OnlineSchoolBusinessLogic.Services
             return timetable
                 .GroupBy(e => e.DayOfWeek);
         }
+
+        public async Task<TimetableEntry> UpdateTimetableEntryAsync(Guid timetableEntryid, TimetableEntry timetableEntry)
+            => await this.timetableRepository.UpdateTimetableEntryAsync(timetableEntryid, timetableEntry);
 
         private Guid GetId(ClaimsPrincipal user)
         {

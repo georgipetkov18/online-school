@@ -126,5 +126,43 @@ namespace OnlineSchoolApi.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        [HttpPut("{id}")]
+        [Authorize(Policy = Policies.RequireAdministratorRole)]
+        public async Task<IActionResult> Update(Guid id, [FromBody]TimetableEntryInputModel timetableEntryInputModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var updatedEntry = await this.timetableService.UpdateTimetableEntryAsync(id, timetableEntryInputModel.ToTimetableEntry());
+                return Ok(updatedEntry);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Policy = Policies.RequireAdministratorRole)]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                await this.timetableService.DeleteTimetableEntryAsync(id);
+                return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }

@@ -18,29 +18,7 @@ namespace OnlineSchoolData.Repositories
 
         public async Task AddTimetableEntryAsync(TimetableEntry timetableEntry)
         {
-            var classExists = await this.context.Classes.AnyAsync(c => c.Id == timetableEntry.ClassId);
-            if (!classExists)
-            {
-                throw new ArgumentException("Класът не съществува");
-            }
-
-            var subjectExists = await this.context.Subjects.AnyAsync(c => c.Id == timetableEntry.SubjectId);
-            if (!subjectExists)
-            {
-                throw new ArgumentException("Предметът не съществува");
-            }
-
-            var lessonExists = await this.context.Lessons.AnyAsync(c => c.Id == timetableEntry.LessonId);
-            if (!lessonExists)
-            {
-                throw new ArgumentException("Учебният час не съществува");
-            }
-
-            var teacherExists = await this.context.Teachers.AnyAsync(c => c.Id == timetableEntry.TeacherId);
-            if (!teacherExists)
-            {
-                throw new ArgumentException("Учителят не съществува");
-            }
+            await CheckIdsValidity(timetableEntry);
             await this.context.Timetable.AddAsync(timetableEntry.ToTimetableEntity());
             await this.context.SaveChangesAsync();
         }
@@ -148,6 +126,34 @@ namespace OnlineSchoolData.Repositories
                 .ToListAsync();
         }
 
+        public async Task<TimetableEntry> UpdateTimetableEntryAsync(Guid timetableEntryid, TimetableEntry timetableEntry)
+        {
+            var entity = await this.context.Timetable.Include(e => e.Teacher).FirstOrDefaultAsync(e => e.Id == timetableEntryid);
+            if (entity is null)
+            {
+                throw new ArgumentException("Използвано е невалидно id");
+            } 
+            await CheckIdsValidity(timetableEntry);
+            entity.SubjectId = timetableEntry.SubjectId;
+            entity.LessonId = timetableEntry.LessonId;
+            entity.TeacherId = timetableEntry.TeacherId;
+            entity.ClassId = timetableEntry.ClassId;
+            this.context.Update(entity);
+            await this.context.SaveChangesAsync();
+            return entity.ToTimetableEntry();
+        }
+        public async Task DeleteTimetableEntryAsync(Guid timetableEntryid)
+        {
+            var entity = await this.context.Timetable.FirstOrDefaultAsync(e => e.Id == timetableEntryid);
+            if (entity is null)
+            {
+                throw new ArgumentException("Използвано е невалидно id");
+            }
+
+            this.context.Remove(entity);
+            await this.context.SaveChangesAsync();
+        }
+
         private async Task<IQueryable<TimetableEntity>> GetTimetableEntriesAsync(Guid userId)
         {
             var userEntity = await this.context.Users
@@ -196,5 +202,33 @@ namespace OnlineSchoolData.Repositories
             }
 
         }
+
+        private async Task CheckIdsValidity(TimetableEntry timetableEntry)
+        {
+            var classExists = await this.context.Classes.AnyAsync(c => c.Id == timetableEntry.ClassId);
+            if (!classExists)
+            {
+                throw new ArgumentException("Класът не съществува");
+            }
+
+            var subjectExists = await this.context.Subjects.AnyAsync(c => c.Id == timetableEntry.SubjectId);
+            if (!subjectExists)
+            {
+                throw new ArgumentException("Предметът не съществува");
+            }
+
+            var lessonExists = await this.context.Lessons.AnyAsync(c => c.Id == timetableEntry.LessonId);
+            if (!lessonExists)
+            {
+                throw new ArgumentException("Учебният час не съществува");
+            }
+
+            var teacherExists = await this.context.Teachers.AnyAsync(c => c.Id == timetableEntry.TeacherId);
+            if (!teacherExists)
+            {
+                throw new ArgumentException("Учителят не съществува");
+            }
+        }
+
     }
 }

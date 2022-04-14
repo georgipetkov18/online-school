@@ -65,6 +65,7 @@ namespace OnlineSchoolApi
 
             return new TimetableEntryResponse
             {
+                TimetableEntryId = timetableEntry.Id,
                 Name = timetableEntry.Subject.Name,
                 Code = timetableEntry.Subject.Code,
                 From = timetableEntry.Lesson.From,

@@ -264,6 +264,28 @@ export class CreateTimetableComponent implements OnInit, AfterViewInit {
     })
   }
 
+  onDelete(row: number, col: number) {
+    const value = this.timetable[row][col];
+    if (value) {
+      const entry = value.entry;
+      if (entry instanceof TimetableEntryRequest) {
+        this.timetable[row][col] = null;
+        this.toastr.success('Часът беше изтрит успешно');
+      }
+      else {
+        const entryId = (<TimetableEntryResponse>entry).timetableEntryId;
+        this.timetableService.deleteEntry(entryId).subscribe(() => {
+          this.timetable[row][col] = null;
+          this.toastr.success('Часът беше изтрит успешно');
+        });
+      }
+    }
+  }
+
+  onUpdate(row: number, col: number) {
+
+  }
+
   private updateTable() {
     this.timetable.push(Array(this.daysOfWeek.length).fill(null));
   }

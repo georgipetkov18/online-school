@@ -68,8 +68,17 @@ table {
     margin-right: 1rem;
 }
 
+.btn-container {
+    display: flex;
+    justify-content: center;
+}
+
 .small-buttons {
     width: 80%
+}
+
+.small-buttons button:not(:last-of-type) {
+    margin-bottom: 0.5rem;
 }
 
 .table-entry-head {
