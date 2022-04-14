@@ -1,6 +1,6 @@
 <section *ngIf="ids.class">
     <div class="larger-device-table">
-        <div class="buttons text-center">
+        <div class="buttons">
             <div class="buttons-item">
                 <button class="btn btn-primary" (click)="addRow()">
                     Добави час
@@ -12,7 +12,7 @@
         </div>
 
 
-        <div style="display: flex;">
+        <div class="app-table">
             <div class="table-col" *ngFor="let day of daysOfWeek; let col = index">
                 <div class="table-entry-head">{{day | translate}}</div>
                 <div class="table-entry" *ngFor="let entry of timetable; let row = index">

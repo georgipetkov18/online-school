@@ -64,7 +64,7 @@ table {
     height: min-content;
 }
 
-.buttons-item button {
+.buttons-item button:not(:last-of-type) {
     margin-right: 1rem;
 }
 
@@ -82,4 +82,27 @@ table {
     justify-content: center;
     align-items: center;
     height: 15rem;
+}
+
+.app-table {
+    display: flex;
+}
+
+@media only screen and (max-width: 768px) {
+    .app-table {
+        flex-direction: column;
+    }
+
+    .table-col {
+        width: 100%;
+        margin-bottom: 4rem;
+    }
+
+    .table-col:not(:first-of-type) {
+        border-top: 1px solid black;
+    }
+
+    .buttons {
+        justify-content: space-evenly;
+    }
 }
