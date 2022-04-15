@@ -29,7 +29,8 @@
                             <div class="btn-container">
                                 <div class="small-buttons">
                                     <button class="btn btn-danger" (click)="onDelete(col, row)">Изтрий</button>
-                                    <button class="btn btn-secondary" (click)="onUpdate(col, row)">Промени</button>
+                                    <button class="btn btn-secondary"
+                                        (click)="openInfoModal(entryInfo, col, row, true, timetable[col][row]?.rowsToDisplay)">Промени</button>
                                 </div>
                             </div>
                         </div>
@@ -39,6 +40,7 @@
         </div>
     </div>
 </section>
+
 
 <ng-template #itemTemplate let-item>
     <a [innerHTML]="item"></a>
@@ -50,7 +52,7 @@
 
 <ng-template #entryInfo let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Добави час</h4>
+        <h4 class="modal-title" id="modal-basic-title">{{updateMode ? 'Редактирай' : 'Добави'}} час</h4>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body">
@@ -61,7 +63,7 @@
                     <ng-autocomplete [data]="suggestions" (inputChanged)="onChangeSearch('subject', $event)"
                         (selected)="setId('subject', $event)" (inputCleared)="removeId('subject')"
                         (inputFocused)="onFocus()" [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate"
-                        id="modal-subject" name="modalSubject" ngModel>
+                        id="modal-subject" name="modalSubject" #subjectAutoComplete ngModel>
                     </ng-autocomplete>
                 </div>
 
@@ -70,7 +72,7 @@
                     <ng-autocomplete [data]="suggestions" (inputChanged)="onChangeSearch('lesson', $event)"
                         (selected)="setId('lesson', $event)" (inputCleared)="removeId('lesson')"
                         (inputFocused)="onFocus()" [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate"
-                        id="modal-lesson" name="modalLesson" ngModel>
+                        id="modal-lesson" name="modalLesson" #lessonAutoComplete ngModel>
                     </ng-autocomplete>
                 </div>
                 <label for="modal-teacher">Учител *</label>
@@ -78,7 +80,7 @@
                     <ng-autocomplete [data]="suggestions" (inputChanged)="onChangeSearch('teacher', $event)"
                         (selected)="setId('teacher', $event)" (inputCleared)="removeId('teacher')"
                         (inputFocused)="onFocus()" [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate"
-                        id="modal-teacher" name="modalTeacher" ngModel>
+                        id="modal-teacher" name="modalTeacher" #teacherAutoComplete ngModel>
                     </ng-autocomplete>
                 </div>
             </div>
@@ -86,7 +88,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="onSubmitModal(modalForm)"
-            [disabled]="!submitEnabled">Създай</button>
+            [disabled]="!submitEnabled">{{updateMode ? 'Редактирай' : 'Създай'}}</button>
     </div>
 </ng-template>
 

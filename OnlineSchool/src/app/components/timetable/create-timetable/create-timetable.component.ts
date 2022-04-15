@@ -1,8 +1,10 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Location, Time } from '@angular/common';
 import { Observable } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 import { TimetableEntryRequest } from 'src/app/models/request/timetable-entry-request.model';
 import { SubjectsService } from 'src/app/services/subjects.service';
@@ -12,12 +14,10 @@ import { LessonResponse } from 'src/app/models/response/lesson-response.model';
 import { SubjectResponse } from 'src/app/models/response/subject-response.model';
 import { TeacherResponse } from 'src/app/models/response/teacher-response.model';
 import { AutoComplete } from 'src/app/models/auto-complete.model';
-import { ToastrService } from 'ngx-toastr';
 import { TimetableValue } from 'src/app/models/timetable-value.model';
 import { ClassResponse } from 'src/app/models/response/class-response.model';
 import { ClassesService } from 'src/app/services/classes.service';
 import { TimetableService } from 'src/app/services/timetable.service';
-import { Location } from '@angular/common';
 import { FullTimetable } from 'src/app/models/full-timetable.model';
 import { TimetableEntryResponse } from 'src/app/models/response/timetable-entry-response.model';
 
@@ -28,6 +28,9 @@ import { TimetableEntryResponse } from 'src/app/models/response/timetable-entry-
 })
 export class CreateTimetableComponent implements OnInit, AfterViewInit {
   @ViewChild('class') classModal!: any;
+  @ViewChild('subjectAutoComplete') subjectAutoComplete!: any;
+  @ViewChild('lessonAutoComplete') lessonAutoComplete!: any;
+  @ViewChild('teacherAutoComplete') teacherAutoComplete!: any;
   public daysOfWeek: DayOfWeek[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   public lessonsCount = 1;
   public suggestions: string[] = [];
@@ -38,6 +41,7 @@ export class CreateTimetableComponent implements OnInit, AfterViewInit {
   public classesNames: string[] = [];
   public submitEnabled = false;
   public submitClass = false;
+  public updateMode = false;
   private infoModalRef!: NgbModalRef;
   private classModalRef!: NgbModalRef;
   private currentRow = -1;
@@ -107,13 +111,25 @@ export class CreateTimetableComponent implements OnInit, AfterViewInit {
     this.updateTable();
   }
 
-  openInfoModal(content: any, row: number, col: number) {
+  openInfoModal(content: any, row: number, col: number, updateMode = false, args: any[] = []) {
+    console.log(args.length);
+    console.log(args[0]);
+    
     this.currentRow = row;
     this.currentCol = col;
-    console.log('row ', this.currentRow);
-    console.log('col ', this.currentCol);
-
+    this.updateMode = updateMode;
     this.infoModalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+    if (updateMode) {
+      this.infoModalRef.shown.subscribe(_ => {
+        const subjectInput = document.querySelector('#modal-subject .input-container input') as HTMLInputElement;     
+        const lessoninput = document.querySelector('#modal-lesson .input-container input') as HTMLInputElement;     
+        const teacherInput = document.querySelector('#modal-teacher .input-container input') as HTMLInputElement;   
+        
+        subjectInput.value = args[0];
+        lessoninput.value = args[1];
+        teacherInput.value = args[2];
+      })
+    }    
   }
 
   onFilterClasses(search: string) {
