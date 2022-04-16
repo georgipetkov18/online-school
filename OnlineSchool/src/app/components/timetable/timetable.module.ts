@@ -5,7 +5,7 @@ import { DisplayTimetableComponent } from "./display-timetable/display-timetable
 
 import { TimetableRoutingModule } from "./timetable-routing.module";
 import { TimetableComponent } from "./timetable.component";
-import { CreateTimetableComponent } from './manage-timetable/manage-timetable.component';
+import { ManageTimetableComponent } from './manage-timetable/manage-timetable.component';
 import { SharedModule } from "../shared/shared.module";
 import { HourPipe } from "src/app/pipes/hour.pipe";
 import { TimetableInfoComponent } from './timetable-info/timetable-info.component';
@@ -14,7 +14,7 @@ import { TimetableInfoComponent } from './timetable-info/timetable-info.componen
     declarations: [
         TimetableComponent,
         DisplayTimetableComponent,
-        CreateTimetableComponent,
+        ManageTimetableComponent,
         HourPipe,
         TimetableInfoComponent
     ],

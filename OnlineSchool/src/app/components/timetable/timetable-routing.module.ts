@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { DisplayTimetableComponent } from './display-timetable/display-timetable.component';
-import { CreateTimetableComponent as ManageTimetableComponent } from './manage-timetable/manage-timetable.component';
+import { ManageTimetableComponent } from './manage-timetable/manage-timetable.component';
 import { TimetableInfoComponent } from './timetable-info/timetable-info.component';
 import { AdminAuthGuard } from 'src/app/guards/admin.guard';
 import { CommonUserAuthGuard } from 'src/app/guards/common-user.guard';

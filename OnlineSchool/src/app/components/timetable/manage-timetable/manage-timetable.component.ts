@@ -26,7 +26,7 @@ import { TimetableEntryResponse } from 'src/app/models/response/timetable-entry-
   templateUrl: './manage-timetable.component.html',
   styleUrls: ['./manage-timetable.component.css']
 })
-export class CreateTimetableComponent implements OnInit, AfterViewInit {
+export class ManageTimetableComponent implements OnInit, AfterViewInit {
   @ViewChild('class') classModal!: any;
   @ViewChild('subjectAutoComplete') subjectAutoComplete!: any;
   @ViewChild('lessonAutoComplete') lessonAutoComplete!: any;
