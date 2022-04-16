@@ -23,7 +23,7 @@ namespace OnlineSchoolBusinessLogic.Interfaces
 
         Task AddTimetable(IEnumerable<TimetableEntry> timetable);
 
-        Task<TimetableEntry> UpdateTimetableEntryAsync(Guid timetableEntryid, TimetableEntry timetableEntry);
+        Task UpdateTimetableEntryAsync(Guid timetableEntryid, TimetableEntry timetableEntry);
 
         Task DeleteTimetableEntryAsync(Guid timetableEntryid);
     }

@@ -22,9 +22,9 @@ import { FullTimetable } from 'src/app/models/full-timetable.model';
 import { TimetableEntryResponse } from 'src/app/models/response/timetable-entry-response.model';
 
 @Component({
-  selector: 'app-create-timetable',
-  templateUrl: './create-timetable.component.html',
-  styleUrls: ['./create-timetable.component.css']
+  selector: 'app-manage-timetable',
+  templateUrl: './manage-timetable.component.html',
+  styleUrls: ['./manage-timetable.component.css']
 })
 export class CreateTimetableComponent implements OnInit, AfterViewInit {
   @ViewChild('class') classModal!: any;
@@ -111,25 +111,25 @@ export class CreateTimetableComponent implements OnInit, AfterViewInit {
     this.updateTable();
   }
 
-  openInfoModal(content: any, row: number, col: number, updateMode = false, args: any[] = []) {
+  openInfoModal(content: any, row: number, col: number, updateMode = false, args: string[] = []) {
     console.log(args.length);
     console.log(args[0]);
-    
+
     this.currentRow = row;
     this.currentCol = col;
     this.updateMode = updateMode;
     this.infoModalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
     if (updateMode) {
       this.infoModalRef.shown.subscribe(_ => {
-        const subjectInput = document.querySelector('#modal-subject .input-container input') as HTMLInputElement;     
-        const lessoninput = document.querySelector('#modal-lesson .input-container input') as HTMLInputElement;     
-        const teacherInput = document.querySelector('#modal-teacher .input-container input') as HTMLInputElement;   
-        
+        const subjectInput = document.querySelector('#modal-subject .input-container input') as HTMLInputElement;
+        const lessoninput = document.querySelector('#modal-lesson .input-container input') as HTMLInputElement;
+        const teacherInput = document.querySelector('#modal-teacher .input-container input') as HTMLInputElement;
+
         subjectInput.value = args[0];
         lessoninput.value = args[1];
         teacherInput.value = args[2];
       })
-    }    
+    }
   }
 
   onFilterClasses(search: string) {
@@ -232,19 +232,13 @@ export class CreateTimetableComponent implements OnInit, AfterViewInit {
     const subject = modalForm.value['modalSubject'];
     const lesson = modalForm.value['modalLesson'];
     const teacher = modalForm.value['modalTeacher'];
-    const timetableEntry = new TimetableEntryRequest(
-      this.daysOfWeek[this.currentRow],
-      this.ids.subject,
-      this.ids.lesson,
-      this.ids.class,
-      this.ids.teacher);
-
-    const timetableValue = new TimetableValue([
-      subject, lesson, teacher
-    ], timetableEntry);
-
-    this.timetable[this.currentRow][this.currentCol] = timetableValue;
-    console.log('updated timetable', this.timetable);
+    if (this.updateMode) {
+      this.updateEntry(subject, lesson, teacher);
+    }
+    else {
+      this.createEntry(subject, lesson, teacher);
+    }
+    console.log('gvyivyuvyuv ', this.timetable[this.currentRow][this.currentCol]);
 
     // const day = this.daysOfWeek[this.currentCol];
     // this.unformattedTimetable[day]![this.currentRow] = <TimetableEntryResponse>timetableValue.entry;
@@ -255,6 +249,8 @@ export class CreateTimetableComponent implements OnInit, AfterViewInit {
   }
 
   saveProgramme() {
+    console.log('save porgramme ', this.timetable);
+    
     const entries: TimetableEntryRequest[] = [];
     for (let i = 0; i < this.timetable.length; i++) {
       const row = this.timetable[i];
@@ -298,8 +294,44 @@ export class CreateTimetableComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onUpdate(row: number, col: number) {
+  createEntry(subject: string, lesson: string, teacher: string) {
+    const timetableEntry = new TimetableEntryRequest(
+      this.daysOfWeek[this.currentRow],
+      this.ids.subject,
+      this.ids.lesson,
+      this.ids.class,
+      this.ids.teacher);
 
+    const timetableValue = new TimetableValue([
+      subject, lesson, teacher
+    ], timetableEntry);
+
+    this.timetable[this.currentRow][this.currentCol] = timetableValue;
+  }
+  updateEntry(subject: string, lesson: string, teacher: string) {
+    const entry = this.timetable[this.currentRow][this.currentCol]?.entry;
+    if (entry instanceof TimetableEntryRequest) {
+      this.createEntry(subject, lesson, teacher);
+    }
+    else {
+      const entryId = (<TimetableEntryResponse>entry).timetableEntryId;
+      console.log('entryId ', entryId);
+      const timetableEntry = new TimetableEntryRequest(
+        this.daysOfWeek[this.currentRow],
+        this.ids.subject,
+        this.ids.lesson,
+        this.ids.class,
+        this.ids.teacher,
+        entryId);
+  
+      const timetableValue = new TimetableValue([
+        subject, lesson, teacher
+      ], timetableEntry);
+  
+      this.timetable[this.currentRow][this.currentCol] = timetableValue;
+      console.log('timetable id ', this.timetable[this.currentRow][this.currentCol]?.entry);
+      
+    }
   }
 
   private updateTable() {

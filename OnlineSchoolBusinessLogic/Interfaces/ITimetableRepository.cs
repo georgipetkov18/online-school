@@ -11,7 +11,7 @@ namespace OnlineSchoolBusinessLogic.Interfaces
         Task<TimetableEntry?> GetNextEntryAsync(Guid userId);
         Task<TimetableEntry?> GetCurrentEntryAsync(Guid userId);
         Task AddTimetableEntryAsync(TimetableEntry timetableEntry);
-        Task<TimetableEntry> UpdateTimetableEntryAsync(Guid timetableEntryid, TimetableEntry timetableEntry);
+        Task UpdateTimetableEntryAsync(Guid timetableEntryid, TimetableEntry timetableEntry);
         Task DeleteTimetableEntryAsync(Guid timetableEntryid);
     }
 }

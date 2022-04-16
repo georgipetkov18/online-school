@@ -126,13 +126,13 @@ namespace OnlineSchoolData.Repositories
                 .ToListAsync();
         }
 
-        public async Task<TimetableEntry> UpdateTimetableEntryAsync(Guid timetableEntryid, TimetableEntry timetableEntry)
+        public async Task UpdateTimetableEntryAsync(Guid timetableEntryid, TimetableEntry timetableEntry)
         {
             var entity = await this.context.Timetable.Include(e => e.Teacher).FirstOrDefaultAsync(e => e.Id == timetableEntryid);
             if (entity is null)
             {
                 throw new ArgumentException("Използвано е невалидно id");
-            } 
+            }
             await CheckIdsValidity(timetableEntry);
             entity.SubjectId = timetableEntry.SubjectId;
             entity.LessonId = timetableEntry.LessonId;
@@ -140,7 +140,6 @@ namespace OnlineSchoolData.Repositories
             entity.ClassId = timetableEntry.ClassId;
             this.context.Update(entity);
             await this.context.SaveChangesAsync();
-            return entity.ToTimetableEntry();
         }
         public async Task DeleteTimetableEntryAsync(Guid timetableEntryid)
         {
@@ -229,6 +228,5 @@ namespace OnlineSchoolData.Repositories
                 throw new ArgumentException("Учителят не съществува");
             }
         }
-
     }
 }

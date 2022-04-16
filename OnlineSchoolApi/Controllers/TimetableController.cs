@@ -137,8 +137,8 @@ namespace OnlineSchoolApi.Controllers
             }
             try
             {
-                var updatedEntry = await this.timetableService.UpdateTimetableEntryAsync(id, timetableEntryInputModel.ToTimetableEntry());
-                return Ok(updatedEntry);
+                await this.timetableService.UpdateTimetableEntryAsync(id, timetableEntryInputModel.ToTimetableEntry());
+                return Ok();
             }
             catch (ArgumentException ex)
             {

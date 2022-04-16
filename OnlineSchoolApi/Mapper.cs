@@ -101,6 +101,7 @@ namespace OnlineSchoolApi
         {
             return new TimetableEntry
             {
+                Id = timetableEntryInputModel.TimetableEntryId ?? Guid.Empty,
                 DayOfWeek = timetableEntryInputModel.DayOfWeek,
                 SubjectId = timetableEntryInputModel.SubjectId,
                 ClassId = timetableEntryInputModel.ClassId,

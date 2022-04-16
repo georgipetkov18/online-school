@@ -17,7 +17,10 @@ namespace OnlineSchoolBusinessLogic.Services
         {
             foreach (var entry in timetable)
             {
-                await timetableRepository.AddTimetableEntryAsync(entry);
+                if (entry.Id == Guid.Empty)
+                    await this.timetableRepository.AddTimetableEntryAsync(entry);
+                else
+                    await this.timetableRepository.UpdateTimetableEntryAsync(entry.Id, entry);
             }
         }
 
@@ -78,7 +81,7 @@ namespace OnlineSchoolBusinessLogic.Services
                 .GroupBy(e => e.DayOfWeek);
         }
 
-        public async Task<TimetableEntry> UpdateTimetableEntryAsync(Guid timetableEntryid, TimetableEntry timetableEntry)
+        public async Task UpdateTimetableEntryAsync(Guid timetableEntryid, TimetableEntry timetableEntry)
             => await this.timetableRepository.UpdateTimetableEntryAsync(timetableEntryid, timetableEntry);
 
         private Guid GetId(ClaimsPrincipal user)

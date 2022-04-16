@@ -5,5 +5,6 @@ export class TimetableEntryRequest {
         public lessonId: string,
         public classId: string,
         public teacherId: string,
+        public timetableEntryId: string | null = null
     ) {}
 }

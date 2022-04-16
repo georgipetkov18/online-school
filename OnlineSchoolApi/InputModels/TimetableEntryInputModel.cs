@@ -5,6 +5,8 @@ namespace OnlineSchoolApi.InputModels
 {
     public class TimetableEntryInputModel
     {
+        public Guid? TimetableEntryId { get; set; }
+
         [Required]
         [DayOfWeek]
         public string DayOfWeek { get; set; } = null!;
