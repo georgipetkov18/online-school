@@ -73,9 +73,6 @@ export class ManageTimetableComponent implements OnInit, AfterViewInit {
     this.classModalRef = this.modalService.open(this.classModal, { ariaLabelledBy: 'modal-basic-title' });
     this.classModalRef.closed.subscribe(_ => {
       this.timetableService.getTimetableByClassId(this.ids.class).subscribe(timetable => {
-        // this.unformattedTimetable = timetable;
-        // console.log(timetable);
-
         const formattedTimetable = this.timetableService.formatTableData(timetable);
         this.lessonsCount = formattedTimetable.length > 0 ? formattedTimetable.length : 1;
         this.lessonsArray = Array(this.lessonsCount).fill(0).map((_, i) => i);
@@ -85,7 +82,6 @@ export class ManageTimetableComponent implements OnInit, AfterViewInit {
         if (formattedTimetable.length === 0) {
           return;
         }
-        console.log('formatted ', formattedTimetable);
 
         for (let i = 0; i < formattedTimetable.length; i++) {
           const row = formattedTimetable[i];
@@ -112,9 +108,6 @@ export class ManageTimetableComponent implements OnInit, AfterViewInit {
   }
 
   openInfoModal(content: any, row: number, col: number, updateMode = false, args: string[] = []) {
-    console.log(args.length);
-    console.log(args[0]);
-
     this.currentRow = row;
     this.currentCol = col;
     this.updateMode = updateMode;
@@ -190,8 +183,6 @@ export class ManageTimetableComponent implements OnInit, AfterViewInit {
       return;
     }
     this.ids.class = currentElement.id;
-    console.log(this.ids);
-
   }
 
   setId(source: 'subject' | 'lesson' | 'teacher', value: string) {
@@ -238,19 +229,14 @@ export class ManageTimetableComponent implements OnInit, AfterViewInit {
     else {
       this.createEntry(subject, lesson, teacher);
     }
-    console.log('gvyivyuvyuv ', this.timetable[this.currentRow][this.currentCol]);
 
-    // const day = this.daysOfWeek[this.currentCol];
-    // this.unformattedTimetable[day]![this.currentRow] = <TimetableEntryResponse>timetableValue.entry;
     this.infoModalRef.close();
     this.currentRow = -1;
     this.currentCol = -1;
 
   }
 
-  saveProgramme() {
-    console.log('save porgramme ', this.timetable);
-    
+  saveProgramme() {    
     const entries: TimetableEntryRequest[] = [];
     for (let i = 0; i < this.timetable.length; i++) {
       const row = this.timetable[i];
@@ -262,8 +248,6 @@ export class ManageTimetableComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    console.log('entries ', entries);
-
 
     this.timetableService.addTimetable(entries).subscribe({
       next: () => {
@@ -315,7 +299,6 @@ export class ManageTimetableComponent implements OnInit, AfterViewInit {
     }
     else {
       const entryId = (<TimetableEntryResponse>entry).timetableEntryId;
-      console.log('entryId ', entryId);
       const timetableEntry = new TimetableEntryRequest(
         this.daysOfWeek[this.currentRow],
         this.ids.subject,
@@ -328,9 +311,7 @@ export class ManageTimetableComponent implements OnInit, AfterViewInit {
         subject, lesson, teacher
       ], timetableEntry);
   
-      this.timetable[this.currentRow][this.currentCol] = timetableValue;
-      console.log('timetable id ', this.timetable[this.currentRow][this.currentCol]?.entry);
-      
+      this.timetable[this.currentRow][this.currentCol] = timetableValue;      
     }
   }
 

@@ -40,7 +40,6 @@ export class CreateLessonsComponent implements OnInit {
     this.lessonsService.addLesson(from, durationInMinutes).subscribe({
       next: lesson => {
         this.toastr.success('Часът е създаден успешно');
-        console.log(lesson);
       },
       error: errorMessage => {
         this.toastr.error(errorMessage);
