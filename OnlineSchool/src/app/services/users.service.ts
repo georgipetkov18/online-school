@@ -30,14 +30,12 @@ export class UsersService {
           return throwError(errorMessage);
         }),
         tap(response => {
-          console.log('after type ', typeof (response.expiresAfter));
-          console.log('after ', response.expiresAfter);
-
-          console.log('date after ', new Date(response.expiresAfter));
+          const token = JSON.parse(atob(response.jwtToken.split('.')[1]));
+console.log('token after login ', token);
 
 
-          this.autoRefreshToken(response.jwtToken);
           sessionStorage.setItem('token', response.jwtToken);
+          this.autoRefreshToken(response.jwtToken);
         })
       );
   }
@@ -80,8 +78,8 @@ export class UsersService {
   public refreshToken() {
     this.http.post<AuthenticateResponse>('/api/refresh-token', {}).subscribe({
       next: response => {
-        this.autoRefreshToken(response.jwtToken);
         sessionStorage.setItem('token', response.jwtToken);
+        this.autoRefreshToken(response.jwtToken);        
       },
       error: _ => {
         this.logout();
@@ -92,7 +90,7 @@ export class UsersService {
   private autoRefreshToken(jwtToken: string) {
     const token = JSON.parse(atob(jwtToken.split('.')[1]));
     const expiresOnDate = new Date(token.exp * 1000);
-
+    
     this.intervalRef = setTimeout(this.refreshToken.bind(this), expiresOnDate.getTime() - new Date().getTime() - 10000);
   }
 }

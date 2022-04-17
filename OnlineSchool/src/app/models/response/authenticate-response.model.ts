@@ -5,6 +5,5 @@ export class AuthenticateResponse {
         public email: string,
         public role: string,
         public jwtToken: string,
-        public expiresAfter: string,
     ) {};
 }

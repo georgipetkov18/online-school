@@ -32,7 +32,7 @@ namespace OnlineSchoolApi.Controllers
                 var cookieOptions = GetRefreshTokenOptions();
 
                 this.Response.Cookies.Append("refreshToken", authenticatedUser.RefreshToken, cookieOptions);
-                return Ok(authenticatedUser.ToAuthenticateResponse(cookieOptions.Expires!.Value));
+                return Ok(authenticatedUser.ToAuthenticateResponse());
             }
             catch (ArgumentException ex)
             {
@@ -78,7 +78,7 @@ namespace OnlineSchoolApi.Controllers
 
                 this.Response.Cookies.Append("refreshToken", authenticatedUser.RefreshToken, cookieOptions);
 
-                return Ok(authenticatedUser.ToAuthenticateResponse(cookieOptions.Expires!.Value));
+                return Ok(authenticatedUser.ToAuthenticateResponse());
             }
             catch (ArgumentNullException)
             {
