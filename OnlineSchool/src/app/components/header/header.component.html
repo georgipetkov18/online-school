@@ -21,8 +21,12 @@
         </li> -->
     </div>
 
-    <div class="nav navbar-nav navbar-right">
+    <div *ngIf="!loggedIn" class="nav navbar-nav navbar-right not-logged">
         <a routerLink="/login" class="nav-link">Вход</a>
         <a routerLink="/register" class="nav-link">Регистрация</a>
+    </div>
+
+    <div *ngIf="loggedIn" class="nav navbar-nav navbar-right logged">
+        <a class="nav-link" (click)="onLogout()">Изход</a>
     </div>
 </nav>

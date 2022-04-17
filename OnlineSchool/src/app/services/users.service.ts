@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { throwError } from 'rxjs';
+import { Subject, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
 import { AuthenticateRequest } from '../models/request/authenticate-request.model';
@@ -13,6 +13,7 @@ import { RegisterResponse } from '../models/response/register-response.model';
 })
 export class UsersService {
   private intervalRef: any = null;
+  public userLoggedIn = new Subject<void>();
 
   constructor(private http: HttpClient) { }
 
@@ -30,12 +31,9 @@ export class UsersService {
           return throwError(errorMessage);
         }),
         tap(response => {
-          const token = JSON.parse(atob(response.jwtToken.split('.')[1]));
-console.log('token after login ', token);
-
-
           sessionStorage.setItem('token', response.jwtToken);
           this.autoRefreshToken(response.jwtToken);
+          this.userLoggedIn.next();
         })
       );
   }
