@@ -133,6 +133,7 @@ export class ManageTimetableComponent implements OnInit, AfterViewInit {
       this.classes = classes;
       this.classesNames = classes.map(c => c.name);
     })
+    this.submitClass = this.classes.map(c => c.name).includes(search)
   }
 
   onChangeSearch(source: 'subject' | 'lesson' | 'teacher', search: string) {
@@ -170,6 +171,12 @@ export class ManageTimetableComponent implements OnInit, AfterViewInit {
       next: suggestions => {
         this.suggestionsFull = suggestions;
         this.suggestions = suggestions.map(s => s.autoCompleteIdentifier);
+        if (this.suggestions.includes(search)) {
+          this.setId(source, search);
+        }
+        else {
+          this.submitEnabled = false;
+        }
       }
     })
   }
@@ -236,7 +243,7 @@ export class ManageTimetableComponent implements OnInit, AfterViewInit {
 
   }
 
-  saveProgramme() {    
+  saveProgramme() {
     const entries: TimetableEntryRequest[] = [];
     for (let i = 0; i < this.timetable.length; i++) {
       const row = this.timetable[i];
@@ -306,12 +313,12 @@ export class ManageTimetableComponent implements OnInit, AfterViewInit {
         this.ids.class,
         this.ids.teacher,
         entryId);
-  
+
       const timetableValue = new TimetableValue([
         subject, lesson, teacher
       ], timetableEntry);
-  
-      this.timetable[this.currentRow][this.currentCol] = timetableValue;      
+
+      this.timetable[this.currentRow][this.currentCol] = timetableValue;
     }
   }
 
