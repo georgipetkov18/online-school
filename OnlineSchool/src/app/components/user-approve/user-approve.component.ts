@@ -34,7 +34,12 @@ export class UserApproveComponent implements OnInit, OnDestroy {
   }
 
   onReject(id: string) {
-
+    this.usersService.rejectUser(id).subscribe({
+      next: _ => {
+        this.toastr.success('Потребителят беше отхвърлен успешно');
+        this.usersService.getPendingUsers();
+      }
+    })
   }
 
   ngOnDestroy(): void {

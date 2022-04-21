@@ -64,12 +64,15 @@ namespace OnlineSchoolBusinessLogic.Services
         }
 
         public async Task<User> ApproveUserAsync(Guid userId, ClaimsPrincipal approver) =>
-            await usersRepository.ApproveUserAsync(userId, approver);
+            await this.usersRepository.ApproveUserAsync(userId, approver);
 
         public async Task RegisterAsync(User user) =>
             await this.usersRepository.RegisterAsync(user);
 
         public async Task<IEnumerable<User>> GetPendingUsersAsync() =>
             await this.usersRepository.GetPendingUsersAsync();
+
+        public async Task<User> RejectUserAsync(Guid userId, ClaimsPrincipal rejecter) =>
+            await this.usersRepository.RejectUserAsync(userId, rejecter);
     }
 }

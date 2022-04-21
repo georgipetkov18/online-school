@@ -91,6 +91,10 @@ export class UsersService {
     return this.http.put<UserResponse>(`/api/approve/${id}`, {});
   }
 
+  public rejectUser(id: string) {
+    return this.http.put<UserResponse>(`/api/reject/${id}`, {});
+  }
+
   public getPendingUsers() {
     this.http.get<UserResponse[]>('/api/users/pending').subscribe(users => {
       this.pendingUsersChanged.next(users);

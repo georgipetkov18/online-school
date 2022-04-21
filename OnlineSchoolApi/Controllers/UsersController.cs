@@ -110,6 +110,25 @@ namespace OnlineSchoolApi.Controllers
             }
         }
 
+        [HttpPut("[action]/{userId}")]
+        [Authorize(Policy = Policies.RequireAuthorityRole)]
+        public async Task<IActionResult> Reject(Guid userId)
+        {
+            try
+            {
+                var user = await usersService.RejectUserAsync(userId, User);
+                return Ok(user.ToUserResponse());
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (InvalidOperationException)
+            {
+                return Forbid();
+            }
+        }
+
         [HttpGet("[controller]/[action]")]
         [Authorize(Policy = Policies.RequireAuthorityRole)]
         public async Task<IActionResult> Pending()

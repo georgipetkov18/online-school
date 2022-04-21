@@ -136,5 +136,28 @@ namespace OnlineSchoolData.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
+
+        public async Task<User> RejectUserAsync(Guid userId, ClaimsPrincipal rejecter)
+        {
+            var userEntity = await context.Users
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (userEntity is null)
+            {
+                throw new ArgumentException($"User with id: {userId} does not exist");
+            }
+
+            if (rejecter.IsInRole(Roles.Teacher) && userEntity.Role.Name != Roles.Student)
+            {
+                throw new InvalidOperationException();
+            }
+
+            userEntity.Status = AccountStatus.Rejected;
+            context.Update(userEntity);
+            await context.SaveChangesAsync();
+
+            return userEntity.ToUser();
+        }
     }
 }
