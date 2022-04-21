@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlineSchoolApi.InputModels;
+using OnlineSchoolBusinessLogic.Common;
 using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolData.CustomExceptions;
 
@@ -44,6 +46,7 @@ public class SubjectsController : ControllerBase
     }
 
     [HttpPost("[action]")]
+    [Authorize(Policy = Policies.RequireAdministratorRole)]
     public async Task<IActionResult> Add(SubjectInputModel subjectInputModel)
     {
         if (!ModelState.IsValid)
@@ -56,6 +59,7 @@ public class SubjectsController : ControllerBase
     }
 
     [HttpPut("[action]/{subjectId}")]
+    [Authorize(Policy = Policies.RequireAdministratorRole)]
     public async Task<IActionResult> Update(Guid subjectId, SubjectInputModel subjectInputModel)
     {
         if (!ModelState.IsValid)
@@ -76,6 +80,7 @@ public class SubjectsController : ControllerBase
     }
 
     [HttpDelete("[action]/{subjectId}")]
+    [Authorize(Policy = Policies.RequireAdministratorRole)]
     public async Task<IActionResult> Delete(Guid subjectId)
     {
         if (!ModelState.IsValid)

@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using OnlineSchoolApi.InputModels;
-using OnlineSchoolApi.ResponseModels;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using OnlineSchoolBusinessLogic.Common;
 using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolData.CustomExceptions;
 
@@ -38,6 +38,7 @@ namespace OnlineSchoolApi.Controllers
         }
 
         [HttpDelete("{studentId}")]
+        [Authorize(Policy = Policies.RequireAdministratorRole)]
         public async Task<IActionResult> Delete(Guid studentId)
         {
             if (!ModelState.IsValid)
