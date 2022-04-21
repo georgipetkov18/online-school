@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 import { UtilityService } from '../../../services/utility.service';
 
@@ -15,6 +15,7 @@ export class FormComponent implements OnInit {
   @Input() errorMessage: string = '';
   @Input() submitBtnText: string = 'Изпрати';
   @Input() afterInputsContext: any;
+  @Input() validators: ValidatorFn[] = [];
   @Output() formSubmitted = new EventEmitter<FormGroup>();
 
   public form!: FormGroup;
@@ -27,8 +28,8 @@ export class FormComponent implements OnInit {
       return new AppFormControl(
         c.name,
         c.label,
-        new FormControl(),
-        c.inputType ? c.inputType : 'text'
+        new FormControl('', c.validators ? c.validators : this.validators),
+        c.inputType ? c.inputType : 'text',
       )
     })
 
@@ -49,6 +50,7 @@ export interface IAppFormControl {
   name: string,
   label: string,
   inputType?: string,
+  validators?: ValidatorFn[],
 }
 
 class AppFormControl implements IAppFormControl {
@@ -56,6 +58,7 @@ class AppFormControl implements IAppFormControl {
     public name: string,
     public label: string,
     public formControl: FormControl,
-    public inputType: string
+    public inputType: string,
+    public validators: ValidatorFn[] = [],
   ) { }
 }

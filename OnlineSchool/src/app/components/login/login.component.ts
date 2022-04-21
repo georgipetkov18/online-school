@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, NgForm } from '@angular/forms';
+import { FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -17,12 +17,14 @@ export class LoginComponent implements OnInit {
   public formSetup: IAppFormControl[] = [
     {
      name: 'usernameOrEmail',
-     label: 'Потрбителско име или имейл *' 
+     label: 'Потрбителско име или имейл *',
+     validators: [Validators.required]
     },
     {
       name: 'password',
       label: 'Парола *',
-      inputType: 'password'
+      inputType: 'password',
+      validators: [Validators.required]
     }
   ]
   constructor(
