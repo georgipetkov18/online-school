@@ -59,6 +59,5 @@ class AppFormControl implements IAppFormControl {
     public label: string,
     public formControl: FormControl,
     public inputType: string,
-    public validators: ValidatorFn[] = [],
   ) { }
 }
