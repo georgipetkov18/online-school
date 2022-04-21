@@ -68,5 +68,8 @@ namespace OnlineSchoolBusinessLogic.Services
 
         public async Task RegisterAsync(User user) =>
             await this.usersRepository.RegisterAsync(user);
+
+        public async Task<IEnumerable<User>> GetPendingUsersAsync() =>
+            await this.usersRepository.GetPendingUsersAsync();
     }
 }

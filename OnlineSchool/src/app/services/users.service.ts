@@ -7,6 +7,7 @@ import { AuthenticateRequest } from '../models/request/authenticate-request.mode
 import { RegisterRequest } from '../models/request/register-request.model';
 import { AuthenticateResponse } from '../models/response/authenticate-response.model';
 import { RegisterResponse } from '../models/response/register-response.model';
+import { UserResponse } from '../models/response/user-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ import { RegisterResponse } from '../models/response/register-response.model';
 export class UsersService {
   private intervalRef: any = null;
   public userLoggedIn = new Subject<void>();
+  public pendingUsersChanged = new Subject<UserResponse[]>();
 
   constructor(private http: HttpClient) { }
 
@@ -77,7 +79,7 @@ export class UsersService {
     this.http.post<AuthenticateResponse>('/api/refresh-token', {}).subscribe({
       next: response => {
         sessionStorage.setItem('token', response.jwtToken);
-        this.autoRefreshToken(response.jwtToken);        
+        this.autoRefreshToken(response.jwtToken);
       },
       error: _ => {
         this.logout();
@@ -85,10 +87,20 @@ export class UsersService {
     })
   }
 
+  public approveUser(id: string) {
+    return this.http.put<UserResponse>(`/api/approve/${id}`, {});
+  }
+
+  public getPendingUsers() {
+    this.http.get<UserResponse[]>('/api/users/pending').subscribe(users => {
+      this.pendingUsersChanged.next(users);
+    });
+  }
+
   private autoRefreshToken(jwtToken: string) {
     const token = JSON.parse(atob(jwtToken.split('.')[1]));
     const expiresOnDate = new Date(token.exp * 1000);
-    
+
     this.intervalRef = setTimeout(this.refreshToken.bind(this), expiresOnDate.getTime() - new Date().getTime() - 10000);
   }
 }

@@ -11,7 +11,7 @@ namespace OnlineSchoolApi.InputModels
 
         [Required]
         [StringLength(65, MinimumLength = 6)]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,65}$")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,65}$")]
         public string Password { get; set; } = null!;
 
         [Required]

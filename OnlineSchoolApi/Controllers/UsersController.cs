@@ -110,6 +110,14 @@ namespace OnlineSchoolApi.Controllers
             }
         }
 
+        [HttpGet("[controller]/[action]")]
+        [Authorize(Policy = Policies.RequireAuthorityRole)]
+        public async Task<IActionResult> Pending()
+        {
+            var users = await this.usersService.GetPendingUsersAsync();
+            return Ok(users);
+        }
+
 
         private CookieOptions GetRefreshTokenOptions()
         {

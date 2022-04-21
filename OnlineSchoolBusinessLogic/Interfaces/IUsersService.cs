@@ -9,6 +9,7 @@ namespace OnlineSchoolBusinessLogic.Interfaces
         Task RegisterAsync(User user);
         Task<AuthenticateModel> RefreshTokenAsync(ClaimsPrincipal user);
         Task<User> ApproveUserAsync(Guid userId, ClaimsPrincipal approver);
+        Task<IEnumerable<User>> GetPendingUsersAsync();
     }
 
 }

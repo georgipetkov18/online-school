@@ -126,5 +126,15 @@ namespace OnlineSchoolData.Repositories
 
             return userEntity.ToUser();
         }
+
+        public async Task<IEnumerable<User>> GetPendingUsersAsync()
+        {
+            return await this.context.Users
+                .Where(u => u.Status == AccountStatus.Pending)
+                .Include(u => u.Role)
+                .Select(u => u.ToUser())
+                .AsNoTracking()
+                .ToListAsync();
+        }
     }
 }

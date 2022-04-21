@@ -23,6 +23,40 @@
     text-align: center;
 }
 
+.table-entry {
+    border: 1px solid gray;
+    height: 100%;
+}
+
+.table-entry-small {
+    max-width: 10px;
+}
+
+.table-entry-head {
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.bi-plus-circle-dotted {
+    width: 3rem;
+    height: 100%;
+    cursor: pointer;
+}
+
+.table-entry-container {  
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.table-entry-filled {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 
 input.ng-invalid.ng-touched {
     border: 1px solid red;
