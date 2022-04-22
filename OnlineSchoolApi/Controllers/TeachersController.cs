@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineSchoolApi.InputModels;
+using OnlineSchoolBusinessLogic.InputModels;
 using OnlineSchoolBusinessLogic.Interfaces;
 
 namespace OnlineSchoolApi.Controllers

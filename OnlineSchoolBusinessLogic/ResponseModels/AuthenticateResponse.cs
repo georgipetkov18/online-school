@@ -1,4 +1,4 @@
-﻿namespace OnlineSchoolApi.ResponseModels
+﻿namespace OnlineSchoolBusinessLogic.ResponseModels
 {
     public class AuthenticateResponse
     {

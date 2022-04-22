@@ -45,7 +45,9 @@ table {
 }
 
 .small-buttons {
-    width: 80%
+    display: flex;
+    flex-direction: column;
+    width: 7rem
 }
 
 .small-buttons button:not(:last-of-type) {
@@ -62,6 +64,7 @@ table {
 .app-table {
     display: flex;
 }
+
 
 #lessonNotFound {
     border: none;

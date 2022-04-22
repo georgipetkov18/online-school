@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolBusinessLogic.Models;
+using OnlineSchoolBusinessLogic.ResponseModels;
 
 namespace OnlineSchoolBusinessLogic.Hubs
 {
@@ -36,7 +37,7 @@ namespace OnlineSchoolBusinessLogic.Hubs
                         if (info.Next is not null)
                         {
                             var delay = GetDelay(info.Next);
-                            await Clients.Caller.WaitingForLesson(info.Next);
+                            await Clients.Caller.WaitingForLesson(info.Next.ToTimetableEntryResponse());
                             await Task.Delay(delay);
                             await OnLessonBegan();
                         }
@@ -52,7 +53,7 @@ namespace OnlineSchoolBusinessLogic.Hubs
                 }
                 else
                 {
-                    await Clients.Caller.LessonBegan(info);
+                    await Clients.Caller.LessonBegan(info.ToTimetableEntriesInfoResponse());
                     var now = DateTime.Now;
                     var nowSpan = new TimeSpan(now.Hour, now.Minute, now.Second);
                     var lessonEndsSpan = info.Current.Lesson.From.Add(TimeSpan.FromMinutes(info.Current.Lesson.DurationInMinutes));
@@ -66,7 +67,7 @@ namespace OnlineSchoolBusinessLogic.Hubs
         {
             if (info.Next is not null)
             {
-                await Clients.Caller.LessonEnded(info.Next);
+                await Clients.Caller.LessonEnded(info.Next.ToTimetableEntryResponse());
                 var now = DateTime.Now;
                 var delay = info.Next.Lesson.From - new TimeSpan(now.Hour, now.Minute, now.Second);
                 await Task.Delay(delay);
@@ -122,10 +123,10 @@ namespace OnlineSchoolBusinessLogic.Hubs
 
     public interface ITimetableHub
     {
-        Task LessonBegan(TimetableEntriesInfo info);
-        Task LessonEnded(TimetableEntry next);
+        Task LessonBegan(TimetableEntriesInfoResponse info);
+        Task LessonEnded(TimetableEntryResponse next);
         Task LastLessonEnded();
-        Task WaitingForLesson(TimetableEntry next);
+        Task WaitingForLesson(TimetableEntryResponse next);
         Task NoLessons();
     }
 }

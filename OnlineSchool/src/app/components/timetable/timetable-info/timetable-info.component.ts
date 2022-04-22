@@ -17,10 +17,12 @@ export class TimetableInfoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.signalRService.initiateConnection().then(_ => {
       this.signalRService.lessonBegan.subscribe({
-        next: info => {
+        next: info => {          
+          console.log(info);
+          
           this.lastLessonEnded = false;
           this.current = info.current;
-          this.current = info.next;
+          this.next = info.next;
         }
       });
 

@@ -1,8 +1,8 @@
-﻿using OnlineSchoolApi.InputModels;
-using OnlineSchoolApi.ResponseModels;
+﻿using OnlineSchoolBusinessLogic.InputModels;
 using OnlineSchoolBusinessLogic.Models;
+using OnlineSchoolBusinessLogic.ResponseModels;
 
-namespace OnlineSchoolApi
+namespace OnlineSchoolBusinessLogic
 {
     public static class Mapper
     {
@@ -55,6 +55,15 @@ namespace OnlineSchoolApi
                 RoleName = userInputModel.RoleName,
                 ClassId = userInputModel.ClassId,
                 SubjectId = userInputModel.SubjectId,
+            };
+        }
+
+        public static TimetableEntriesInfoResponse ToTimetableEntriesInfoResponse(this TimetableEntriesInfo timetableEntriesInfo)
+        {
+            return new TimetableEntriesInfoResponse
+            {
+                Current = timetableEntriesInfo.Current?.ToTimetableEntryResponse(),
+                Next = timetableEntriesInfo.Next?.ToTimetableEntryResponse(),
             };
         }
 

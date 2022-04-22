@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnlineSchoolApi.InputModels;
+using OnlineSchoolBusinessLogic;
 using OnlineSchoolBusinessLogic.Common;
+using OnlineSchoolBusinessLogic.InputModels;
 using OnlineSchoolBusinessLogic.Interfaces;
 using OnlineSchoolData.CustomExceptions;
 

@@ -1,4 +1,4 @@
-﻿namespace OnlineSchoolApi.InputModels
+﻿namespace OnlineSchoolBusinessLogic.InputModels
 {
     public class FilterInputModel
     {

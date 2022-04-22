@@ -1,6 +1,6 @@
 ﻿using OnlineSchoolBusinessLogic.Common;
 
-namespace OnlineSchoolApi.ResponseModels
+namespace OnlineSchoolBusinessLogic.ResponseModels
 {
     public class UserResponse
     {

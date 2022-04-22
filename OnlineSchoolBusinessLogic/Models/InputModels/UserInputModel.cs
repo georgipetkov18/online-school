@@ -1,7 +1,7 @@
 ﻿using BusinessLayer.Attributes;
 using System.ComponentModel.DataAnnotations;
 
-namespace OnlineSchoolApi.InputModels
+namespace OnlineSchoolBusinessLogic.InputModels
 {
     public class UserInputModel
     {
