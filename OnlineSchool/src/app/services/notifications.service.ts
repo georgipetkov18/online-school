@@ -16,7 +16,7 @@ export class NotificationsService {
       let notification = new Notification('Online School', {
         body: `Часът: ${entry.name} започва след 1 минута. Натиснете тук за да се присъедините към срещата.`,
       });
-      notification.onclick = () => this.setMeetRedirect(entry.code);
+      notification.onclick = () => this.redirectToMeet(entry.code);
     }, lessonStart.getTime() - now.getTime() - 1 * 60 * 1000);
     return id;
   }
@@ -25,7 +25,7 @@ export class NotificationsService {
     navigator.clipboard.writeText(text);
   }
 
-  private setMeetRedirect(code: string) {
+  public redirectToMeet(code: string) {
     let url = `https://meet.google.com/lookup/${code}`;
     window.open(url);
   }

@@ -8,8 +8,12 @@
                 <p>{{current?.code}}</p>
                 <p>{{current?.from | hour}} - {{current?.to | hour}}</p>
                 <div class="buttons">
-                    <button class="btn btn-outline-success">Влез в Google Meet</button>
-                    <button class="btn btn-outline-primary">Копирай кода</button>
+                    <button class="btn btn-outline-success" (click)="notificationsService.redirectToMeet(current.code)">
+                        Влез в Google Meet
+                    </button>
+                    <button class="btn btn-outline-primary" (click)="notificationsService.copyToClipboard(current.code)">
+                        Копирай кода
+                    </button>
                 </div>
             </div>
         </div>
@@ -20,8 +24,12 @@
                 <p>{{next?.code}}</p>
                 <p>{{next?.from | hour}} - {{next?.to | hour}}</p>
                 <div class="buttons">
-                    <button class="btn btn-outline-success">Влез в Google Meet</button>
-                    <button class="btn btn-outline-primary">Копирай кода</button>
+                    <button class="btn btn-outline-success" (click)="notificationsService.redirectToMeet(next.code)">
+                        Влез в Google Meet
+                    </button>
+                    <button class="btn btn-outline-primary" (click)="notificationsService.copyToClipboard(next.code)">
+                        Копирай кода
+                    </button>
                 </div>
             </div>
         </div>

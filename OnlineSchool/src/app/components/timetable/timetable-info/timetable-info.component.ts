@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TimetableEntryResponse } from 'src/app/models/response/timetable-entry-response.model';
+import { NotificationsService } from 'src/app/services/notifications.service';
 import { SignalRService } from 'src/app/services/signal-r.service';
 
 @Component({
@@ -12,7 +13,9 @@ export class TimetableInfoComponent implements OnInit, OnDestroy {
   public next: TimetableEntryResponse | undefined;
   public lastLessonEnded = false;
 
-  constructor(private signalRService: SignalRService) { }
+  constructor(
+    private signalRService: SignalRService, 
+    public notificationsService: NotificationsService) { }
 
   ngOnInit(): void {
     this.signalRService.initiateConnection().then(_ => {
@@ -30,6 +33,7 @@ export class TimetableInfoComponent implements OnInit, OnDestroy {
         next: nextLesson => {
           this.current = undefined;
           this.next = nextLesson;
+          this.notificationsService.setNotification(nextLesson);
         }
       });
 
@@ -37,6 +41,7 @@ export class TimetableInfoComponent implements OnInit, OnDestroy {
         next: nextLesson => {
           this.current = undefined;
           this.next = nextLesson;
+          this.notificationsService.setNotification(nextLesson);
         }
       });
 
