@@ -12,6 +12,7 @@ export class TimetableInfoComponent implements OnInit, OnDestroy {
   public current: TimetableEntryResponse | undefined;
   public next: TimetableEntryResponse | undefined;
   public lastLessonEnded = false;
+  private timeoutId: any;
 
   constructor(
     private signalRService: SignalRService, 
@@ -33,7 +34,7 @@ export class TimetableInfoComponent implements OnInit, OnDestroy {
         next: nextLesson => {
           this.current = undefined;
           this.next = nextLesson;
-          this.notificationsService.setNotification(nextLesson);
+          this.timeoutId = this.notificationsService.setNotification(nextLesson);
         }
       });
 
@@ -41,7 +42,7 @@ export class TimetableInfoComponent implements OnInit, OnDestroy {
         next: nextLesson => {
           this.current = undefined;
           this.next = nextLesson;
-          this.notificationsService.setNotification(nextLesson);
+          this.timeoutId = this.notificationsService.setNotification(nextLesson);
         }
       });
 
@@ -68,6 +69,7 @@ export class TimetableInfoComponent implements OnInit, OnDestroy {
     this.signalRService.lastLessonEnded.unsubscribe();
     this.signalRService.waitingForLesson.unsubscribe();
     this.signalRService.noLessons.unsubscribe();
+    clearTimeout(this.timeoutId);
   }
 
 }
