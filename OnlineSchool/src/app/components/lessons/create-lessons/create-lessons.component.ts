@@ -38,7 +38,7 @@ export class CreateLessonsComponent implements OnInit {
     const from = lessonsForm.value['from'] + ':00';
     const durationInMinutes = +lessonsForm.value['duration'];
     this.lessonsService.addLesson(from, durationInMinutes).subscribe({
-      next: lesson => {
+      next: _ => {
         this.toastr.success('Часът е създаден успешно');
       },
       error: errorMessage => {

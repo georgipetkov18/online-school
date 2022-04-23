@@ -13,8 +13,8 @@ export class NotificationsService {
     let now = new Date();
     let lessonStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minutes, seconds);
     let id = setTimeout(() => {
-      let notification = new Notification('A Message From Code Picker!', {
-        body: `Часът: ${entry.name} започва след 1 минута. Натиснете тук за да се присъедините.`,
+      let notification = new Notification('Online School', {
+        body: `Часът: ${entry.name} започва след 1 минута. Натиснете тук за да се присъедините към срещата.`,
       });
       notification.onclick = () => this.setMeetRedirect(entry.code);
     }, lessonStart.getTime() - now.getTime() - 1 * 60 * 1000);

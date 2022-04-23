@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Location, Time } from '@angular/common';
+import { Location } from '@angular/common';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
@@ -26,7 +26,7 @@ import { TimetableEntryResponse } from 'src/app/models/response/timetable-entry-
   templateUrl: './manage-timetable.component.html',
   styleUrls: ['./manage-timetable.component.css']
 })
-export class ManageTimetableComponent implements OnInit, AfterViewInit {
+export class ManageTimetableComponent implements AfterViewInit {
   @ViewChild('class') classModal!: any;
   @ViewChild('subjectAutoComplete') subjectAutoComplete!: any;
   @ViewChild('lessonAutoComplete') lessonAutoComplete!: any;
@@ -64,10 +64,6 @@ export class ManageTimetableComponent implements OnInit, AfterViewInit {
     private timetableService: TimetableService,
     private router: Router,
     private location: Location) { }
-
-  ngOnInit(): void {
-
-  }
 
   ngAfterViewInit(): void {
     this.classModalRef = this.modalService.open(this.classModal, { ariaLabelledBy: 'modal-basic-title' });
@@ -299,6 +295,7 @@ export class ManageTimetableComponent implements OnInit, AfterViewInit {
 
     this.timetable[this.currentRow][this.currentCol] = timetableValue;
   }
+
   updateEntry(subject: string, lesson: string, teacher: string) {
     const entry = this.timetable[this.currentRow][this.currentCol]?.entry;
     if (entry instanceof TimetableEntryRequest) {
@@ -320,6 +317,26 @@ export class ManageTimetableComponent implements OnInit, AfterViewInit {
 
       this.timetable[this.currentRow][this.currentCol] = timetableValue;
     }
+  }
+
+  onAddNewLesson() {
+    const lessoninput = document.querySelector('#modal-lesson .input-container input') as HTMLInputElement;
+    const splitted = lessoninput.value.split(':').filter(s => s !== '').map(s => +s);
+    
+    if (splitted.length < 2 || Number.isNaN(splitted[0]) || Number.isNaN(splitted[1])) {
+      this.toastr.error('Въведеният час е невалиден.');
+      return;
+    }
+    const from = lessoninput.value + ':00';
+    const durationInMinutes = 35;
+    this.lessonsService.addLesson(from, durationInMinutes).subscribe({
+      next: _ => {
+        this.toastr.success('Часът е създаден успешно');
+      },
+      error: errorMessage => {
+        this.toastr.error(errorMessage);
+      }
+    })
   }
 
   private updateTable() {

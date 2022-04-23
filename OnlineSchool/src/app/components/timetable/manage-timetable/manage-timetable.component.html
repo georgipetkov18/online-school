@@ -50,6 +50,12 @@
     <div>Няма резултати</div>
 </ng-template>
 
+<ng-template #lessonNotFoundTemplate let-lessonNotFound>
+    <div class="d-flex justify-content-center align-items-center">
+        <button class="btn btn-success" (click)="onAddNewLesson()">Добави</button>
+    </div>
+</ng-template>
+
 <ng-template #entryInfo let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">{{updateMode ? 'Редактирай' : 'Добави'}} час</h4>
@@ -71,7 +77,7 @@
                 <div class="modal-input-group">
                     <ng-autocomplete [data]="suggestions" (inputChanged)="onChangeSearch('lesson', $event)"
                         (selected)="setId('lesson', $event)" (inputCleared)="removeId('lesson')"
-                        (inputFocused)="onFocus()" [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate"
+                        (inputFocused)="onFocus()" [itemTemplate]="itemTemplate" [notFoundTemplate]="lessonNotFoundTemplate"
                         id="modal-lesson" name="modalLesson" #lessonAutoComplete ngModel>
                     </ng-autocomplete>
                 </div>
