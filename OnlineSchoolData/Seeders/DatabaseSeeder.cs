@@ -2,13 +2,14 @@
 {
     public static class DatabaseSeeder
     {
-        public async static Task SeedDatabase(ApplicationDbContext context)
+        public async static Task SeedDatabase(this ApplicationDbContext context)
         {
-            await RoleSeeder.SeedRolesAsync(context);
-            await SubjectSeeder.SeedSubjectAsync(context);
-            await ClassSeeder.SeedClassAsync(context);
-            await LessonSeeder.SeedLessonAsync(context);
-            await UserSeeder.SeedUsersAsync(context);
+            await context.SeedRolesAsync();
+            await context.SeedSubjectAsync();
+            await context.SeedClassAsync();
+            await context.SeedLessonAsync();
+            await context.SeedUsersAsync();
+            await context.SeedTimetableAsync();
         }
     }
 }

@@ -5,7 +5,7 @@ namespace OnlineSchoolData.Entities
     public class SubjectEntity : BaseEntity
     {
         [Required]
-        [MaxLength(40)]
+        [MaxLength(128)]
         public string Name { get; set; } = string.Empty;
 
         [Required]

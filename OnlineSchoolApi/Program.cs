@@ -148,6 +148,6 @@ app.UseEndpoints(endpoints =>
 
 using var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetService<ApplicationDbContext>()!;
-await DatabaseSeeder.SeedDatabase(context);
+await context.SeedDatabase();
 
 app.Run();

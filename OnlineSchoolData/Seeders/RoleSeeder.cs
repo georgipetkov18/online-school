@@ -6,7 +6,7 @@ namespace OnlineSchoolData.Seeders
 {
     public static class RoleSeeder
     {
-        public static async Task SeedRolesAsync(ApplicationDbContext context)
+        public static async Task SeedRolesAsync(this ApplicationDbContext context)
         {
             await context.Database.EnsureCreatedAsync();
             if (!await context.Roles.AnyAsync())

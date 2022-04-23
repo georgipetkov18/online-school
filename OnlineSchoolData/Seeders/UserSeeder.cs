@@ -7,7 +7,7 @@ namespace OnlineSchoolData.Seeders
 {
     public static class UserSeeder
     {
-        public static async Task SeedStudentAsync(ApplicationDbContext context)
+        public static async Task SeedStudentAsync(this ApplicationDbContext context)
         {
             await context.Database.EnsureCreatedAsync();
             if (!await context.Students.AnyAsync() && await context.Roles.AnyAsync())
@@ -25,7 +25,7 @@ namespace OnlineSchoolData.Seeders
                     Username = "Student",
                     FirstName = "Student",
                     LastName = "1",
-                    Email= "student@abv.bg",
+                    Email = "student@abv.bg",
                     Password = "student",
                     RoleName = Roles.Student,
                     ClassId = _class.Id
@@ -40,40 +40,166 @@ namespace OnlineSchoolData.Seeders
             }
         }
 
-        public static async Task SeedTeacherAsync(ApplicationDbContext context)
+        public static async Task SeedTeacherAsync(this ApplicationDbContext context)
         {
             await context.Database.EnsureCreatedAsync();
             if (!await context.Teachers.AnyAsync() && await context.Roles.AnyAsync())
             {
                 var teacherRole = await context.Roles.FirstOrDefaultAsync(r => r.Name == Roles.Teacher);
-                var subject = await context.Subjects.FirstOrDefaultAsync();
+                var subjects = await context.Subjects.ToListAsync();
 
-                if (teacherRole is null || subject is null)
+                if (teacherRole is null)
                 {
                     return;
                 }
 
-                var user = new User
+                var users = new List<User>
                 {
-                    Username = "Teacher",
-                    FirstName = "Teacher",
-                    LastName = "1",
-                    Email = "teacher@abv.bg",
-                    Password = "teacher",
-                    RoleName = Roles.Teacher,
-                    SubjectId = subject.Id
-                };
+                        new User
+                        {
+                            Username = "Rosen_Valchev",
+                            FirstName = "Росен",
+                            LastName = "Вълчев",
+                            Email = "rosenvalchev@schoolmath.eu",
+                            Password = "Тeacher1!",
+                            RoleName = Roles.Teacher,
+                            SubjectId = subjects.FirstOrDefault(s => s.Name == "Приложения с графичен потребителски интерфейс")?.Id
+                        },
+                        new User
+                        {
+                            Username = "Pepa_Ilkova",
+                            FirstName = "Пепа",
+                            LastName = "Илкова",
+                            Email = "pepailkova@schoolmath.eu",
+                            Password = "Тeacher1!",
+                            RoleName = Roles.Teacher,
+                            SubjectId = subjects.FirstOrDefault(s => s.Name == "Компютърна графика и дизайн")?.Id
+                        },
+                        new User
+                        {
+                            Username = "Dafinka_Andreeva",
+                            FirstName = "Дафинка",
+                            LastName = "Андреева",
+                            Email = "dafinkaandreeva@schoolmath.eu",
+                            Password = "Тeacher1!",
+                            RoleName = Roles.Teacher,
+                            SubjectId = subjects.FirstOrDefault(s => s.Name == "Математика")?.Id
+                        },
+                        new User
+                        {
+                            Username = "Nina_Tosheva",
+                            FirstName = "Нина",
+                            LastName = "Тошева",
+                            Email = "ninatosheva@schoolmath.eu",
+                            Password = "Тeacher1!",
+                            RoleName = Roles.Teacher,
+                            SubjectId = subjects.FirstOrDefault(s => s.Name == "БЕЛ")?.Id
+                        },
+                        new User
+                        {
+                            Username = "Nedko_Kableshkov",
+                            FirstName = "Недко",
+                            LastName = "Каблешков",
+                            Email = "nedkokableshkov@schoolmath.eu",
+                            Password = "Тeacher1!",
+                            RoleName = Roles.Teacher,
+                            SubjectId = subjects.FirstOrDefault(s => s.Name == "ФВС")?.Id
+                        },
+                        new User
+                        {
+                            Username = "Lilia_Nedeleva",
+                            FirstName = "Лилия",
+                            LastName = "Неделева",
+                            Email = "lilianedeleva@schoolmath.eu",
+                            Password = "Тeacher1!",
+                            RoleName = Roles.Teacher,
+                            SubjectId = subjects.FirstOrDefault(s => s.Name == "Чужд език по професията")?.Id
+                        },
+                        new User
+                        {
+                            Username = "Ivan_Peev",
+                            FirstName = "Иван",
+                            LastName = "Пеев",
+                            Email = "ivanpeev@schoolmath.eu",
+                            Password = "Тeacher1!",
+                            RoleName = Roles.Teacher,
+                            SubjectId = subjects.FirstOrDefault(s => s.Name == "Интернет програмиране")?.Id
+                        },
+                        new User
+                        {
+                            Username = "Miroslava_Iovkova",
+                            FirstName = "Мирослава",
+                            LastName = "Йовкова",
+                            Email = "miroslavaiovkova@schoolmath.eu",
+                            Password = "Тeacher1!",
+                            RoleName = Roles.Teacher,
+                            SubjectId = subjects.FirstOrDefault(s => s.Name == "Немски език")?.Id
+                        },
+                        new User
+                        {
+                            Username = "Hrisi_Plachkova",
+                            FirstName = "Хриси",
+                            LastName = "Плачкова",
+                            Email = "hrisiplachkova@schoolmath.eu",
+                            Password = "Тeacher1!",
+                            RoleName = Roles.Teacher,
+                            SubjectId = subjects.FirstOrDefault(s => s.Name == "Софтуерно инженерство")?.Id
+                        },
+                        new User
+                        {
+                            Username = "Desislava_Vachkova_Mateeva",
+                            FirstName = "Десислава",
+                            LastName = "Вачкова-Матеева",
+                            Email = "desislavavachkovamateeva@schoolmath.eu",
+                            Password = "Тeacher1!",
+                            RoleName = Roles.Teacher,
+                            SubjectId = subjects.FirstOrDefault(s => s.Name == "Гражданско образование")?.Id
+                        },
+                        new User
+                        {
+                            Username = "Yanislav_Kartelov",
+                            FirstName = "Янислав",
+                            LastName = "Картелов",
+                            Email = "yanislavkartelov@schoolmath.eu",
+                            Password = "Тeacher1!",
+                            RoleName = Roles.Teacher,
+                            SubjectId = subjects.FirstOrDefault(s => s.Name == "Мрежови протоколи и технологии")?.Id
+                        },
+                        new User
+                        {
+                            Username = "Zhivko_Radev",
+                            FirstName = "Живко",
+                            LastName = "Радев",
+                            Email = "zhivkoradev@schoolmath.eu",
+                            Password = "Тeacher1!",
+                            RoleName = Roles.Teacher,
+                            SubjectId = subjects.FirstOrDefault(s => s.Name == "Програмиране за вградени системи")?.Id
+                        },
+                        new User
+                        {
+                            Username = "Denitsa_Grozeva",
+                            FirstName = "Деница",
+                            LastName = "Грозева",
+                            Email = "denitsagrozeva@schoolmath.eu",
+                            Password = "Тeacher1!",
+                            RoleName = Roles.Teacher,
+                            SubjectId = subjects.FirstOrDefault(s => s.Name == "Мрежови протоколи и технологии")?.Id
+                        }
+            };
 
-                var userEntity = user.ToUserEntity(teacherRole);
-                userEntity.Status = AccountStatus.Approved;
+                var userEntities = users.Select(u => 
+                { 
+                    var userEntity = u.ToUserEntity(teacherRole); 
+                    userEntity.Status = AccountStatus.Approved;
+                    return userEntity;
+                }).ToList();
 
-                await context.Teachers.AddAsync(user.ToTeacherEntity(userEntity));
-
+                await context.Teachers.AddRangeAsync(users.Select((u, i) => u.ToTeacherEntity(userEntities[i])));
                 await context.SaveChangesAsync();
             }
         }
 
-        public static async Task SeedAdminAsync(ApplicationDbContext context)
+        public static async Task SeedAdminAsync(this ApplicationDbContext context)
         {
             await context.Database.EnsureCreatedAsync();
             if (!await context.Administrators.AnyAsync() && await context.Roles.AnyAsync())
@@ -104,11 +230,11 @@ namespace OnlineSchoolData.Seeders
             }
         }
 
-        public static async Task SeedUsersAsync(ApplicationDbContext context)
+        public static async Task SeedUsersAsync(this ApplicationDbContext context)
         {
-            await SeedStudentAsync(context);
-            await SeedTeacherAsync(context);
-            await SeedAdminAsync(context);
+            await context.SeedStudentAsync();
+            await context.SeedTeacherAsync();
+            await context.SeedAdminAsync();
         }
     }
 }

@@ -5,7 +5,7 @@ namespace OnlineSchoolData.Seeders
 {
     public static class ClassSeeder
     {
-        public static async Task SeedClassAsync(ApplicationDbContext context)
+        public static async Task SeedClassAsync(this ApplicationDbContext context)
         {
             await context.Database.EnsureCreatedAsync();
             if (!await context.Classes.AnyAsync())
