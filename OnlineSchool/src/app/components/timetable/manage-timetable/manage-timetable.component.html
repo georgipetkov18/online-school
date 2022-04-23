@@ -15,7 +15,7 @@
         <div class="app-table">
             <div class="table-col" *ngFor="let day of daysOfWeek; let col = index">
                 <div class="table-entry-head">{{day | translate}}</div>
-                <div class="table-entry" *ngFor="let entry of timetable; let row = index">
+                <div class="table-entry" *ngFor="let entry of timetable[col]; let row = index">
                     <div>
                         <div (click)="openInfoModal(entryInfo, col, row)">
                             <svg *ngIf="!timetable[col][row]" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
