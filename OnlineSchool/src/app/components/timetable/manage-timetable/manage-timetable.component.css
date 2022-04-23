@@ -63,6 +63,10 @@ table {
     display: flex;
 }
 
+#lessonNotFound {
+    border: none;
+}
+
 @media only screen and (max-width: 768px) {
     .app-table {
         flex-direction: column;
