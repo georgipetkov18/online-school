@@ -163,6 +163,7 @@ export class ManageTimetableComponent implements AfterViewInit {
         suggestionsObs = this.teachersService.getAllTeachers(search);
         break;
     }
+
     suggestionsObs.subscribe({
       next: suggestions => {
         this.suggestionsFull = suggestions;
@@ -322,14 +323,14 @@ export class ManageTimetableComponent implements AfterViewInit {
   onAddNewLesson(form: NgForm) {
     const lessoninput = document.querySelector('#modal-lesson .input-container input') as HTMLInputElement;
     const splitted = lessoninput.value.split(':').filter(s => s !== '').map(s => +s);
-    
+
     if (splitted.length < 2 || Number.isNaN(splitted[0]) || Number.isNaN(splitted[1])) {
       this.toastr.error('Въведеният час е невалиден');
       return;
     }
     else if (form.invalid) {
       this.toastr.error('Полето "Продължителност" е невалидно');
-      return; 
+      return;
     }
     const durationInMinutes = +form.value['dynamicDuration'];
     const from = lessoninput.value + ':00';
@@ -344,7 +345,7 @@ export class ManageTimetableComponent implements AfterViewInit {
         this.toastr.error(errorMessage);
       }
     })
-    
+
   }
 
   private updateTable() {

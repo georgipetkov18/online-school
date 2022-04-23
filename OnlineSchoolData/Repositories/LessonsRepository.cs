@@ -45,7 +45,9 @@ namespace OnlineSchoolData.Repositories
                 .AsNoTracking()
                 .ToListAsync();
 
-            return lessonEntities.Select(l => l.ToLesson());
+            return lessonEntities
+                .Where(l => l.From.ToString(@"hh\:mm\:ss").Substring(0, l.From.ToString(@"hh\:mm\:ss").Length - 3).Contains(filter))
+                .Select(l => l.ToLesson());
         }
 
         public async Task<Lesson> GetLessonAsync(Guid lessonId)
