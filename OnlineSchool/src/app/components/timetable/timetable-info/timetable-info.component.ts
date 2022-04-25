@@ -65,6 +65,7 @@ export class TimetableInfoComponent implements OnInit, OnDestroy {
       });
 
       this.signalRService.connection.invoke('GetData');
+      this.notificationsService.requestPermission();
     })
 
   }
