@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ClassesService } from 'src/app/services/classes.service';
 import { IAppFormControl } from '../../shared/form/form.component';
@@ -25,7 +25,8 @@ export class UpdateClassComponent implements OnInit {
   constructor(
     private classesService: ClassesService,
     private toastr: ToastrService,
-    private route: ActivatedRoute) {}
+    private route: ActivatedRoute,
+    private router: Router) {}
 
   ngOnInit(): void {  
     this.id = this.route.snapshot.data[0].id;  
@@ -42,6 +43,7 @@ export class UpdateClassComponent implements OnInit {
     this.classesService.updateClass(this.id, name).subscribe({
       next: () => {
         this.toastr.success('Класът беше променен успешно');
+        this.router.navigate(['/', 'classes', 'all']);
       },
       error: errorMessage => {
         this.errorMessage = errorMessage;

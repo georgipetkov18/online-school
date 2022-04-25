@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, NgForm, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 import { ClassesService } from '../../../services/classes.service';
@@ -24,7 +25,9 @@ export class CreateClassComponent implements OnInit {
   constructor(
     public utilityService: UtilityService,
     private classesService: ClassesService,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
   }
@@ -40,6 +43,7 @@ export class CreateClassComponent implements OnInit {
     this.classesService.addClass(name).subscribe({
       next: () => {
         this.toastr.success('Класът беше създаден успешно');
+        this.router.navigate(['../', 'all'], {relativeTo: this.route});
       },
       error: errorMessage => {
         this.errorMessage = errorMessage;
