@@ -30,6 +30,7 @@ builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<ITeachersRepository, TeachersRepository>();
 builder.Services.AddScoped<ITeachersService, TeachersService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 builder.Services.AddSignalR();
