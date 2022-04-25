@@ -22,7 +22,7 @@ public class SubjectsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] FilterInputModel filterInputModel)
     {
-        var subjects = await this.subjectService.GetAllSubjectsAsync(filterInputModel.Filter);
+        var subjects = await this.subjectService.GetAllSubjectsAsync(filterInputModel.Filter ?? string.Empty);
         return Ok(subjects);
     }
 

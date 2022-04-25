@@ -22,7 +22,7 @@ namespace OnlineSchoolApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] FilterInputModel filterInputModel)
         {
-            var lessons = await this.lessonService.GetAllLessonsAsync(filterInputModel.Filter);
+            var lessons = await this.lessonService.GetAllLessonsAsync(filterInputModel.Filter ?? string.Empty);
             return Ok(lessons);
         }
 

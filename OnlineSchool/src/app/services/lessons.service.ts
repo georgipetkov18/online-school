@@ -33,6 +33,10 @@ export class LessonsService {
     );
   }
 
+  public getLesson(id: string) {
+    return this.http.get<LessonResponse>(environment.routes.lessons + `/get/${id}`);
+  }
+
   public getAllLessons(filter: string) {
     return this.http.get<LessonResponse[]>(environment.routes.lessons, {
       params: new HttpParams().append('filter', filter)
@@ -45,5 +49,25 @@ export class LessonsService {
         l.autoCompleteIdentifier = l.from;
       })
     }));
+  }
+
+  public updateLesson(id: string, from: string, duration: number) {
+    const lesson = new LessonRequest(from, duration);
+    return this.http.put<LessonResponse>(environment.routes.lessons + `/update/${id}`, lesson).pipe(
+      catchError(error => {
+        let errorMessage = 'Нещо се обърка';
+        if (error && error.error && error.error.DurationInMinutes) {
+          errorMessage = 'Полето минути трябва да съдържа число между 5 и 100';
+        }
+        if (error && error.error && error.error.Id) {
+          errorMessage = 'Въведено е невалидно id';
+        }
+        return throwError(errorMessage);
+      })
+    );
+  }
+
+  public deleteLesson(id: string) {
+    return this.http.delete<void>(environment.routes.lessons + `/delete/${id}`);
   }
 }

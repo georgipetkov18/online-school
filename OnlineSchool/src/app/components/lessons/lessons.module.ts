@@ -7,12 +7,14 @@ import { LessonsRoutingModule } from './lessons-routing.module';
 import { CreateLessonsComponent } from './create-lessons/create-lessons.component';
 import { HourPipe } from 'src/app/pipes/hour.pipe';
 import { LessonsListComponent } from './lessons-list/lessons-list.component';
+import { UpdateLessonComponent } from './update-lesson/update-lesson.component';
 
 @NgModule({
   declarations: [
     LessonsComponent,
     CreateLessonsComponent,
     LessonsListComponent,
+    UpdateLessonComponent,
   ],
   imports: [
     CommonModule,

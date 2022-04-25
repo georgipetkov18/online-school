@@ -1,1 +1,24 @@
-<p>lessons-list works!</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">От</th>
+            <th scope="col">Продължителност</th>
+            <th scope="col">Действия</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let lesson of lessons">
+            <th scope="row">{{lesson.id}}</th>
+            <td>{{lesson.from}}</td>
+            <td>{{lesson.durationInMinutes}}</td>
+            <td>
+                <div class="buttons-row">
+                    <button class="btn btn-primary me-2" [routerLink]="['../', 'edit', lesson.id]">Промени</button>
+                    <button class="btn btn-danger" (click)="onDelete(lesson.id)">Изтрий</button>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
