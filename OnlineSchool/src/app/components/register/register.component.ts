@@ -34,9 +34,9 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit() {
+  onSubmit() {    
     if (this.registerForm.invalid) {
-      this.errorMessage = 'Всички полета са задължителни';
+      this.errorMessage = 'Въведени са невалидни данни';
       return;
     }
     const password = this.registerForm.value['password'];

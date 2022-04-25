@@ -18,6 +18,7 @@ import { LessonsModule } from './components/lessons/lessons.module';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { HomeComponent } from './components/home/home.component';
 import { UserApproveComponent } from './components/user-approve/user-approve.component';
+import { PasswordsMatchDirective } from './directives/passwords-match.directive';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { UserApproveComponent } from './components/user-approve/user-approve.com
     HeaderComponent,
     HomeComponent,
     UserApproveComponent,
+    PasswordsMatchDirective,
   ],
   imports: [
     BrowserModule,

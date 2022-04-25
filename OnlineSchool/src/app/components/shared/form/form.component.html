@@ -10,6 +10,9 @@
             [name]="control.name" 
             [formControl]="control.formControl"
             class="form-control">
+            <div *ngIf="control.formControl.invalid && (control.formControl.dirty || control.formControl.touched)">
+                <p *ngIf="control.formControl.errors?.['required']" class="error-paragraph">Полето е задължително</p>
+            </div>
         </div>
     </section>
 

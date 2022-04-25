@@ -5,11 +5,13 @@ import { AutocompleteLibModule } from "angular-ng-autocomplete";
 import { TranslatePipe } from "src/app/pipes/translate.pipe";
 
 import { FormComponent } from "./form/form.component";
+import { ErrorContainerComponent } from './error-container/error-container.component';
 
 @NgModule({
     declarations: [
         FormComponent,
         TranslatePipe,
+        ErrorContainerComponent,
     ],
     imports: [
         CommonModule,
@@ -18,6 +20,7 @@ import { FormComponent } from "./form/form.component";
     ],
     exports: [
         FormComponent,
+        ErrorContainerComponent,
         TranslatePipe,
         AutocompleteLibModule
     ],

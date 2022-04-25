@@ -6,7 +6,7 @@ namespace OnlineSchoolBusinessLogic.InputModels
     public class UserInputModel
     {
         [Required]
-        [StringLength(128, MinimumLength = 3)]
+        [StringLength(100, MinimumLength = 3)]
         public string Username { get; set; } = null!;
 
         [Required]

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
 import { LessonsService } from '../../../services/lessons.service';
@@ -14,14 +14,16 @@ export class CreateLessonsComponent implements OnInit {
   public errorMessage!: string;
   public formSetup: IAppFormControl[] = [
     {
-     name: 'from',
-     label: 'От *' ,
-     inputType: 'time'
+      name: 'from',
+      label: 'От *',
+      inputType: 'time',
+      validators: [Validators.required]
     },
     {
       name: 'duration',
       label: 'Минути *',
-      inputType: 'number'
+      inputType: 'number',
+      validators: [Validators.required, Validators.min(5), Validators.max(100)]
     }
   ]
 

@@ -25,39 +25,71 @@
     <section class="form-fields">
         <div class="form-group">
             <label for="username">Потребителско име *</label>
-            <input type="text" id="username" name="username" class="form-control" ngModel required>
-        </div>
-
-        <div class="form-group">
-            <label for="password">Парола *</label>
-            <input type="password" id="password" name="password" class="form-control" ngModel required>
-        </div>
-
-        <div class="form-group">
-            <label for="rePassword">Потвърди парола *</label>
-            <input type="password" id="rePassword" name="rePassword" class="form-control" ngModel required>
-        </div>
-
-        <div class="form-group">
-            <label for="firstName">Име *</label>
-            <input type="text" id="firstName" name="firstName" class="form-control" ngModel required>
-        </div>
-
-        <div class="form-group">
-            <label for="lastName">Фамилия *</label>
-            <input type="text" id="lastName" name="lastName" class="form-control" ngModel required>
+            <input type="text" id="username" name="username" class="form-control" ngModel #username="ngModel" required
+                maxlength="100" minlength="3">
+            <div *ngIf="username.invalid && (username.dirty || username.touched)">
+                <p *ngIf="username.errors?.['required']" class="error-paragraph">Полето е задължително</p>
+            </div>
         </div>
 
         <div class="form-group">
             <label for="email">Имейл *</label>
-            <input type="text" id="email" name="email" class="form-control" ngModel required>
+            <input type="text" id="email" name="email" class="form-control" ngModel #email="ngModel" required
+                maxlength="100">
+            <div *ngIf="email.invalid && (email.dirty || email.touched)">
+                <p *ngIf="email.errors?.['required']" class="error-paragraph">Полето е задължително</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="firstName">Име *</label>
+            <input type="text" id="firstName" name="firstName" class="form-control" ngModel #firstName="ngModel"
+                required maxlength="128">
+            <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
+                <p *ngIf="firstName.errors?.['required']" class="error-paragraph">Полето е задължително</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="lastName">Фамилия *</label>
+            <input type="text" id="lastName" name="lastName" class="form-control" ngModel #lastName="ngModel" required
+                maxLength="128">
+            <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
+                <p *ngIf="lastName.errors?.['required']" class="error-paragraph">Полето е задължително</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Парола *</label>
+            <input type="password" id="password" name="password" class="form-control" ngModel #password="ngModel"
+                required maxlength="65" minlength="6"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,65}$">
+            <div *ngIf="password.invalid && (password.dirty || password.touched)">
+                <p *ngIf="password.errors?.['required']" class="error-paragraph">Полето е задължително</p>
+                <p *ngIf="password.errors?.['minlength']" class="error-paragraph">Паролата трябва да съдържа поне 6 символа</p>
+                <p *ngIf="password.errors?.['pattern']" class="error-paragraph">
+                    Паролата трябва да съдържа една малка буква, една главна буква, една цифра и един специален символ (@, $, !, %, *, ?, &)
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="rePassword">Потвърди парола *</label>
+            <input type="password" id="rePassword" name="rePassword" class="form-control" ngModel #rePassword="ngModel" required [appPasswordsMatch]="password">
+            <div *ngIf="rePassword.invalid && (rePassword.dirty || rePassword.touched)">
+                <p *ngIf="rePassword.errors?.['required']" class="error-paragraph">Полето е задължително</p>
+                <p *ngIf="rePassword.errors?.['passwordsDiffer']" class="error-paragraph">Паролите не съвпадат</p>
+            </div>
         </div>
 
         <div class="form-group">
             <label for="userSpecific">{{role === 'teacher' ? 'Предмет *' : 'Клас *'}}</label>
             <ng-autocomplete [data]="data" (inputChanged)="onChangeSearch($event)" [itemTemplate]="itemTemplate"
-                [notFoundTemplate]="notFoundTemplate" id="userSpecific" name="userSpecific" ngModel>
+                [notFoundTemplate]="notFoundTemplate" id="userSpecific" name="userSpecific" #userSpecific="ngModel" ngModel>
             </ng-autocomplete>
+            <div *ngIf="userSpecific.invalid && (userSpecific.dirty || userSpecific.touched)">
+                <p *ngIf="userSpecific.errors?.['required']" class="error-paragraph">Полето е задължително</p>
+            </div>
         </div>
     </section>
 

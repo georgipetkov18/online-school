@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
 import { SubjectsService } from '../../../services/subjects.service';
@@ -15,13 +15,15 @@ export class CreateSubjectComponent implements OnInit {
   public errorMessage!: string;
   public formSetup: IAppFormControl[] = [
     {
-     name: 'name',
-     label: 'Име *' 
+      name: 'name',
+      label: 'Име *',
+      validators: [Validators.required, Validators.maxLength(128)]
     },
     {
       name: 'code',
-      label: 'Код *' 
-     },
+      label: 'Код *',
+      validators: [Validators.required, Validators.maxLength(30)]
+    },
   ]
 
   constructor(

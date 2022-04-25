@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, NgForm } from '@angular/forms';
+import { FormGroup, NgForm, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
 import { ClassesService } from '../../../services/classes.service';
@@ -16,7 +16,8 @@ export class CreateClassComponent implements OnInit {
   public formSetup: IAppFormControl[] = [
     {
      name: 'name',
-     label: 'Име *' 
+     label: 'Име *',
+     validators: [Validators.required, Validators.maxLength(30)]
     },
   ]
 
