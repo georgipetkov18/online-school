@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { TimetableEntryResponse } from 'src/app/models/response/timetable-entry-response.model';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { SignalRService } from 'src/app/services/signal-r.service';
@@ -13,6 +14,11 @@ export class TimetableInfoComponent implements OnInit, OnDestroy {
   public next: TimetableEntryResponse | undefined;
   public lastLessonEnded = false;
   private timeoutId: any;
+  private lessonBeganSub!: Subscription;
+  private lessonEndedSub!: Subscription;
+  private waitingForLessonSub!: Subscription;
+  private lastLessonEndedSub!: Subscription;
+  private noLessonsSub!: Subscription;
 
   constructor(
     private signalRService: SignalRService, 
@@ -20,7 +26,7 @@ export class TimetableInfoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.signalRService.initiateConnection().then(_ => {
-      this.signalRService.lessonBegan.subscribe({
+      this.lessonBeganSub = this.signalRService.lessonBegan.subscribe({
         next: info => {          
           console.log(info);
           
@@ -30,7 +36,7 @@ export class TimetableInfoComponent implements OnInit, OnDestroy {
         }
       });
 
-      this.signalRService.lessonEnded.subscribe({
+      this.lessonEndedSub = this.signalRService.lessonEnded.subscribe({
         next: nextLesson => {
           this.current = undefined;
           this.next = nextLesson;
@@ -38,7 +44,7 @@ export class TimetableInfoComponent implements OnInit, OnDestroy {
         }
       });
 
-      this.signalRService.waitingForLesson.subscribe({
+      this.waitingForLessonSub = this.signalRService.waitingForLesson.subscribe({
         next: nextLesson => {
           this.current = undefined;
           this.next = nextLesson;
@@ -46,15 +52,15 @@ export class TimetableInfoComponent implements OnInit, OnDestroy {
         }
       });
 
-      this.signalRService.lastLessonEnded.subscribe({
+      this.lastLessonEndedSub = this.signalRService.lastLessonEnded.subscribe({
         next: () => {
           this.lastLessonEnded = true;
         }
       });
 
-      this.signalRService.noLessons.subscribe({
+      this.noLessonsSub = this.signalRService.noLessons.subscribe({
         next: () => {
-          
+          this.lastLessonEnded = true;
         }
       });
 
@@ -64,11 +70,11 @@ export class TimetableInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.signalRService.lessonBegan.unsubscribe();
-    this.signalRService.lessonEnded.unsubscribe();
-    this.signalRService.lastLessonEnded.unsubscribe();
-    this.signalRService.waitingForLesson.unsubscribe();
-    this.signalRService.noLessons.unsubscribe();
+    this.lessonBeganSub.unsubscribe();
+    this.lessonEndedSub.unsubscribe();
+    this.lastLessonEndedSub.unsubscribe();
+    this.waitingForLessonSub.unsubscribe();
+    this.noLessonsSub.unsubscribe();
     clearTimeout(this.timeoutId);
   }
 

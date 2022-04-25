@@ -79,7 +79,6 @@ namespace OnlineSchoolData.Repositories
             {
                 throw new ArgumentException($"User: {usernameOrEmail} is not approved");
             }
-
             var passwordIsValid = hashedPassword ? user.Password == password : BCrypt.Net.BCrypt.Verify(password, user.Password);
 
             if (!passwordIsValid)

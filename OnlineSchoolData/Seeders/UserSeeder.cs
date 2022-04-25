@@ -61,7 +61,7 @@ namespace OnlineSchoolData.Seeders
                             FirstName = "Росен",
                             LastName = "Вълчев",
                             Email = "rosenvalchev@schoolmath.eu",
-                            Password = "Тeacher1!",
+                            Password = "Rosen_Valchev1!",
                             RoleName = Roles.Teacher,
                             SubjectId = subjects.FirstOrDefault(s => s.Name == "Приложения с графичен потребителски интерфейс")?.Id
                         },
@@ -71,7 +71,7 @@ namespace OnlineSchoolData.Seeders
                             FirstName = "Пепа",
                             LastName = "Илкова",
                             Email = "pepailkova@schoolmath.eu",
-                            Password = "Тeacher1!",
+                            Password = "Pepa_Ilkova1!",
                             RoleName = Roles.Teacher,
                             SubjectId = subjects.FirstOrDefault(s => s.Name == "Компютърна графика и дизайн")?.Id
                         },
@@ -81,7 +81,7 @@ namespace OnlineSchoolData.Seeders
                             FirstName = "Дафинка",
                             LastName = "Андреева",
                             Email = "dafinkaandreeva@schoolmath.eu",
-                            Password = "Тeacher1!",
+                            Password = "Dafinka_Andreeva1!",
                             RoleName = Roles.Teacher,
                             SubjectId = subjects.FirstOrDefault(s => s.Name == "Математика")?.Id
                         },
@@ -91,7 +91,7 @@ namespace OnlineSchoolData.Seeders
                             FirstName = "Нина",
                             LastName = "Тошева",
                             Email = "ninatosheva@schoolmath.eu",
-                            Password = "Тeacher1!",
+                            Password = "Nina_Tosheva1!",
                             RoleName = Roles.Teacher,
                             SubjectId = subjects.FirstOrDefault(s => s.Name == "БЕЛ")?.Id
                         },
@@ -101,7 +101,7 @@ namespace OnlineSchoolData.Seeders
                             FirstName = "Недко",
                             LastName = "Каблешков",
                             Email = "nedkokableshkov@schoolmath.eu",
-                            Password = "Тeacher1!",
+                            Password = "Nedko_Kableshkov1!",
                             RoleName = Roles.Teacher,
                             SubjectId = subjects.FirstOrDefault(s => s.Name == "ФВС")?.Id
                         },
@@ -111,7 +111,7 @@ namespace OnlineSchoolData.Seeders
                             FirstName = "Лилия",
                             LastName = "Неделева",
                             Email = "lilianedeleva@schoolmath.eu",
-                            Password = "Тeacher1!",
+                            Password = "Lilia_Nedeleva1!",
                             RoleName = Roles.Teacher,
                             SubjectId = subjects.FirstOrDefault(s => s.Name == "Чужд език по професията")?.Id
                         },
@@ -121,7 +121,7 @@ namespace OnlineSchoolData.Seeders
                             FirstName = "Иван",
                             LastName = "Пеев",
                             Email = "ivanpeev@schoolmath.eu",
-                            Password = "Тeacher1!",
+                            Password = "Ivan_Peev1!",
                             RoleName = Roles.Teacher,
                             SubjectId = subjects.FirstOrDefault(s => s.Name == "Интернет програмиране")?.Id
                         },
@@ -131,7 +131,7 @@ namespace OnlineSchoolData.Seeders
                             FirstName = "Мирослава",
                             LastName = "Йовкова",
                             Email = "miroslavaiovkova@schoolmath.eu",
-                            Password = "Тeacher1!",
+                            Password = "Miroslava_Iovkova1!",
                             RoleName = Roles.Teacher,
                             SubjectId = subjects.FirstOrDefault(s => s.Name == "Немски език")?.Id
                         },
@@ -141,7 +141,7 @@ namespace OnlineSchoolData.Seeders
                             FirstName = "Хриси",
                             LastName = "Плачкова",
                             Email = "hrisiplachkova@schoolmath.eu",
-                            Password = "Тeacher1!",
+                            Password = "Hrisi_Plachkova1!",
                             RoleName = Roles.Teacher,
                             SubjectId = subjects.FirstOrDefault(s => s.Name == "Софтуерно инженерство")?.Id
                         },
@@ -151,7 +151,7 @@ namespace OnlineSchoolData.Seeders
                             FirstName = "Десислава",
                             LastName = "Вачкова-Матеева",
                             Email = "desislavavachkovamateeva@schoolmath.eu",
-                            Password = "Тeacher1!",
+                            Password = "Desislava_Vachkova_Mateeva1!",
                             RoleName = Roles.Teacher,
                             SubjectId = subjects.FirstOrDefault(s => s.Name == "Гражданско образование")?.Id
                         },
@@ -161,7 +161,7 @@ namespace OnlineSchoolData.Seeders
                             FirstName = "Янислав",
                             LastName = "Картелов",
                             Email = "yanislavkartelov@schoolmath.eu",
-                            Password = "Тeacher1!",
+                            Password = "Yanislav_Kartelov1!",
                             RoleName = Roles.Teacher,
                             SubjectId = subjects.FirstOrDefault(s => s.Name == "Мрежови протоколи и технологии")?.Id
                         },
@@ -171,7 +171,7 @@ namespace OnlineSchoolData.Seeders
                             FirstName = "Живко",
                             LastName = "Радев",
                             Email = "zhivkoradev@schoolmath.eu",
-                            Password = "Тeacher1!",
+                            Password = "Zhivko_Radev1!",
                             RoleName = Roles.Teacher,
                             SubjectId = subjects.FirstOrDefault(s => s.Name == "Програмиране за вградени системи")?.Id
                         },
@@ -181,7 +181,7 @@ namespace OnlineSchoolData.Seeders
                             FirstName = "Деница",
                             LastName = "Грозева",
                             Email = "denitsagrozeva@schoolmath.eu",
-                            Password = "Тeacher1!",
+                            Password = "Denitsa_Grozeva1!",
                             RoleName = Roles.Teacher,
                             SubjectId = subjects.FirstOrDefault(s => s.Name == "Мрежови протоколи и технологии")?.Id
                         }

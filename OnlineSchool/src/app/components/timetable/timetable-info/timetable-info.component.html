@@ -1,9 +1,10 @@
-<section *ngIf="current && next && !lastLessonEnded">
+<section *ngIf="(current || next) && !lastLessonEnded">
     <h3 class="heading-center">Моите часове</h3>
 
     <section class="app-card-container">
-        <div class="app-card">
+        <div *ngIf="current" class="app-card">
             <div class="app-card-content">
+                <p>Сега</p>
                 <p class="app-card-name">{{current?.name}}</p>
                 <p>{{current?.code}}</p>
                 <p>{{current?.from | hour}} - {{current?.to | hour}}</p>
@@ -18,8 +19,9 @@
             </div>
         </div>
 
-        <div class="app-card">
+        <div *ngIf="next" class="app-card">
             <div class="app-card-content">
+                <p>Следва</p>
                 <p class="app-card-name">{{next?.name}}</p>
                 <p>{{next?.code}}</p>
                 <p>{{next?.from | hour}} - {{next?.to | hour}}</p>
