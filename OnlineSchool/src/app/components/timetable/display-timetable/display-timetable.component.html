@@ -1,4 +1,4 @@
-<table class="table table-striped">
+<!-- <table class="table table-striped">
     <thead>
         <tr>
             <th scope="col" class="table-col">Понеделник</th>
@@ -20,4 +20,22 @@
             </td>
         </tr>
     </tbody>
-</table>
+</table> -->
+
+
+<div class="app-table">
+    <div class="table-col" *ngFor="let day of daysOfWeek; let col = index">
+        <div class="table-entry-head">{{day | translate}}</div>
+        <div class="table-entry" *ngFor="let entry of data[col]; let row = index">
+            <div>
+                <div *ngIf="data[col][row]">
+                        <p>{{data[col][row].name}}</p>
+                        <p>
+                            {{data[col][row]?.from}} {{data[col][row] ? '-' : ''}} {{data[col][row]?.to | hour}}
+                        </p>
+                        <p>{{data[col][row].teacher?.firstName}} {{data[col][row].teacher?.lastName}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

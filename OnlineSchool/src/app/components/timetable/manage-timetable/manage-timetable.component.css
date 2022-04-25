@@ -3,15 +3,6 @@ table {
     width: 100%;
 }
 
-.table-col {
-    width: 19%;
-    text-align: center;
-}
-
-.table-col-small {
-    width: 5%;
-}
-
 .content-row {
     height: 10rem;
 }
@@ -52,17 +43,6 @@ table {
 
 .small-buttons button:not(:last-of-type) {
     margin-bottom: 0.5rem;
-}
-
-.table-entry {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 15rem;
-}
-
-.app-table {
-    display: flex;
 }
 
 

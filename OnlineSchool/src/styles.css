@@ -61,6 +61,26 @@
     color: red;
 }
 
+.table-entry {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15rem;
+}
+
+.app-table {
+    display: flex;
+}
+
+.table-col {
+    width: 19%;
+    text-align: center;
+}
+
+.table-col-small {
+    width: 5%;
+}
+
 .app-card-container {
     height: 60vh;
     display: flex;
