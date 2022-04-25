@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
       pathArray = ['/', 'login'];
     }
     else if (userRole === 'administrator') {
-      pathArray = ['/', 'register']
+      pathArray = ['/', 'subjects', 'add']
     }  
     else {
       pathArray = ['/', 'timetable', 'info'];
