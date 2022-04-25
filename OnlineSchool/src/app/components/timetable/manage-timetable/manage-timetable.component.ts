@@ -80,10 +80,10 @@ export class ManageTimetableComponent implements AfterViewInit {
         if (formattedTimetable.length === 0) {
           return;
         }
-
+        const maxLength = Math.max(...formattedTimetable.map(x => x.length))
         for (let i = 0; i < formattedTimetable.length; i++) {
           const row = formattedTimetable[i];
-          for (let j = 0; j < row.length; j++) {
+          for (let j = 0; j < maxLength; j++) {
             const element = row[j];
             this.timetable[i][j] = element ?
               new TimetableValue([element.name, element.from,
@@ -351,7 +351,9 @@ export class ManageTimetableComponent implements AfterViewInit {
   }
 
   private updateTable() {
-    this.timetable.push(Array(this.daysOfWeek.length).fill(null));
+    this.timetable.forEach(row => {
+      row.push(null);
+    });
   }
 
 }
