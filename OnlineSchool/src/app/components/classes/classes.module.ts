@@ -6,11 +6,15 @@ import { CreateClassComponent } from '../classes/create-class/create-class.compo
 import { SharedModule } from "../shared/shared.module";
 import { ClassesRoutingModule } from "./classes-routing.module";
 import { ClassesComponent } from "./classes.component";
+import { ClassesListComponent } from './classes-list/classes-list.component';
+import { UpdateClassComponent } from './update-class/update-class.component';
 
 @NgModule({
     declarations: [
         ClassesComponent,
-        CreateClassComponent
+        CreateClassComponent,
+        ClassesListComponent,
+        UpdateClassComponent
     ],
     imports: [
         CommonModule,

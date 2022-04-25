@@ -1,0 +1,22 @@
+.buttons {
+    margin: 2rem 4rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.buttons .btn {
+    width: 8rem;
+}
+
+.app-card {
+    margin-bottom: 2rem;
+}
+
+@media screen and (max-width: 767px) {
+    .buttons {
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+    }
+}

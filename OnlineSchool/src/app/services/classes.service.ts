@@ -28,4 +28,20 @@ export class ClassesService {
         return throwError('Всички полета са задължителни');
       }));
   }
+
+  public updateClass(id: string, name: string) {
+    const classRequest = new ClassRequest(name);
+    return this.http.put<ClassResponse>(environment.routes.classes + '/update' + `/${id}`, classRequest)
+      .pipe(catchError(_ => {
+        return throwError('Всички полета са задължителни');
+      }));
+  }
+
+  public getClass(id: string) {
+    return this.http.get<ClassResponse>(environment.routes.classes + `/get/${id}`)
+  }
+
+  public deleteClass(id: string) {
+    return this.http.delete<void>(environment.routes.classes + `/delete/${id}`);
+  }
 }

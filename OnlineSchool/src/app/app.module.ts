@@ -19,6 +19,7 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { HomeComponent } from './components/home/home.component';
 import { UserApproveComponent } from './components/user-approve/user-approve.component';
 import { PasswordsMatchDirective } from './directives/passwords-match.directive';
+import { AdminComponent } from './components/admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { PasswordsMatchDirective } from './directives/passwords-match.directive'
     HomeComponent,
     UserApproveComponent,
     PasswordsMatchDirective,
+    AdminComponent,
   ],
   imports: [
     BrowserModule,

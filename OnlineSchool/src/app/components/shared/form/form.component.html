@@ -9,7 +9,8 @@
             [id]="control.name" 
             [name]="control.name" 
             [formControl]="control.formControl"
-            class="form-control">
+            class="form-control"
+            [(ngModel)]="control.initialValue">
             <div *ngIf="control.formControl.invalid && (control.formControl.dirty || control.formControl.touched)">
                 <p *ngIf="control.formControl.errors?.['required']" class="error-paragraph">Полето е задължително</p>
             </div>

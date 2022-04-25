@@ -3,11 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminAuthGuard } from 'src/app/guards/admin.guard';
 
 import { CreateSubjectComponent } from './create-subject/create-subject.component';
+import { SubjectsListComponent } from './subjects-list/subjects-list.component';
 
 const routes: Routes = [
     {
         path: '', canActivate: [AdminAuthGuard], children: [
-            { path: 'add', component: CreateSubjectComponent }
+            { path: 'add', component: CreateSubjectComponent },
+            { path: 'all', component: SubjectsListComponent }
         ]
     }
 ];

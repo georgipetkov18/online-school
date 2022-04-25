@@ -24,12 +24,13 @@ export class FormComponent implements OnInit {
   constructor(public utilityService: UtilityService) { }
 
   ngOnInit(): void {
-    this.formControls = this.formControlsSetup.map(c => {
+    this.formControls = this.formControlsSetup.map(c => {      
       return new AppFormControl(
         c.name,
         c.label,
         new FormControl('', c.validators ? c.validators : this.validators),
         c.inputType ? c.inputType : 'text',
+        c.initialValue ? c.initialValue : ''
       )
     })
 
@@ -51,6 +52,7 @@ export interface IAppFormControl {
   label: string,
   inputType?: string,
   validators?: ValidatorFn[],
+  initialValue?: string
 }
 
 class AppFormControl implements IAppFormControl {
@@ -59,5 +61,6 @@ class AppFormControl implements IAppFormControl {
     public label: string,
     public formControl: FormControl,
     public inputType: string,
+    public initialValue: string
   ) { }
 }

@@ -1,0 +1,22 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Име</th>
+            <th scope="col">Действия</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let class of classes">
+            <th scope="row">{{class.id}}</th>
+            <td>{{class.name}}</td>
+            <td>
+                <div class="buttons-row">
+                    <button class="btn btn-primary me-2" [routerLink]="['../', 'edit', class.id]">Промени</button>
+                    <button class="btn btn-danger" (click)="onDelete(class.id)">Изтрий</button>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

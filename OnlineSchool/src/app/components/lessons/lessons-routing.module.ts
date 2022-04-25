@@ -3,11 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminAuthGuard } from 'src/app/guards/admin.guard';
 
 import { CreateLessonsComponent } from './create-lessons/create-lessons.component';
+import { LessonsListComponent } from './lessons-list/lessons-list.component';
 
 const routes: Routes = [
     {
         path: '', canActivate: [AdminAuthGuard], children: [
-            { path: 'add', component: CreateLessonsComponent }
+            { path: 'add', component: CreateLessonsComponent },
+            { path: 'all', component: LessonsListComponent },
         ]
     }
 ];

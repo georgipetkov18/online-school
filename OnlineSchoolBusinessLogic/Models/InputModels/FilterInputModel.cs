@@ -2,6 +2,6 @@
 {
     public class FilterInputModel
     {
-        public string Filter { get; set; } = null!;
+        public string? Filter { get; set; }
     }
 }

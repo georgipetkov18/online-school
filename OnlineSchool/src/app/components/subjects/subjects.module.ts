@@ -6,11 +6,13 @@ import { SharedModule } from "../shared/shared.module";
 import { CreateSubjectComponent } from "./create-subject/create-subject.component";
 import { SubjectsRoutingModule } from "./subjects-routing.module";
 import { SubjectsComponent } from "./subjects.component";
+import { SubjectsListComponent } from './subjects-list/subjects-list.component';
 
 @NgModule({
     declarations: [
         SubjectsComponent,
-        CreateSubjectComponent
+        CreateSubjectComponent,
+        SubjectsListComponent
     ],
     imports: [
         CommonModule,
