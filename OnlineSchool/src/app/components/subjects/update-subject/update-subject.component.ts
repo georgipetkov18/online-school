@@ -1,40 +1,42 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-
-import { SubjectsService } from '../../../services/subjects.service';
-import { UtilityService } from '../../../services/utility.service';
+import { SubjectsService } from 'src/app/services/subjects.service';
 import { IAppFormControl } from '../../shared/form/form.component';
 
 @Component({
-  selector: 'app-create-subject',
-  templateUrl: './create-subject.component.html',
-  styleUrls: ['./create-subject.component.css']
+  selector: 'app-update-subject',
+  templateUrl: './update-subject.component.html',
+  styleUrls: ['./update-subject.component.css']
 })
-export class CreateSubjectComponent implements OnInit {
+export class UpdateSubjectComponent implements OnInit {
   public errorMessage!: string;
+  private id!: string;
   public formSetup: IAppFormControl[] = [
     {
       name: 'name',
       label: 'Име *',
+      initialValue: this.route.snapshot.data[0].name,
       validators: [Validators.required, Validators.maxLength(128)]
     },
     {
       name: 'code',
       label: 'Код *',
+      initialValue: this.route.snapshot.data[0].code,
       validators: [Validators.required, Validators.maxLength(30)]
     },
   ]
 
   constructor(
-    public utilityService: UtilityService,
     private subjectsService: SubjectsService,
     private toastr: ToastrService,
-    private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit(): void {
+    this.id = this.route.snapshot.data[0].id;  
+
   }
 
   onSubmit(subjectsForm: FormGroup) {
@@ -46,10 +48,10 @@ export class CreateSubjectComponent implements OnInit {
     const name = subjectsForm.value['name'];
     const code = subjectsForm.value['code'];
 
-    this.subjectsService.addSubject(name, code).subscribe({
+    this.subjectsService.updateSubject(this.id, name, code).subscribe({
       next: () => {
-        this.toastr.success('Успешно добавихте предмет');
-        this.router.navigate(['../', 'all'], {relativeTo: this.route});
+        this.toastr.success('Предметът беше променен успешно');
+        this.router.navigate(['/', 'subjects', 'all']);
       },
       error: errorMessage => {
         this.errorMessage = errorMessage;

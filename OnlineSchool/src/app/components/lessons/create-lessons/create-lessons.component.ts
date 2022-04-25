@@ -47,7 +47,7 @@ export class CreateLessonsComponent implements OnInit {
     this.lessonsService.addLesson(from, durationInMinutes).subscribe({
       next: _ => {
         this.toastr.success('Часът е създаден успешно');
-        this.router.navigate(['../', 'all'], {relativeTo: this.route});
+        this.router.navigate(['../', 'all'], { relativeTo: this.route });
       },
       error: errorMessage => {
         this.toastr.error(errorMessage);

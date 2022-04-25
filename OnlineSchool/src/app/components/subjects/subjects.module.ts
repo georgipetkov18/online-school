@@ -7,12 +7,14 @@ import { CreateSubjectComponent } from "./create-subject/create-subject.componen
 import { SubjectsRoutingModule } from "./subjects-routing.module";
 import { SubjectsComponent } from "./subjects.component";
 import { SubjectsListComponent } from './subjects-list/subjects-list.component';
+import { UpdateSubjectComponent } from './update-subject/update-subject.component';
 
 @NgModule({
     declarations: [
         SubjectsComponent,
         CreateSubjectComponent,
-        SubjectsListComponent
+        SubjectsListComponent,
+        UpdateSubjectComponent
     ],
     imports: [
         CommonModule,

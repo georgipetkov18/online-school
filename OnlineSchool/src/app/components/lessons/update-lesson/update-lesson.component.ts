@@ -11,7 +11,6 @@ import { IAppFormControl } from '../../shared/form/form.component';
   styleUrls: ['./update-lesson.component.css']
 })
 export class UpdateLessonComponent implements OnInit {
-
   public errorMessage!: string;
   private id!: string;
   public formSetup: IAppFormControl[] = [

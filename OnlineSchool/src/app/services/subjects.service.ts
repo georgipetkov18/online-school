@@ -29,4 +29,21 @@ export class SubjectsService {
         return throwError('Всички полета са задължителни');
       }));
   }
+
+  public updateSubject(id: string, name: string, code: string) {
+    const subjectRequest = new SubjectRequest(name, code);
+
+    return this.http.put<SubjectResponse>(environment.routes.subjects + '/update' + `/${id}`, subjectRequest)
+      .pipe(catchError(_ => {
+        return throwError('Всички полета са задължителни');
+      }));
+  }
+
+  public getSubject(id: string) {
+    return this.http.get<SubjectResponse>(environment.routes.subjects + `/get/${id}`)
+  }
+
+  public deleteSubject(id: string) {
+    return this.http.delete<void>(environment.routes.subjects + `/delete/${id}`);
+  }
 }
