@@ -12,10 +12,12 @@ namespace OnlineSchoolApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUsersService usersService;
+        private readonly IEmailService emailService;
 
-        public UsersController(IUsersService authenticationService)
+        public UsersController(IUsersService authenticationService, IEmailService emailService)
         {
             this.usersService = authenticationService;
+            this.emailService = emailService;
         }
 
         [HttpPost("[action]")]
@@ -99,6 +101,8 @@ namespace OnlineSchoolApi.Controllers
             try
             {
                 var user = await usersService.ApproveUserAsync(userId, User);
+                await this.emailService.SendAsync(user.Email, "Акаунтът Ви беше одобрен.", "Поздравления, Вашият акаунт беше одобрен. Влезте в профила си <a href='https://localhost:4200/login'>тук</a>");
+
                 return Ok(user.ToUserResponse());
             }
             catch (ArgumentException ex)
@@ -118,6 +122,8 @@ namespace OnlineSchoolApi.Controllers
             try
             {
                 var user = await usersService.RejectUserAsync(userId, User);
+                await this.emailService.SendAsync(user.Email, "Акаунтът Ви беше отхвърлен.", "За съжаление, Вашият акаунт не беше одобрен.");
+
                 return Ok(user.ToUserResponse());
             }
             catch (ArgumentException ex)

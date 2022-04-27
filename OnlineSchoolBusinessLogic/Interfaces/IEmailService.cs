@@ -2,6 +2,6 @@
 {
     public interface IEmailService
     {
-        void Send(string to, string subject, string text, string? from = null);
+        Task SendAsync(string to, string subject, string text, string from = "online.school.project.2022@gmail.com");
     }
 }

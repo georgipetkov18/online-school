@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -63,8 +63,9 @@ export class RegisterComponent implements OnInit {
 
     this.usersService.register(registerRequest)
       .subscribe({
-        next: response => {
+        next: _ => {
           this.toastr.success('Регистрацията беше успешна');
+          this.router.navigate(['/login']);
         },
         error: errorMessage => {
           this.errorMessage = errorMessage;

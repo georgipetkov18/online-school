@@ -9,28 +9,21 @@ namespace OnlineSchoolBusinessLogic.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly IConfiguration configuration;
-
-        public EmailService(IConfiguration configuration)
-        {
-            this.configuration = configuration;
-        }
-
-        public void Send(string to, string subject, string text, string? from = null)
+        public async Task SendAsync(string to, string subject, string text, string from = "online.school.project.2022@gmail.com")
         {
             // create message
             var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse(from ?? configuration.GetValue<string>("EmailSender:EmailFrom")));
+            email.From.Add(MailboxAddress.Parse(from ?? "online.school.project.2022@gmail.com"));
             email.To.Add(MailboxAddress.Parse(to));
             email.Subject = subject;
-            email.Body = new TextPart(TextFormat.Plain) { Text = text };
+            email.Body = new TextPart(TextFormat.Html) { Text = text };
 
             // send email
             using var smtp = new SmtpClient();
-            smtp.Connect(configuration.GetValue<string>("EmailSender:SmtpHost"), configuration.GetValue<int>("EmailSender:SmtpPort"), SecureSocketOptions.StartTls);
-            smtp.Authenticate(configuration.GetValue<string>("EmailSender:SmtpUser"), configuration.GetValue<string>("EmailSender:SmtpPass"));
-            smtp.Send(email);
-            smtp.Disconnect(true);
+            await smtp.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+            await smtp.AuthenticateAsync("online.school.project.2022", "rihlornqvcygmzdd");
+            await smtp.SendAsync(email);
+            await smtp.DisconnectAsync(true);
         }
     }
 }
