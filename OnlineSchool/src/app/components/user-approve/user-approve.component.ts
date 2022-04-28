@@ -17,9 +17,7 @@ export class UserApproveComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.pendingUsersSub = this.usersService.pendingUsersChanged.subscribe(users => {
-      this.pendingUsers = users;    
-      console.log(this.pendingUsers);
-        
+      this.pendingUsers = users;            
     });
     this.usersService.getPendingUsers();
   }

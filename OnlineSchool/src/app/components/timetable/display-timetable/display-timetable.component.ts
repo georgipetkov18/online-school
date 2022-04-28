@@ -15,11 +15,8 @@ export class DisplayTimetableComponent implements OnInit {
   constructor(private timetableService: TimetableService) { }
 
   ngOnInit(): void {
-    // Try catch this
     this.timetableService.getTimetable().subscribe(timetable => {
-      this.data = this.timetableService.formatTableData(timetable);
-      console.log(this.data);
-      
+      this.data = this.timetableService.formatTableData(timetable);      
     })
   }
 }

@@ -70,7 +70,6 @@ export class ManageTimetableComponent implements AfterViewInit {
     this.classModalRef.closed.subscribe(_ => {
       this.timetableService.getTimetableByClassId(this.ids.class).subscribe(timetable => {
         const formattedTimetable = this.timetableService.formatTableData(timetable);
-        console.log(formattedTimetable);
         
         this.lessonsCount = formattedTimetable.length > 0 ? formattedTimetable.length : 1;
         this.lessonsArray = Array(this.lessonsCount).fill(0).map((_, i) => i);

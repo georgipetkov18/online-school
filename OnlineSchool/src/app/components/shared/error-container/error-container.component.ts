@@ -9,9 +9,7 @@ export class ErrorContainerComponent implements OnInit {
   @Input('errors') errors: any;
   constructor() { }
 
-  ngOnInit(): void {
-    console.log(this.errors);
-    
+  ngOnInit(): void {    
   }
 
 }

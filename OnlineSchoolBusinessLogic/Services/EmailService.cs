@@ -11,14 +11,12 @@ namespace OnlineSchoolBusinessLogic.Services
     {
         public async Task SendAsync(string to, string subject, string text, string from = "online.school.project.2022@gmail.com")
         {
-            // create message
             var email = new MimeMessage();
             email.From.Add(MailboxAddress.Parse(from ?? "online.school.project.2022@gmail.com"));
             email.To.Add(MailboxAddress.Parse(to));
             email.Subject = subject;
             email.Body = new TextPart(TextFormat.Html) { Text = text };
 
-            // send email
             using var smtp = new SmtpClient();
             await smtp.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
             await smtp.AuthenticateAsync("online.school.project.2022", "rihlornqvcygmzdd");
