@@ -9,9 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineSchoolData", "OnlineS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineSchoolApi", "OnlineSchoolApi\OnlineSchoolApi.csproj", "{0E120D18-9F7F-4FB7-9FB1-F135EB4C9C98}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineSchoolTests", "OnlineSchoolTests\OnlineSchoolTests.csproj", "{E49398C0-BD5F-4734-8319-FB6AAE2EE3EF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineSchoolBusinessLogic", "OnlineSchoolBusinessLogic\OnlineSchoolBusinessLogic.csproj", "{3ADC8243-F044-4FB3-9855-CBFF3B69B56E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineSchoolBusinessLogic", "OnlineSchoolBusinessLogic\OnlineSchoolBusinessLogic.csproj", "{3ADC8243-F044-4FB3-9855-CBFF3B69B56E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +31,6 @@ Global
 		{0E120D18-9F7F-4FB7-9FB1-F135EB4C9C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E120D18-9F7F-4FB7-9FB1-F135EB4C9C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E120D18-9F7F-4FB7-9FB1-F135EB4C9C98}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E49398C0-BD5F-4734-8319-FB6AAE2EE3EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E49398C0-BD5F-4734-8319-FB6AAE2EE3EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E49398C0-BD5F-4734-8319-FB6AAE2EE3EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E49398C0-BD5F-4734-8319-FB6AAE2EE3EF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3ADC8243-F044-4FB3-9855-CBFF3B69B56E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3ADC8243-F044-4FB3-9855-CBFF3B69B56E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3ADC8243-F044-4FB3-9855-CBFF3B69B56E}.Release|Any CPU.ActiveCfg = Release|Any CPU
