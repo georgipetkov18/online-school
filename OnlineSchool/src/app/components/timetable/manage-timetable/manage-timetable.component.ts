@@ -31,6 +31,7 @@ export class ManageTimetableComponent implements AfterViewInit {
   @ViewChild('subjectAutoComplete') subjectAutoComplete!: any;
   @ViewChild('lessonAutoComplete') lessonAutoComplete!: any;
   @ViewChild('teacherAutoComplete') teacherAutoComplete!: any;
+
   public daysOfWeek: DayOfWeek[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   public lessonsCount = 1;
   public suggestions: string[] = [];
@@ -47,6 +48,7 @@ export class ManageTimetableComponent implements AfterViewInit {
   private currentRow = -1;
   private currentCol = -1;
   private suggestionsFull: AutoComplete[] = [];
+  private updateValues: {subject: string, lesson: string, teacher: string} = {subject: '', lesson: '', teacher:''};
   public ids = {
     subject: '',
     lesson: '',
@@ -114,10 +116,12 @@ export class ManageTimetableComponent implements AfterViewInit {
         const subjectInput = document.querySelector('#modal-subject .input-container input') as HTMLInputElement;
         const lessoninput = document.querySelector('#modal-lesson .input-container input') as HTMLInputElement;
         const teacherInput = document.querySelector('#modal-teacher .input-container input') as HTMLInputElement;
-
         subjectInput.value = args[0];
         lessoninput.value = args[1];
         teacherInput.value = args[2];
+        this.updateValues.subject = args[0];
+        this.updateValues.lesson = args[1];
+        this.updateValues.teacher = args[2];
       })
     }
   }
@@ -192,15 +196,15 @@ export class ManageTimetableComponent implements AfterViewInit {
 
   setId(source: 'subject' | 'lesson' | 'teacher', value: string) {
     const currentElement = this.suggestionsFull.find(s => s.autoCompleteIdentifier === value);
-
+    
     if (!currentElement) {
       this.ids[source] = '';
       this.submitEnabled = false;
       return;
     }
     this.ids[source] = currentElement.id;
-
-    if (this.ids.lesson && this.ids.subject && this.ids.teacher) {
+    
+    if ((this.ids.lesson && this.ids.subject && this.ids.teacher) || this.updateMode) {
       this.submitEnabled = true;
     }
   }
@@ -225,9 +229,10 @@ export class ManageTimetableComponent implements AfterViewInit {
       this.toastr.error('Въведени са невалидни данни');
       return;
     }
-    const subject = modalForm.value['modalSubject'];
-    const lesson = modalForm.value['modalLesson'];
-    const teacher = modalForm.value['modalTeacher'];
+    
+    const subject = modalForm.value['modalSubject'] || this.updateValues.subject;
+    const lesson = modalForm.value['modalLesson'] || this.updateValues.lesson;
+    const teacher = modalForm.value['modalTeacher'] || this.updateValues.teacher;
     if (this.updateMode) {
       this.updateEntry(subject, lesson, teacher);
     }

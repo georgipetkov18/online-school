@@ -22,7 +22,7 @@ export class NotificationsService {
     let id = setTimeout(() => {
         if (this.permission === 'granted') {
           let notification = new Notification('Online School', {
-            body: `Часът: ${entry.name} започва след 1 минута. Натиснете тук за да се присъедините към срещата.`,
+            body: `Часът: ${entry.name} ще започне скоро. Натиснете тук за да се присъедините към срещата.`,
           });          
           notification.onclick = () => this.redirectToMeet(entry.code);
         }
