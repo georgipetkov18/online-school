@@ -64,7 +64,7 @@ export class RegisterComponent implements OnInit {
     this.usersService.register(registerRequest)
       .subscribe({
         next: _ => {
-          this.toastr.success('Регистрацията беше успешна');
+          this.toastr.success('Заявката Ви за регистрация беше успешна и ще бъде прегледана от администратор скоро.');
           this.router.navigate(['/login']);
         },
         error: errorMessage => {
